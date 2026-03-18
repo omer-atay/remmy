@@ -1,0 +1,158 @@
+import type { PostView } from 'lemmy-js-client';
+import { Link } from 'wouter';
+import { Upvote } from '../../icons/Upvote';
+import { Downvote } from '../../icons/Downvote';
+import { Comment } from '../../icons/Comment';
+import { Share } from '../../icons/Share';
+
+export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
+  return (
+    <div className="flex flex-col justify-between gap-1">
+      <hr className="border-0 border-b border-solid border-b-media-border-weak" />
+      <div className="flex flex-col justify-between gap-2 w-2xl px-2 rounded-2xl hover:bg-neutral-background-hover">
+        {source === 'community' && (
+          <div className="flex justify-between items-center gap-2">
+            <div className="flex items-center gap-1">
+              <img className="size-6 rounded-4xl" src={post.community.icon} alt="" />
+
+              <Link
+                href={`/c/${post.community.name}`}
+                className="text-xs font-bold text-neutral-content hover:text-primary"
+              >
+                c/{post.community.name}
+              </Link>
+
+              <span className="created-separator text-xs text-neutral-content-weak" aria-hidden="true">
+                •
+              </span>
+
+              {/* use {post.community.published} */}
+              <span className="text-xs text-neutral-content-weak">3 hr. ago</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <button className="flex justify-center items-center py-1 px-3 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover">
+                Join
+              </button>
+
+              <button className="p-2 hover:bg-secondary-background-hover rounded-full">
+                <span className="flex">
+                  <svg
+                    fill="currentColor"
+                    height="15"
+                    icon-name="overflow-horizontal"
+                    viewBox="0 0 20 20"
+                    width="15"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M16 11.75a1.75 1.75 0 11.001-3.501A1.75 1.75 0 0116 11.75zM11.75 10a1.75 1.75 0 10-3.501.001A1.75 1.75 0 0011.75 10zm-6 0a1.75 1.75 0 10-3.501.001A1.75 1.75 0 005.75 10z"></path>
+                  </svg>
+                </span>
+              </button>
+            </div>
+
+            {/* <div>
+                  {post.community.banner && (
+                    <img src={post.community.banner} alt="banner_img" />
+                  )}
+                  <div className="flex justify-between gap-2">
+                    <img
+                      className="size-10 rounded-4xl"
+                      src={post.community.icon}
+                      alt={post.community.name}
+                    />
+
+                    <h3>r/{post.community.name}</h3>
+                  </div>
+                  <p>{post.community.description}</p>
+                </div> */}
+
+            {/* // will need for styling etc.
+                 <p>ID {post.community.id}</p>
+                <p>NSFW {post.community.nsfw}</p>
+                <p>REMOVED {post.community.removed}</p> */}
+          </div>
+        )}
+
+        {source === 'creator' && (
+          <div className="flex items-center gap-2">
+            {!post.creator.deleted && (
+              <div>
+                <img className="size-8 rounded-4xl" src={post.creator.avatar} alt="" />
+
+                <Link
+                  className="text-xs font-bold text-neutral-content hover:text-primary"
+                  href={`/u/${post.creator.name}`}
+                >
+                  u/{post.creator.name}
+                </Link>
+
+                <span className="created-separator text-xs text-neutral-content-weak" aria-hidden="true">
+                  •
+                </span>
+
+                {/* use {post.creator.published} */}
+                <span className="text-xs text-neutral-content-weak">3 hr. ago</span>
+
+                <div>
+                  {post.creator.banner && <img src={post.creator.banner} alt="" />}
+                  <div className="flex items-center gap-2">
+                    <img className="size-8 rounded-4xl" src={post.creator.avatar} alt="" />
+                    <Link className="text-1xl font-semibold" href={`/u/${post.creator.name}`}>
+                      u/{post.creator.name}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {post.creator.deleted && (
+              <div>
+                <span className="text-xs text-neutral-content-weak">[deleted]</span>
+              </div>
+            )}
+
+            {/* // will need for styling etc.
+              <p>ACTOR ID {post.creator.actor_id}</p>
+              <p>ID {post.creator.id}</p>
+              <p>ID {post.creator.published}</p> */}
+          </div>
+        )}
+
+        <div>
+          <p className="pb-1.5 text-xl font-bold text-neutral-content-strong">{post.post.name}</p>
+          <p>{post.post.body}</p>
+          <div className="flex justify-center border border-solid border-media-border-weak bg-black rounded-2xl">
+            <img src={post.post.thumbnail_url} alt="" />
+          </div>
+          {/* // will need for styling etc.
+          <p>{post.post.deleted}</p>
+          <p>{post.post.nsfw}</p>
+          <p>{post.post.removed}</p> */}
+        </div>
+
+        <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong">
+          <div className="flex justify-center items-center rounded-2xl bg-secondary-background">
+            <button className="p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover">
+              <Upvote />
+            </button>
+            <span>{post.counts.upvotes}</span>
+            <button className="p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover">
+              <Downvote />
+            </button>
+          </div>
+
+          <button className="flex justify-center items-center gap-1 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
+            <Comment />
+            <span>{post.counts.comments}</span>
+          </button>
+
+          <button className="flex justify-center items-center gap-1.5 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
+            <Share />
+            <span>Share</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
