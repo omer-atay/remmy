@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ThreeDot } from '../../icons/ThreeDot';
 import { CirclePlus } from 'lucide-react';
 import { PostsSection } from '../PostsSection/PostsSection';
+import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 
 export function CreatorPage() {
   const { userName } = useParams<{ userName: string }>();
@@ -58,7 +59,7 @@ export function CreatorPage() {
         <PostsSection posts={creator.posts} />
       </div>
 
-      <aside className="flex flex-col w-xs mt-4 fixed left-[75%] bg-neutral-background-weak rounded-lg">
+      <PageDetailsSection>
         {creator.person_view.person.banner && (
           <img
             className="h-full w-full object-cover object-center rounded-lg"
@@ -109,7 +110,7 @@ export function CreatorPage() {
             </div>
           </div>
         </div>
-      </aside>
+      </PageDetailsSection>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { communityQueries, postQueries } from '../../queries';
 import { Cake } from '../../icons/Cake';
 import { World } from '../../icons/World';
 import { PostsSection } from '../PostsSection/PostsSection';
+import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 
 export function CommunityPage() {
   const { communityName } = useParams<{ communityName: string }>();
@@ -69,43 +70,45 @@ export function CommunityPage() {
       <div className="grid grid-cols-[3fr_1fr] mt-16">
         <CommunityPosts communityName={communityName} />
 
-        <aside className="flex flex-col w-xs px-4 py-5 bg-neutral-background-weak rounded-lg">
-          <span className="text-sm font-bold text-neutral-content">{community.community_view.community.title}</span>
+        <PageDetailsSection>
+          <div className="flex flex-col w-xs px-4 py-5 bg-neutral-background-weak rounded-lg">
+            <span className="text-sm font-bold text-neutral-content">{community.community_view.community.title}</span>
 
-          <div className="flex flex-col py-2 gap-1">
-            <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">
-              <Cake />
-              <span>Created {community.community_view.community.published}</span>
+            <div className="flex flex-col py-2 gap-1">
+              <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">
+                <Cake />
+                <span>Created {community.community_view.community.published}</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">
+                <World />
+                <span>{community.community_view.community.visibility}</span>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">
-              <World />
-              <span>{community.community_view.community.visibility}</span>
+            <div className="flex gap-10 pb-3">
+              <div className="flex flex-col">
+                <span className="text-sm text-neutral-content-strong font-bold">
+                  {community.community_view.counts.subscribers}
+                </span>
+
+                <span className="text-xs text-neutral-content-weak">Subscribers</span>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-sm text-neutral-content-strong font-bold">
+                  {community.community_view.counts.users_active_week}
+                </span>
+
+                <span className="text-xs text-neutral-content-weak">Weekly visitors</span>
+              </div>
             </div>
+
+            <hr className="border-neutral-border-weak" />
+
+            <p className="text-sm text-neutral-content-weak">{community.community_view.community.description}</p>
           </div>
-
-          <div className="flex gap-10 pb-3">
-            <div className="flex flex-col">
-              <span className="text-sm text-neutral-content-strong font-bold">
-                {community.community_view.counts.subscribers}
-              </span>
-
-              <span className="text-xs text-neutral-content-weak">Subscribers</span>
-            </div>
-
-            <div className="flex flex-col">
-              <span className="text-sm text-neutral-content-strong font-bold">
-                {community.community_view.counts.users_active_week}
-              </span>
-
-              <span className="text-xs text-neutral-content-weak">Weekly visitors</span>
-            </div>
-          </div>
-
-          <hr className="border-neutral-border-weak" />
-
-          <p className="text-sm text-neutral-content-weak">{community.community_view.community.description}</p>
-        </aside>
+        </PageDetailsSection>
       </div>
     </div>
   );
