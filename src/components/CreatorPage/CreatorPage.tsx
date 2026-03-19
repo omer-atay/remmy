@@ -3,7 +3,7 @@ import { userQueries } from '../../queries';
 import { useQuery } from '@tanstack/react-query';
 import { ThreeDot } from '../../icons/ThreeDot';
 import { CirclePlus } from 'lucide-react';
-import { PostCard } from '../PostCard/PostCard';
+import { PostsSection } from '../PostsSection/PostsSection';
 
 export function CreatorPage() {
   const { userName } = useParams<{ userName: string }>();
@@ -55,11 +55,7 @@ export function CreatorPage() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-2 max-w-2xl mt-6">
-          {creator.posts.map((post) => {
-            return <PostCard key={post.post.id} post={post} source="community" />;
-          })}
-        </div>
+        <PostsSection posts={creator.posts} />
       </div>
 
       <aside className="flex flex-col w-xs mt-4 fixed left-[75%] bg-neutral-background-weak rounded-lg">
