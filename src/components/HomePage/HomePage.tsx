@@ -25,7 +25,7 @@ export function HomePage() {
 
   return (
     <>
-      <h1 className="text-2xl font-extrabold">remmy</h1>
+      <h1 className="text-3xl font-extrabold text-neutral-content-strong logo">remmy</h1>
       <CommunityList />
       <div className="flex flex-col items-center gap-2 mx-auto max-w-2xl">
         {posts.posts.map((post) => {
