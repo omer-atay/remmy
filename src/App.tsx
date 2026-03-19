@@ -8,8 +8,8 @@ export function App() {
     <main>
       <Switch>
         <Route path="/" component={HomePage} />
-        <Route path="/c/:communityName" component={CommunityPage} />
-        <Route path="/u/:userName" component={CreatorPage} />
+        <Route path="/c/:communityName">{(params) => <CommunityPage name={params.communityName} />}</Route>
+        <Route path="/u/:userName">{(params) => <CreatorPage username={params.userName} />}</Route>
       </Switch>
     </main>
   );

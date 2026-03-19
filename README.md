@@ -3,7 +3,7 @@
 - [x] use tailwind
 - [x] use wouter
 - [x] use tanstack query
-- [x] use font (for logo) => https://fontsource.org/fonts/reddit-sans/install
+- [x] use font for logo
 
 - [x] HomePage
 - [] PostPage

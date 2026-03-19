@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'wouter';
 import { Plus } from 'lucide-react';
 import { communityQueries, postQueries } from '../../queries';
 import { Cake } from '../../icons/Cake';
@@ -7,16 +6,14 @@ import { World } from '../../icons/World';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 
-export function CommunityPage() {
-  const { communityName } = useParams<{ communityName: string }>();
-
+export function CommunityPage({ name }: { name: string }) {
   const {
     data: community,
     isLoading,
     isError,
   } = useQuery(
     communityQueries.detail({
-      name: communityName,
+      name,
     }),
   );
 
@@ -42,25 +39,25 @@ export function CommunityPage() {
         )}
 
         <div className="flex justify-between relative py-3">
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex justify-center items-center gap-4 pl-28">
             <img
               className="size-24 border-4 absolute left-4 bottom-2 border-neutral-background rounded-full"
               src={community.community_view.community.icon}
               alt=""
             />
 
-            <h2 className="text-3xl font-bold absolute left-28 text-neutral-content-strong">
+            <h2 className="text-3xl font-bold text-neutral-content-strong">
               c/{community.community_view.community.name}
             </h2>
           </div>
 
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex justify-center items-center gap-3">
             <button className="flex justify-center items-center gap-2 text-secondary-plain text-sm font-bold border border-neutral-border-medium rounded-3xl py-1.5 px-2 hover:text-secondary-plain-hover hover:border-secondary-plain-hover">
               <Plus size={24} strokeWidth={1.75} />
               <span>Create Post</span>
             </button>
 
-            <button className="flex justify-center items-center py-2 px-3.5 text-sm text-global-white font-bold bg-primary-background rounded-3xl hover:bg-primary-background-hover">
+            <button className="py-2 px-3.5 text-sm text-global-white font-bold bg-primary-background rounded-3xl hover:bg-primary-background-hover">
               Join
             </button>
           </div>
@@ -68,7 +65,7 @@ export function CommunityPage() {
       </div>
 
       <div className="grid grid-cols-[3fr_1fr] mt-16">
-        <CommunityPosts communityName={communityName} />
+        <CommunityPosts communityName={name} />
 
         <PageDetailsSection>
           <div className="flex flex-col w-xs px-4 py-5 bg-neutral-background-weak rounded-lg">
@@ -77,7 +74,7 @@ export function CommunityPage() {
             <div className="flex flex-col py-2 gap-1">
               <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">
                 <Cake />
-                <span>Created {community.community_view.community.published}</span>
+                <span>Created {new Date(community.community_view.community.published).toDateString()}</span>
               </div>
 
               <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">

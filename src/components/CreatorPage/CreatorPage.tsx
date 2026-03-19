@@ -1,4 +1,3 @@
-import { useParams } from 'wouter';
 import { userQueries } from '../../queries';
 import { useQuery } from '@tanstack/react-query';
 import { ThreeDot } from '../../icons/ThreeDot';
@@ -6,16 +5,14 @@ import { CirclePlus } from 'lucide-react';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 
-export function CreatorPage() {
-  const { userName } = useParams<{ userName: string }>();
-
+export function CreatorPage({ username }: { username: string }) {
   const {
     data: creator,
     isLoading,
     isError,
   } = useQuery(
     userQueries.detail({
-      username: userName,
+      username,
     }),
   );
 
@@ -46,12 +43,9 @@ export function CreatorPage() {
           )}
 
           <div className="flex flex-col">
-            {creator.person_view.person.display_name && (
-              <h1 className="text-2xl font-bold text-neutral-content">{creator.person_view.person.display_name}</h1>
-            )}
-            {!creator.person_view.person.display_name && (
-              <h1 className="text-2xl font-bold text-neutral-content">{creator.person_view.person.name}</h1>
-            )}
+            <h1 className="text-2xl font-bold text-neutral-content">
+              {creator.person_view.person.display_name ?? creator.person_view.person.name}
+            </h1>
             <span className="text-sm font-semibold text-neutral-content-weak">u/{creator.person_view.person.name}</span>
           </div>
         </div>
@@ -61,11 +55,7 @@ export function CreatorPage() {
 
       <PageDetailsSection>
         {creator.person_view.person.banner && (
-          <img
-            className="h-full w-full object-cover object-center rounded-lg"
-            src={creator.person_view.person.banner}
-            alt=""
-          />
+          <img className="h-full w-full object-cover object-center" src={creator.person_view.person.banner} alt="" />
         )}
 
         <div className="flex flex-col px-4">
@@ -106,6 +96,7 @@ export function CreatorPage() {
 
             <div className="flex flex-col">
               <span className="text-neutral-content-strong font-bold">{creator.person_view.person.published}</span>
+              {/* todo: display correct age */}
               <span className="text-xs text-neutral-content-weak font-medium">Lemmy Age</span>
             </div>
           </div>

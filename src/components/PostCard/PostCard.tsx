@@ -7,6 +7,10 @@ import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
+  const creatorAbsoluteName = post.creator.local
+    ? post.creator.name
+    : `${post.creator.name}@${new URL(post.creator.actor_id).host}`;
+
   return (
     <div className="flex flex-col justify-between gap-1">
       <hr className="border-0 border-b border-solid border-b-media-border-weak" />
@@ -72,9 +76,9 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
 
                   <Link
                     className="text-xs font-bold text-neutral-content hover:text-primary"
-                    href={`/u/${post.creator.name}`}
+                    href={`/u/${creatorAbsoluteName}`}
                   >
-                    u/{post.creator.name}
+                    u/{creatorAbsoluteName}
                   </Link>
                 </div>
               )}
@@ -119,7 +123,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
         <div>
           <p className="pb-1.5 text-xl font-bold text-neutral-content-strong">{post.post.name}</p>
           <p>{post.post.body}</p>
-          <div className="flex justify-center border border-solid border-media-border-weak bg-black rounded-2xl">
+          <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
             <img src={post.post.thumbnail_url} alt="" />
           </div>
           {/* // will need for styling etc.

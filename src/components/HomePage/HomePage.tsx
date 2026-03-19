@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CommunityList } from '../CommunityList/CommunityList';
 import { postQueries } from '../../queries';
 import { PostsSection } from '../PostsSection/PostsSection';
+import { AppLogo } from '../../icons/AppLogo';
 
 export function HomePage() {
   const {
@@ -25,7 +26,7 @@ export function HomePage() {
 
   return (
     <>
-      <h1 className="text-3xl font-extrabold text-neutral-content-strong logo">remmy</h1>
+      <AppLogo height={22} className="text-global-white" />
       <CommunityList />
       <PostsSection posts={posts.posts} />
     </>
