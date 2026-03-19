@@ -4,6 +4,7 @@ import { Upvote } from '../../icons/Upvote';
 import { Downvote } from '../../icons/Downvote';
 import { Comment } from '../../icons/Comment';
 import { Share } from '../../icons/Share';
+import { ThreeDot } from '../../icons/ThreeDot';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
   return (
@@ -26,8 +27,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                 •
               </span>
 
-              {/* use {post.community.published} */}
-              <span className="text-xs text-neutral-content-weak">3 hr. ago</span>
+              <span className="text-xs text-neutral-content-weak">{post.community.published} ago</span>
             </div>
 
             <div className="flex items-center gap-1">
@@ -36,18 +36,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               </button>
 
               <button className="p-2 hover:bg-secondary-background-hover rounded-full">
-                <span className="flex">
-                  <svg
-                    fill="currentColor"
-                    height="15"
-                    icon-name="overflow-horizontal"
-                    viewBox="0 0 20 20"
-                    width="15"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M16 11.75a1.75 1.75 0 11.001-3.501A1.75 1.75 0 0116 11.75zM11.75 10a1.75 1.75 0 10-3.501.001A1.75 1.75 0 0011.75 10zm-6 0a1.75 1.75 0 10-3.501.001A1.75 1.75 0 005.75 10z"></path>
-                  </svg>
-                </span>
+                <ThreeDot />
               </button>
             </div>
 
@@ -75,26 +64,42 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
         )}
 
         {source === 'creator' && (
-          <div className="flex items-center gap-2">
-            {!post.creator.deleted && (
-              <div>
-                <img className="size-8 rounded-4xl" src={post.creator.avatar} alt="" />
+          <div className="flex justify-between items-center gap-2">
+            <div className="flex items-center gap-1">
+              {!post.creator.deleted && (
+                <div className="flex items-center gap-2">
+                  <img className="size-6 rounded-4xl" src={post.creator.avatar} alt="" />
 
-                <Link
-                  className="text-xs font-bold text-neutral-content hover:text-primary"
-                  href={`/u/${post.creator.name}`}
-                >
-                  u/{post.creator.name}
-                </Link>
+                  <Link
+                    className="text-xs font-bold text-neutral-content hover:text-primary"
+                    href={`/u/${post.creator.name}`}
+                  >
+                    u/{post.creator.name}
+                  </Link>
+                </div>
+              )}
 
-                <span className="created-separator text-xs text-neutral-content-weak" aria-hidden="true">
-                  •
-                </span>
-
-                {/* use {post.creator.published} */}
-                <span className="text-xs text-neutral-content-weak">3 hr. ago</span>
-
+              {post.creator.deleted && (
                 <div>
+                  <div className="size-6 rounded-4xl" />
+                  <span className="text-xs font-bold text-neutral-content">[deleted]</span>
+                </div>
+              )}
+
+              <span className="created-separator text-xs text-neutral-content-weak" aria-hidden="true">
+                •
+              </span>
+
+              <span className="text-xs text-neutral-content-weak">{post.creator.published} ago</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <button className="p-2 hover:bg-secondary-background-hover rounded-full">
+                <ThreeDot />
+              </button>
+            </div>
+
+            {/* <div>
                   {post.creator.banner && <img src={post.creator.banner} alt="" />}
                   <div className="flex items-center gap-2">
                     <img className="size-8 rounded-4xl" src={post.creator.avatar} alt="" />
@@ -102,15 +107,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                       u/{post.creator.name}
                     </Link>
                   </div>
-                </div>
-              </div>
-            )}
-
-            {post.creator.deleted && (
-              <div>
-                <span className="text-xs text-neutral-content-weak">[deleted]</span>
-              </div>
-            )}
+                </div> */}
 
             {/* // will need for styling etc.
               <p>ACTOR ID {post.creator.actor_id}</p>

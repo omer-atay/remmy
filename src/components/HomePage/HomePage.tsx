@@ -1,22 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { client } from '../../client';
 import { PostCard } from '../PostCard/PostCard';
 import { CommunityList } from '../CommunityList/CommunityList';
+import { postQueries } from '../../queries';
 
 export function HomePage() {
   const {
     data: posts,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ['posts', 'topday'],
-    queryFn: () => {
-      return client.getPosts({
-        sort: 'TopDay',
-        type_: 'Local',
-      });
-    },
-  });
+  } = useQuery(
+    postQueries.list({
+      sort: 'TopDay',
+      type_: 'Local',
+    }),
+  );
 
   if (isLoading) {
     return <p>loading...</p>;
