@@ -11,8 +11,12 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
     ? post.creator.name
     : `${post.creator.name}@${new URL(post.creator.actor_id).host}`;
 
+  const communityAbsoluteName = post.community.local
+    ? post.community.name
+    : `${post.community.name}@${new URL(post.community.actor_id).host}`;
+
   return (
-    <div className="flex flex-col justify-between gap-1">
+    <div className="flex flex-col justify-between gap-1 relative">
       <hr className="border-0 border-b border-solid border-b-media-border-weak" />
       <div className="flex flex-col justify-between gap-2 w-2xl px-2 rounded-2xl hover:bg-neutral-background-hover">
         {source === 'community' && (
@@ -21,10 +25,10 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               <img className="size-6 rounded-4xl" src={post.community.icon} alt="" />
 
               <Link
-                href={`/c/${post.community.name}`}
-                className="text-xs font-bold text-neutral-content hover:text-primary"
+                href={`/c/${communityAbsoluteName}`}
+                className="text-xs font-bold text-neutral-content z-1000 hover:text-primary"
               >
-                c/{post.community.name}
+                c/{communityAbsoluteName}
               </Link>
 
               <span className="created-separator text-xs text-neutral-content-weak" aria-hidden="true">
@@ -35,11 +39,11 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
             </div>
 
             <div className="flex items-center gap-1">
-              <button className="flex justify-center items-center py-1 px-3 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover">
+              <button className="flex justify-center items-center py-1 px-3 z-1000 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover">
                 Join
               </button>
 
-              <button className="p-2 hover:bg-secondary-background-hover rounded-full">
+              <button className="p-2 z-1000 hover:bg-secondary-background-hover rounded-full">
                 <ThreeDot />
               </button>
             </div>
@@ -75,7 +79,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                   <img className="size-6 rounded-4xl" src={post.creator.avatar} alt="" />
 
                   <Link
-                    className="text-xs font-bold text-neutral-content hover:text-primary"
+                    className="z-1000 text-xs font-bold text-neutral-content hover:text-primary"
                     href={`/u/${creatorAbsoluteName}`}
                   >
                     u/{creatorAbsoluteName}
@@ -98,7 +102,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
             </div>
 
             <div className="flex items-center gap-1">
-              <button className="p-2 hover:bg-secondary-background-hover rounded-full">
+              <button className="p-2 z-1000 hover:bg-secondary-background-hover rounded-full">
                 <ThreeDot />
               </button>
             </div>
@@ -107,7 +111,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                   {post.creator.banner && <img src={post.creator.banner} alt="" />}
                   <div className="flex items-center gap-2">
                     <img className="size-8 rounded-4xl" src={post.creator.avatar} alt="" />
-                    <Link className="text-1xl font-semibold" href={`/u/${post.creator.name}`}>
+                    <Link className="text-1xl font-semibold" href={`/u/${creatorAbsoluteName`}>
                       u/{post.creator.name}
                     </Link>
                   </div>
@@ -134,25 +138,26 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
 
         <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong">
           <div className="flex justify-center items-center rounded-2xl bg-secondary-background">
-            <button className="p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover">
+            <button className="p-2 z-1000 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover">
               <Upvote />
             </button>
             <span>{post.counts.upvotes}</span>
-            <button className="p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover">
+            <button className="p-2 z-1000 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover">
               <Downvote />
             </button>
           </div>
 
-          <button className="flex justify-center items-center gap-1 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
+          <button className="flex justify-center items-center gap-1 py-2 px-4 z-1000 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
             <Comment />
             <span>{post.counts.comments}</span>
           </button>
 
-          <button className="flex justify-center items-center gap-1.5 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
+          <button className="flex justify-center items-center gap-1.5 py-2 px-4 z-1000 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
             <Share />
             <span>Share</span>
           </button>
         </div>
+        <Link className="after:content-[''] after:absolute after:inset-0 after:z-999" href={`/post/${post.post.id}`} />
       </div>
     </div>
   );

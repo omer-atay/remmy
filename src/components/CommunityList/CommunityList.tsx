@@ -30,6 +30,12 @@ export function CommunityList() {
         <h2 className="text-xs font-extrabold text-neutral-content-weak">POPULAR COMMUNITIES</h2>
         <ul className="flex flex-col mt-4">
           {visibleCommunities.map((community) => {
+            console.log(community.community);
+
+            const communityAbsoluteName = community.community.local
+              ? community.community.name
+              : `${community.community.name}@${new URL(community.community.actor_id).host}`;
+
             return (
               <li
                 key={community.community.id}
@@ -39,9 +45,9 @@ export function CommunityList() {
                 <div className="flex flex-col">
                   <Link
                     className="after:content-[''] after:absolute after:inset-0 after:z-999 text-sm text-neutral-content"
-                    href={`/c/${community.community.name}`}
+                    href={`/c/${communityAbsoluteName}`}
                   >
-                    c/{community.community.name}
+                    c/{communityAbsoluteName}
                   </Link>
                   <span className="text-xs text-neutral-content-weak">{community.counts.subscribers} members</span>
                 </div>

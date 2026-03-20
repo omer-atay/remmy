@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/reddit-sans';
 
 @layer base {
   button:not(:disabled),
