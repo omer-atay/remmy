@@ -6,7 +6,7 @@
 - [x] use font for logo
 
 - [x] HomePage
-- [] PostPage
+- [x] PostPage
 - [x] CommunityPage
 - [x] UserPage (u/{someone})
 - [] Sidebar
@@ -43,7 +43,7 @@
 - [] handle no-text buttons, add sr-only
 - [] handle hover of community/user name, show detailed section
 - [] add 'Join the conversation' section (add comment)
-
+- [] handle comment layout
   0.22826977
   0.22826977.22835093
   0.22826977.22827608

@@ -25,7 +25,7 @@ export function CommunityList() {
   const visibleCommunities = shouldShowMore ? data.communities : data.communities.slice(0, 5);
 
   return (
-    <aside className="flex flex-col max-w-2xs px-4 py-2 bg-neutral-background-weak rounded-lg">
+    <aside className="flex flex-col max-w-2xs h-fit px-4 py-2 bg-neutral-background-weak rounded-lg">
       <div className="flex flex-col">
         <h2 className="text-xs font-extrabold text-neutral-content-weak">POPULAR COMMUNITIES</h2>
         <ul className="flex flex-col mt-4">

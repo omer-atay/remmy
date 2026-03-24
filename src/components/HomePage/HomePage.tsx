@@ -25,10 +25,10 @@ export function HomePage() {
   }
 
   return (
-    <>
+    <div className="grid grid-cols-[1fr_2fr_1fr]">
       <AppLogo height={22} className="text-global-white" />
-      <CommunityList />
       <PostsSection posts={posts.posts} />
-    </>
+      <CommunityList />
+    </div>
   );
 }
