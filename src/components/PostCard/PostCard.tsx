@@ -25,12 +25,11 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
         {source === 'community' && (
           <div className="flex justify-between items-center gap-2">
             <div className="flex items-center gap-1">
-              <img className="size-6 rounded-4xl" src={post.community.icon} alt="" />
-
               <Link
                 href={`/c/${communityAbsoluteName}`}
-                className="text-xs font-bold text-neutral-content z-1000 hover:text-primary"
+                className="flex items-center gap-1 text-xs font-bold text-neutral-content z-1000 hover:text-primary"
               >
+                <img className="size-6 rounded-4xl" src={post.community.icon} alt="" />
                 c/{communityAbsoluteName}
               </Link>
 
@@ -78,13 +77,12 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
           <div className="flex justify-between items-center gap-2">
             <div className="flex items-center gap-1">
               {!post.creator.deleted && (
-                <div className="flex items-center gap-2">
-                  <img className="size-6 rounded-4xl" src={post.creator.avatar} alt="" />
-
+                <div className="flex items-center gap-1">
                   <Link
-                    className="z-1000 text-xs font-bold text-neutral-content hover:text-primary"
+                    className="flex items-center gap-1 z-1000 text-xs font-bold text-neutral-content hover:text-primary"
                     href={`/u/${creatorAbsoluteName}`}
                   >
+                    <img className="size-6 rounded-4xl" src={post.creator.avatar} alt="" />
                     u/{creatorAbsoluteName}
                   </Link>
                 </div>
@@ -142,12 +140,12 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               {!post.post.url_content_type.includes('image') && (
                 <ReactPlayer src={post.post.url} width={'100%'} height={'100%'} controls />
               )}
+            </div>
+          )}
 
-              {!post.post.url_content_type && (
-                <div>
-                  <Markdown remarkPlugins={[remarkGfm]}>{post.post.body}</Markdown>
-                </div>
-              )}
+          {!post.post.url_content_type && (
+            <div className="text-sm">
+              <Markdown remarkPlugins={[remarkGfm]}>{post.post.body}</Markdown>
             </div>
           )}
 
