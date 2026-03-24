@@ -7,10 +7,6 @@
   }
 }
 
-.logo {
-  font-family: 'Reddit Sans Variable', sans-serif;
-}
-
 :root {
   background: var(--neutral-background);
   color: var(--neutral-content);

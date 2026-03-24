@@ -1,6 +1,14 @@
-import { queryOptions } from '@tanstack/react-query';
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 import { client } from './client';
-import type { GetCommunity, GetPersonDetails, GetPost, GetPosts, ListCommunities } from 'lemmy-js-client';
+import type {
+  GetComment,
+  GetComments,
+  GetCommunity,
+  GetPersonDetails,
+  GetPost,
+  GetPosts,
+  ListCommunities,
+} from 'lemmy-js-client';
 
 export const communityQueries = {
   all: () => ['communities'],
@@ -41,5 +49,29 @@ export const userQueries = {
     queryOptions({
       queryKey: [...userQueries.details(), options],
       queryFn: () => client.getPersonDetails(options),
+    }),
+};
+
+export const commentQueries = {
+  all: () => ['comments'],
+  lists: () => [...commentQueries.all(), 'comment'],
+  list: ({ options, totalCount }: { options: Omit<GetComments, 'page'>; totalCount: number }) =>
+    infiniteQueryOptions({
+      queryKey: [...commentQueries.lists(), options],
+      queryFn: ({ pageParam }) => client.getComments({ ...options, page: pageParam }),
+      getNextPageParam: (_lastPage, allPages, lastPageParam) => {
+        const totalComments = allPages.reduce((acc, page) => acc + page.comments.length, 0);
+
+        if (totalComments < totalCount) {
+          return lastPageParam + 1;
+        }
+      },
+      initialPageParam: 1,
+    }),
+  details: () => [...commentQueries.all(), 'detail'],
+  detail: (options: GetComment) =>
+    queryOptions({
+      queryKey: [...commentQueries.details(), options],
+      queryFn: () => client.getComment(options),
     }),
 };

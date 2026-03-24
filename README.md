@@ -9,16 +9,17 @@
 - [] PostPage
 - [x] CommunityPage
 - [x] UserPage (u/{someone})
-- [] PrivateMessageRoom?
+- [] Sidebar
+- [] ImageViewer
+- [] Header
+- [] Footer
+- [] LoginPopup (use baseUI)
 - [] LoggedUserPage (own page)?
   - [] Up/DownvotedSection
   - [] SavedContentSection
   - [] RecentViewedSection
   - [] Followed/FriendsSection
-- [] Sidebar
-- [] ImageViewer
-- [] Header
-- [] Footer
+- [] PrivateMessageRoom?
 - [] light/dark/system theme
 
 ---
@@ -32,3 +33,22 @@
 ---
 
 # Questions
+
+- [] posts are not infinite
+- [] handle dates
+- [] handle numbers
+- [] handle avatars
+- [] handle avatars/icons clickable and routes to community/user
+- [] handle all general page layouts
+- [] handle community details (about and rules should be separated)
+- [] handle no-text buttons, add sr-only
+- [x] handle back button from PostPage
+- [] handle hover of community/user name, show detailed section
+- [] embed urls in postcards and postpage (<a href={post.post.url}>{post.post.url}</a>)
+- [] add 'Join the conversation' section (add comment)
+
+  0.22826977
+  0.22826977.22835093
+  0.22826977.22827608
+  0.22826977.22827170
+  0.22826977.22827170.22830984

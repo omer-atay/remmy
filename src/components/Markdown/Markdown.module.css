@@ -1,0 +1,17 @@
+.markdown {
+  img {
+    /* max-width: 50%;
+    max-height: 30%; */
+    background-color: #52525c;
+    border-radius: 6px;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--color-primary-hover);
+    }
+  }
+}

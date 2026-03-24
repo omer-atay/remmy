@@ -1,10 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { usePrefetchQuery, useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { communityQueries, postQueries } from '../../queries';
-import { Cake } from '../../icons/Cake';
-import { World } from '../../icons/World';
 import { PostsSection } from '../PostsSection/PostsSection';
-import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
+import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
 
 export function CommunityPage({ name }: { name: string }) {
   const {
@@ -17,6 +15,14 @@ export function CommunityPage({ name }: { name: string }) {
     }),
   );
 
+  usePrefetchQuery(
+    postQueries.list({
+      sort: 'TopDay',
+      type_: 'Local',
+      community_name: name,
+    }),
+  );
+
   if (isLoading) {
     return <p>loading...</p>;
   }
@@ -24,6 +30,8 @@ export function CommunityPage({ name }: { name: string }) {
   if (isError || !community) {
     return <p>Error, something went wrong</p>;
   }
+
+  console.log(community.community_view.community.description);
 
   return (
     <div className="max-w-5xl mt-2 mx-auto">
@@ -41,7 +49,7 @@ export function CommunityPage({ name }: { name: string }) {
         <div className="flex justify-between relative py-3">
           <div className="flex justify-center items-center gap-4 pl-28">
             <img
-              className="size-24 border-4 absolute left-4 bottom-2 border-neutral-background rounded-full"
+              className="size-24 border-4 absolute left-4 bottom-2 bg-neutral-background border-neutral-background rounded-full"
               src={community.community_view.community.icon}
               alt=""
             />
@@ -67,45 +75,7 @@ export function CommunityPage({ name }: { name: string }) {
       <div className="grid grid-cols-[3fr_1fr] mt-16">
         <CommunityPosts communityName={name} />
 
-        <PageDetailsSection>
-          <div className="flex flex-col w-xs px-4 py-5 bg-neutral-background-weak rounded-lg">
-            <span className="text-sm font-bold text-neutral-content">{community.community_view.community.title}</span>
-
-            <div className="flex flex-col py-2 gap-1">
-              <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">
-                <Cake />
-                <span>Created {new Date(community.community_view.community.published).toDateString()}</span>
-              </div>
-
-              <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">
-                <World />
-                <span>{community.community_view.community.visibility}</span>
-              </div>
-            </div>
-
-            <div className="flex gap-10 pb-3">
-              <div className="flex flex-col">
-                <span className="text-sm text-neutral-content-strong font-bold">
-                  {community.community_view.counts.subscribers}
-                </span>
-
-                <span className="text-xs text-neutral-content-weak">Subscribers</span>
-              </div>
-
-              <div className="flex flex-col">
-                <span className="text-sm text-neutral-content-strong font-bold">
-                  {community.community_view.counts.users_active_week}
-                </span>
-
-                <span className="text-xs text-neutral-content-weak">Weekly visitors</span>
-              </div>
-            </div>
-
-            <hr className="border-neutral-border-weak" />
-
-            <p className="text-sm text-neutral-content-weak">{community.community_view.community.description}</p>
-          </div>
-        </PageDetailsSection>
+        <CommunityDetails community={community} />
       </div>
     </div>
   );
@@ -116,13 +86,14 @@ function CommunityPosts({ communityName }: { communityName: string }) {
     data: posts,
     isLoading,
     isError,
-  } = useQuery(
-    postQueries.list({
+  } = useQuery({
+    ...postQueries.list({
       sort: 'TopDay',
       type_: 'Local',
       community_name: communityName,
     }),
-  );
+    refetchOnMount: false,
+  });
 
   if (isLoading) {
     return <p>loading...</p>;

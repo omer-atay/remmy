@@ -5,6 +5,8 @@ import { Downvote } from '../../icons/Downvote';
 import { Comment } from '../../icons/Comment';
 import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
   const creatorAbsoluteName = post.creator.local
@@ -126,10 +128,18 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
 
         <div>
           <p className="pb-1.5 text-xl font-bold text-neutral-content-strong">{post.post.name}</p>
-          <p>{post.post.body}</p>
-          <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
+
+          {!post.post.thumbnail_url && (
+            <div>
+              <Markdown remarkPlugins={[remarkGfm]}>{post.post.body}</Markdown>
+            </div>
+          )}
+
+          <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 relative z-1000 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
             <img src={post.post.thumbnail_url} alt="" />
+            <img className="w-full h-full z-[-1] absolute blur-xl" src={post.post.thumbnail_url} alt="" />
           </div>
+
           {/* // will need for styling etc.
           <p>{post.post.deleted}</p>
           <p>{post.post.nsfw}</p>

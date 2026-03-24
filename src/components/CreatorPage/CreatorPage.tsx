@@ -4,6 +4,7 @@ import { ThreeDot } from '../../icons/ThreeDot';
 import { CirclePlus } from 'lucide-react';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
+import { Markdown } from '../Markdown/Markdown';
 
 export function CreatorPage({ username }: { username: string }) {
   const {
@@ -74,7 +75,10 @@ export function CreatorPage({ username }: { username: string }) {
 
           {creator.person_view.person.bio && (
             <>
-              <p className="py-3 text-sm leading-5 text-neutral-content-weak">{creator.person_view.person.bio}</p>
+              <div className="py-3 text-sm leading-5 text-neutral-content-weak">
+                <Markdown>{creator.person_view.person.bio}</Markdown>
+              </div>
+
               <hr className="border-neutral-border-weak" />
             </>
           )}
