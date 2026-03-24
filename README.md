@@ -43,6 +43,7 @@
 - [] handle community details (about and rules should be separated)
 - [] handle no-text buttons, add sr-only
 - [x] handle back button from PostPage
+- [] handle embedded youtube video
 - [] handle hover of community/user name, show detailed section
 - [] embed urls in postcards and postpage (<a href={post.post.url}>{post.post.url}</a>)
 - [] add 'Join the conversation' section (add comment)

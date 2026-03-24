@@ -12,6 +12,7 @@ import { CommentsSection } from '../CommentsSection/CommentsSection';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
+import ReactPlayer from 'react-player';
 
 export function PostPage({ id }: { id: string }) {
   const {
@@ -127,10 +128,20 @@ function PostSection({ post }: { post: PostView }) {
         <div>
           <p className="pb-1.5 text-2xl font-bold text-neutral-content-strong">{post.post.name}</p>
 
-          <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 relative z-1000 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
-            <img src={post.post.thumbnail_url} alt="" />
-            <img className="w-full h-full z-[-1] absolute blur-xl" src={post.post.thumbnail_url} alt="" />
-          </div>
+          {post.post.url_content_type && (
+            <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 relative z-1000 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
+              {post.post.url_content_type.includes('image') && (
+                <>
+                  <img src={post.post.thumbnail_url} alt="" />
+                  <img className="w-full h-full z-[-1] absolute blur-xl" src={post.post.thumbnail_url} alt="" />
+                </>
+              )}
+
+              {!post.post.url_content_type.includes('image') && (
+                <ReactPlayer src={post.post.url} width={'100%'} height={'100%'} controls />
+              )}
+            </div>
+          )}
 
           <div className="py-2 text-sm leading-5">
             <Markdown remarkPlugins={[remarkGfm]}>{post.post.body}</Markdown>
