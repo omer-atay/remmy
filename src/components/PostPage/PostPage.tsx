@@ -13,6 +13,8 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
 import ReactPlayer from 'react-player';
+import { ImageViewer } from '../ImageViewer/ImageViewer';
+import { useState } from 'react';
 
 export function PostPage({ id }: { id: string }) {
   const {
@@ -50,6 +52,8 @@ export function PostPage({ id }: { id: string }) {
 }
 
 function PostSection({ post }: { post: PostView }) {
+  const [isImageOpen, setIsImageOpen] = useState(false);
+
   const communityAbsoluteName = post.community.local
     ? post.community.name
     : `${post.community.name}@${new URL(post.community.actor_id).host}`;
@@ -129,11 +133,19 @@ function PostSection({ post }: { post: PostView }) {
           <p className="pb-1.5 text-2xl font-bold text-neutral-content-strong">{post.post.name}</p>
 
           {post.post.url_content_type && (
-            <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 relative z-1000 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
+            <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
               {post.post.url_content_type.includes('image') && (
                 <>
-                  <img src={post.post.thumbnail_url} alt="" />
-                  <img className="w-full h-full z-[-1] absolute blur-xl" src={post.post.thumbnail_url} alt="" />
+                  <div
+                    onClick={() => {
+                      setIsImageOpen(true);
+                    }}
+                    aria-hidden
+                    className="flex justify-center w-full h-full aspect-4/3 relative z-10 cursor-pointer"
+                  >
+                    <img src={post.post.thumbnail_url} alt="" />
+                    <img className="w-full h-full -z-10 absolute blur-xl" src={post.post.thumbnail_url} alt="" />
+                  </div>
                 </>
               )}
 
@@ -177,6 +189,15 @@ function PostSection({ post }: { post: PostView }) {
       </div>
 
       <CommentsSection totalCount={post.counts.comments} postId={post.post.id} />
+
+      {isImageOpen && (
+        <ImageViewer
+          closeImage={() => {
+            setIsImageOpen(false);
+          }}
+          post={post}
+        />
+      )}
     </div>
   );
 }

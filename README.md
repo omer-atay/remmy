@@ -10,16 +10,16 @@
 - [x] CommunityPage
 - [x] UserPage (u/{someone})
 - [] Sidebar
-- [] ImageViewer
+- [x] ImageViewer
 - [] Header
 - [] Footer
 - [] LoginPopup (use baseUI)
-- [] LoggedUserPage (own page)?
+- [] LoggedUserPage (own page)
   - [] Up/DownvotedSection
   - [] SavedContentSection
   - [] RecentViewedSection
   - [] Followed/FriendsSection
-- [] PrivateMessageRoom?
+- [] PrivateMessageRoom
 - [] light/dark/system theme
 
 ---
@@ -38,13 +38,10 @@
 - [] handle dates
 - [] handle numbers
 - [] handle avatars
-- [] handle avatars/icons clickable and routes to community/user
 - [] handle all general page layouts
 - [] handle community details (about and rules should be separated)
 - [] handle no-text buttons, add sr-only
-- [x] handle back button from PostPage
 - [] handle hover of community/user name, show detailed section
-- [] embed urls in postcards and postpage (<a href={post.post.url}>{post.post.url}</a>)
 - [] add 'Join the conversation' section (add comment)
 
   0.22826977

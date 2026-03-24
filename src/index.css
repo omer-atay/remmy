@@ -7,6 +7,12 @@
   }
 }
 
+body {
+  &:has(.scroll-lock) {
+    overflow: hidden;
+  }
+}
+
 :root {
   background: var(--neutral-background);
   color: var(--neutral-content);
