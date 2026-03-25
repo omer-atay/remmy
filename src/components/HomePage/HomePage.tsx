@@ -3,6 +3,7 @@ import { CommunityList } from '../CommunityList/CommunityList';
 import { postQueries } from '../../queries';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { AppLogo } from '../../icons/AppLogo';
+import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 
 export function HomePage() {
   const {
@@ -27,8 +28,12 @@ export function HomePage() {
   return (
     <div className="grid grid-cols-[1fr_2fr_1fr]">
       <AppLogo height={22} className="text-global-white" />
+
       <PostsSection posts={posts.posts} />
-      <CommunityList />
+
+      <PageInfoPanel>
+        <CommunityList />
+      </PageInfoPanel>
     </div>
   );
 }

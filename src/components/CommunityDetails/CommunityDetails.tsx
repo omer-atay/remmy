@@ -7,7 +7,7 @@ import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 export function CommunityDetails({ community }: { community: GetCommunityResponse | GetPostResponse }) {
   return (
     <PageDetailsSection>
-      <div className="flex flex-col w-xs px-4 py-5 bg-neutral-background-weak rounded-lg">
+      <div className="flex flex-col px-4 py-5 bg-neutral-background-weak rounded-lg">
         <span className="text-sm font-bold text-neutral-content">{community.community_view.community.title}</span>
 
         <div className="flex flex-col py-2 gap-1">

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'wouter';
 import { communityQueries } from '../../queries';
+import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 
 export function CommunityList() {
   const [shouldShowMore, setShouldShowMore] = useState(false);
@@ -25,9 +26,9 @@ export function CommunityList() {
   const visibleCommunities = shouldShowMore ? data.communities : data.communities.slice(0, 5);
 
   return (
-    <aside className="flex flex-col max-w-2xs h-fit px-4 py-2 bg-neutral-background-weak rounded-lg">
-      <div className="flex flex-col">
-        <h2 className="text-xs font-extrabold text-neutral-content-weak">POPULAR COMMUNITIES</h2>
+    <PageDetailsSection>
+      <div className="p-4">
+        <h2 className="text-xs font-bold text-neutral-content-weak">POPULAR COMMUNITIES</h2>
         <ul className="flex flex-col mt-4">
           {visibleCommunities.map((community) => {
             console.log(community.community);
@@ -64,6 +65,6 @@ export function CommunityList() {
           See {!shouldShowMore ? 'more' : 'less'}
         </button>
       </div>
-    </aside>
+    </PageDetailsSection>
   );
 }

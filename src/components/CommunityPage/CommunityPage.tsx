@@ -3,6 +3,7 @@ import { Plus } from 'lucide-react';
 import { communityQueries, postQueries } from '../../queries';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
+import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 
 export function CommunityPage({ name }: { name: string }) {
   const {
@@ -75,7 +76,9 @@ export function CommunityPage({ name }: { name: string }) {
       <div className="grid grid-cols-[3fr_1fr] mt-16">
         <CommunityPosts communityName={name} />
 
-        <CommunityDetails community={community} />
+        <PageInfoPanel>
+          <CommunityDetails community={community} />
+        </PageInfoPanel>
       </div>
     </div>
   );

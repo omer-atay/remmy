@@ -15,6 +15,7 @@ import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
 import ReactPlayer from 'react-player';
 import { ImageViewer } from '../ImageViewer/ImageViewer';
 import { useState } from 'react';
+import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 
 export function PostPage({ id }: { id: string }) {
   const {
@@ -46,7 +47,9 @@ export function PostPage({ id }: { id: string }) {
       {/* ??? */}
       {/* {post.post_view.image_details.} */}
 
-      <CommunityDetails community={post} />
+      <PageInfoPanel>
+        <CommunityDetails community={post} />
+      </PageInfoPanel>
     </div>
   );
 }
