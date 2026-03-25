@@ -13,8 +13,8 @@ export function ImageViewer({ post, closeImage }: { post: PostView; closeImage: 
         <X size={26} />
         <span className="sr-only">Close image</span>
       </button>
-      <img className="z-1000 max-w-[85%]" src={post.post.thumbnail_url} alt="" />
-      <img className="w-full h-full absolute blur-xl" src={post.post.thumbnail_url} alt="" />
+      <img className="z-1000 max-w-[85%]" src={post.post.url} alt="" />
+      <img className="w-full h-full absolute blur-xl" src={post.post.url} alt="" />
     </div>
   );
 }

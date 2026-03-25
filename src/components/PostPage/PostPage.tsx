@@ -44,8 +44,6 @@ export function PostPage({ id }: { id: string }) {
       {/* {post.cross_posts.map((cross_post) => {
         return <PostSection key={cross_post.post.id} post={cross_post} />;
       })} */}
-      {/* ??? */}
-      {/* {post.post_view.image_details.} */}
 
       <PageInfoPanel>
         <CommunityDetails community={post} />
@@ -146,8 +144,8 @@ function PostSection({ post }: { post: PostView }) {
                     aria-hidden
                     className="flex justify-center w-full h-full aspect-4/3 relative z-10 cursor-pointer"
                   >
-                    <img src={post.post.thumbnail_url} alt="" />
-                    <img className="w-full h-full -z-10 absolute blur-xl" src={post.post.thumbnail_url} alt="" />
+                    <img src={post.post.url} alt="" />
+                    <img className="w-full h-full -z-10 absolute blur-xl" src={post.post.url} alt="" />
                   </div>
                 </>
               )}
