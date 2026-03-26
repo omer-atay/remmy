@@ -105,7 +105,9 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
 
               {post.creator.deleted && (
                 <div>
-                  <div className="size-6 rounded-4xl" />
+                  <div className="flex justify-center size-6 rounded-4xl bg-brand-background">
+                    <span className="mb-2 text-xl leading-12 font-extrabold">X</span>
+                  </div>
                   <span className="text-xs font-bold text-neutral-content">[deleted]</span>
                 </div>
               )}

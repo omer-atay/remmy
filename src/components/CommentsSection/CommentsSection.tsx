@@ -58,7 +58,10 @@ export function CommentsSection({ postId, totalCount }: { postId: number; totalC
                 {comment.creator.avatar && <img className="size-8 rounded-full" src={comment.creator.avatar} alt="" />}
                 {!comment.creator.avatar && (
                   <div className="flex justify-center items-center size-8 rounded-full bg-brand-background">
-                    <span className="text-neutral-content-strong">{comment.creator.name[0]?.toUpperCase()}</span>
+                    {!comment.creator.deleted && (
+                      <span className="text-neutral-content-strong">{comment.creator.name[0]?.toUpperCase()}</span>
+                    )}
+                    {comment.creator.deleted && <span className="mb-2 text-xl leading-12 font-extrabold">X</span>}
                   </div>
                 )}
 
