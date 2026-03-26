@@ -26,7 +26,7 @@ export function CreatorPage({ username }: { username: string }) {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4">
+    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 mt-16">
       <div>
         <p>SIDEBAR</p>
       </div>

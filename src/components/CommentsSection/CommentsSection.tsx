@@ -64,7 +64,7 @@ export function CommentsSection({ postId, totalCount }: { postId: number; totalC
 
                 <Link
                   href={`/u/${creatorAbsoluteName}`}
-                  className="text-xs font-bold text-neutral-content-strong z-1000 hover:underline"
+                  className="text-xs font-bold text-neutral-content-strong hover:underline"
                 >
                   u/{creatorAbsoluteName}
                 </Link>

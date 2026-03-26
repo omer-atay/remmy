@@ -37,7 +37,7 @@ export function PostPage({ id }: { id: string }) {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4">
+    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 mt-16">
       <div>SIDEBAR</div>
 
       <PostSection post={post.post_view} />
