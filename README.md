@@ -11,8 +11,8 @@
 - [x] UserPage (u/{someone})
 - [] Sidebar
 - [x] ImageViewer
-- [] Header
-- [] Footer
+- [x] Header
+- [x] Footer
 - [] LoginPopup (use baseUI)
 - [] LoggedUserPage (own page)
   - [] Up/DownvotedSection

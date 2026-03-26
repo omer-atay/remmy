@@ -49,11 +49,20 @@ export function CommunityPage({ name }: { name: string }) {
 
         <div className="flex justify-between relative py-3">
           <div className="flex justify-center items-center gap-4 pl-28">
-            <img
-              className="size-24 border-4 absolute left-4 bottom-2 bg-neutral-background border-neutral-background rounded-full"
-              src={community.community_view.community.icon}
-              alt=""
-            />
+            {community.community_view.community.icon && (
+              <img
+                className="size-24 border-4 absolute left-4 bottom-2 bg-neutral-background border-neutral-background rounded-full"
+                src={community.community_view.community.icon}
+                alt=""
+              />
+            )}
+
+            {!community.community_view.community.icon && (
+              <div className="flex justify-center items-center gap-0.5 size-18 outline-8 absolute left-4 bottom-2 text-5xl leading-12 font-extrabold bg-neutral-content text-neutral-background border-neutral-background rounded-full">
+                <span className="mb-3">c</span>
+                <span className="mb-5">/</span>
+              </div>
+            )}
 
             <h2 className="text-3xl font-bold text-neutral-content-strong">
               c/{community.community_view.community.name}

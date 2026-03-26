@@ -78,7 +78,14 @@ function PostSection({ post }: { post: PostView }) {
               <ArrowLeft size={20} />
             </button>
 
-            <img className="size-8 rounded-4xl" src={post.community.icon} alt="" />
+            {post.community.icon && <img className="size-8 rounded-4xl" src={post.community.icon} alt="" />}
+
+            {!post.community.icon && (
+              <div className="flex justify-center items-center gap-px size-7 mx-1 pl-0.5 text-xl leading-12 font-extrabold bg-secondary text-neutral-background border-neutral-background rounded-full">
+                <span className="mb-1">c</span>
+                <span className="mb-2">/</span>
+              </div>
+            )}
 
             <div className="flex flex-col justify-center text-xs">
               <div className="flex gap-1">
