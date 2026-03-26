@@ -92,7 +92,12 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                     className="flex items-center gap-1 z-10 text-xs font-bold text-neutral-content hover:text-primary"
                     href={`/u/${creatorAbsoluteName}`}
                   >
-                    <img className="size-6 rounded-4xl" src={post.creator.avatar} alt="" />
+                    {post.creator.avatar && <img className="size-6 rounded-4xl" src={post.creator.avatar} alt="" />}
+                    {!post.creator.avatar && (
+                      <div className="flex justify-center items-center size-6 rounded-full bg-brand-background">
+                        <span className="text-neutral-content-strong">{post.creator.name[0]?.toUpperCase()}</span>
+                      </div>
+                    )}
                     u/{creatorAbsoluteName}
                   </Link>
                 </div>
