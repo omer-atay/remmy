@@ -25,7 +25,7 @@ export function HomePage() {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] mt-16">
+    <div className="grid grid-cols-[1fr_2fr_1fr]">
       <div>sidebar</div>
 
       <PostsSection posts={posts.posts} />

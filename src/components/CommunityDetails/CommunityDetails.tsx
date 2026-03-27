@@ -3,7 +3,7 @@ import { Cake } from '../../icons/Cake';
 import { World } from '../../icons/World';
 import { Markdown } from '../Markdown/Markdown';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
-import { Fragment } from 'react/jsx-runtime';
+import { Fragment } from 'react';
 import { Link } from 'wouter';
 
 export function CommunityDetails({ community }: { community: GetCommunityResponse | GetPostResponse }) {

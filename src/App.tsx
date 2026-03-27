@@ -9,7 +9,7 @@ export function App() {
   return (
     <>
       <Header />
-      <main>
+      <main className="mt-2">
         <Switch>
           <Route path="/" component={HomePage} />
           <Route path="/c/:communityName">{(params) => <CommunityPage name={params.communityName} />}</Route>

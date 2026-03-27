@@ -35,7 +35,7 @@ export function CommunityPage({ name }: { name: string }) {
   console.log(community.community_view.community.description);
 
   return (
-    <div className="max-w-5xl mx-auto mt-16">
+    <div className="max-w-5xl mx-auto">
       <div className="w-full h-32">
         {community.community_view.community.banner ? (
           <img

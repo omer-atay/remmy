@@ -4,7 +4,7 @@ import { ThreeDot } from '../../icons/ThreeDot';
 
 export function Header() {
   return (
-    <header className="px-4 bg-neutral-background border-0 border-b border-neutral-border fixed inset-0 h-14 z-1000">
+    <header className="px-4 bg-neutral-background border-0 border-b border-neutral-border sticky top-0 h-14 z-1000">
       <nav className="flex items-center h-full">
         <Link href="/">
           <AppLogo height={20} className="text-global-white" />

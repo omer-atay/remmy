@@ -14,6 +14,7 @@
 - [x] Header
 - [x] Footer
 - [] LoginPopup (use baseUI)
+- [] LoginPage
 - [] LoggedUserPage (own page)
   - [] Up/DownvotedSection
   - [] SavedContentSection
@@ -27,7 +28,7 @@
 # ToDo
 
 - [] open a google account
-- [] change username from github
+- [x] change username from github
 - [] edit cv, use GPT, give it package json and want it to write (not small) descriptions of projects
 
 ---
@@ -37,10 +38,9 @@
 - [] posts are not infinite
 - [] handle dates
 - [] handle numbers
-- [] handle avatars
-- [] handle all general page layouts
 - [] handle community details (about and rules should be separated)
 - [] handle no-text buttons, add sr-only
+- [] handle news
 - [] handle hover of community/user name, show detailed section
 - [] add 'Join the conversation' section (add comment)
 - [] handle comment layout

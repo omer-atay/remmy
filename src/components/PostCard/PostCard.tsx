@@ -5,11 +5,10 @@ import { Downvote } from '../../icons/Downvote';
 import { Comment } from '../../icons/Comment';
 import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import ReactPlayer from 'react-player';
 import { ImageViewer } from '../ImageViewer/ImageViewer';
 import { useState } from 'react';
+import { Markdown } from '../Markdown/Markdown';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
   const [isImageOpen, setIsImageOpen] = useState(false);
@@ -21,6 +20,8 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
   const communityAbsoluteName = post.community.local
     ? post.community.name
     : `${post.community.name}@${new URL(post.community.actor_id).host}`;
+
+  console.log({ post });
 
   return (
     <div className="flex flex-col justify-between gap-1 relative">
@@ -146,31 +147,36 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
           <p className="pb-1.5 text-xl font-bold text-neutral-content-strong">{post.post.name}</p>
 
           {post.post.url_content_type && (
-            <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 relative z-10 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
-              {post.post.url_content_type.includes('image') && (
-                <>
-                  <div
-                    onClick={() => {
-                      setIsImageOpen(true);
-                    }}
-                    aria-hidden
-                    className="flex justify-center w-full h-full aspect-4/3 relative z-10 cursor-pointer"
-                  >
-                    <img src={post.post.url} alt="" />
-                    <img className="w-full h-full -z-10 absolute blur-xl" src={post.post.url} alt="" />
-                  </div>
-                </>
-              )}
+            <>
+              <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 relative overflow-hidden border border-solid border-media-border-weak rounded-2xl">
+                {post.post.url_content_type.includes('image') && (
+                  <>
+                    <button
+                      onClick={() => {
+                        setIsImageOpen(true);
+                      }}
+                      aria-hidden
+                      className="absolute inset-0 z-10"
+                    />
+                    <img
+                      className="w-full h-full absolute blur-xl object-cover scale-[1.2]"
+                      src={post.post.url}
+                      alt=""
+                    />
+                    <img src={post.post.url} className="z-1" alt="" />
+                  </>
+                )}
 
-              {!post.post.url_content_type.includes('image') && (
-                <ReactPlayer src={post.post.url} width={'100%'} height={'100%'} controls />
-              )}
-            </div>
+                {!post.post.url_content_type.includes('image') && (
+                  <ReactPlayer src={post.post.url} width={'100%'} height={'100%'} controls />
+                )}
+              </div>
+            </>
           )}
 
           {!post.post.url_content_type && (
             <div className="text-sm">
-              <Markdown remarkPlugins={[remarkGfm]}>{post.post.body}</Markdown>
+              <Markdown>{post.post.body}</Markdown>
             </div>
           )}
 

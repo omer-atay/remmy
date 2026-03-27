@@ -14,8 +14,16 @@ import remarkGfm from 'remark-gfm';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
 import ReactPlayer from 'react-player';
 import { ImageViewer } from '../ImageViewer/ImageViewer';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
+
+function MediaContainer({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 overflow-hidden border border-solid border-media-border-weak rounded-2xl">
+      {children}
+    </div>
+  );
+}
 
 export function PostPage({ id }: { id: string }) {
   const {
@@ -37,7 +45,7 @@ export function PostPage({ id }: { id: string }) {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 mt-16">
+    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4">
       <div>SIDEBAR</div>
 
       <PostSection post={post.post_view} />
@@ -62,6 +70,8 @@ function PostSection({ post }: { post: PostView }) {
   const creatorAbsoluteName = post.creator.local
     ? post.creator.name
     : `${post.creator.name}@${new URL(post.creator.actor_id).host}`;
+
+  console.log('post', { post: post.post });
 
   return (
     <div className="flex flex-col justify-between gap-1 relative">
@@ -141,26 +151,49 @@ function PostSection({ post }: { post: PostView }) {
           <p className="pb-1.5 text-2xl font-bold text-neutral-content-strong">{post.post.name}</p>
 
           {post.post.url_content_type && (
-            <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 overflow-hidden border border-solid border-media-border-weak bg-black rounded-2xl">
-              {post.post.url_content_type.includes('image') && (
-                <>
-                  <div
-                    onClick={() => {
-                      setIsImageOpen(true);
-                    }}
-                    aria-hidden
-                    className="flex justify-center w-full h-full aspect-4/3 relative z-10 cursor-pointer"
-                  >
-                    <img src={post.post.url} alt="" />
-                    <img className="w-full h-full -z-10 absolute blur-xl" src={post.post.url} alt="" />
+            <>
+              {post.post.url_content_type.startsWith('image/') && (
+                <MediaContainer>
+                  <div className="flex justify-center w-full h-full aspect-4/3 relative">
+                    <button
+                      onClick={() => {
+                        setIsImageOpen(true);
+                      }}
+                      aria-hidden
+                      className="absolute inset-0 z-10"
+                    />
+                    <img src={post.post.url} className="z-1" alt="" />
+                    <img
+                      className="w-full h-full absolute blur-xl object-cover scale-[1.2]"
+                      src={post.post.url}
+                      alt=""
+                    />
                   </div>
-                </>
+                </MediaContainer>
               )}
 
-              {!post.post.url_content_type.includes('image') && (
-                <ReactPlayer src={post.post.url} width={'100%'} height={'100%'} controls />
+              {post.post.url_content_type.startsWith('video/') && (
+                <MediaContainer>
+                  <video src={post.post.url} autoPlay controls muted width="100%" height="100%" />
+                </MediaContainer>
               )}
-            </div>
+
+              {post.post.url_content_type === 'text/html; charset=utf-8' &&
+                post.post.url &&
+                (ReactPlayer.canPlay?.(post.post.url) ? (
+                  <MediaContainer>
+                    <ReactPlayer src={post.post.url} width={'100%'} height={'100%'} controls />
+                  </MediaContainer>
+                ) : (
+                  <div>
+                    {' '}
+                    <a href={post.post.url} target="_blank">
+                      Open
+                    </a>
+                    <img src={post.post.thumbnail_url} alt="" />
+                  </div>
+                ))}
+            </>
           )}
 
           <div className="py-2 text-sm leading-5">
