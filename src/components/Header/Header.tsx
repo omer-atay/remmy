@@ -13,9 +13,16 @@ export function Header() {
         <div className="h-10 flex-1 py-xs flex justify-stretch">{/* searchbar here */}</div>
 
         <div className="flex items-center justify-end gap-6">
-          <button className="flex justify-center items-center px-3 py-2.5 rounded-full text-sm font-bold text-danger-content-default bg-brand-background hover:bg-brand-background-hover">
+          <Link
+            onClick={(e) => {
+              e.preventDefault();
+              /* add state */
+            }}
+            href="/login"
+            className="flex justify-center items-center px-3 py-2.5 rounded-full text-sm font-bold text-danger-content-default bg-brand-background hover:bg-brand-background-hover"
+          >
             Log In
-          </button>
+          </Link>
 
           <button className="flex justify-center items-center size-10 p-2 text-secondary-plain hover:text-secondary-plain hover:bg-secondary-background-hover rounded-full">
             <ThreeDot size={20} />
