@@ -9,14 +9,11 @@ import { Comment } from '../../icons/Comment';
 import { ArrowLeft } from 'lucide-react';
 import type { PostView } from 'lemmy-js-client';
 import { CommentsSection } from '../CommentsSection/CommentsSection';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
-import ReactPlayer from 'react-player';
 import { ImageViewer } from '../ImageViewer/ImageViewer';
 import { useState } from 'react';
 import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
-import { MediaContainer } from '../MediaContainer/MediaContainer';
+import { PostPageBody } from './PostPageBody';
 
 export function PostPage({ id }: { id: string }) {
   const {
@@ -63,10 +60,6 @@ function PostSection({ post }: { post: PostView }) {
   const creatorAbsoluteName = post.creator.local
     ? post.creator.name
     : `${post.creator.name}@${new URL(post.creator.actor_id).host}`;
-
-  console.log('post', { post: post.post });
-
-  const externalAbsoluteName = new URL(post.post.url ?? '').host.replace(/^www\./, '');
 
   return (
     <div className="flex flex-col justify-between gap-1 relative">
@@ -145,66 +138,12 @@ function PostSection({ post }: { post: PostView }) {
         <div>
           <p className="pb-1.5 text-2xl font-bold text-neutral-content-strong">{post.post.name}</p>
 
-          {post.post.url_content_type && (
-            <>
-              {post.post.url_content_type.startsWith('image/') && (
-                <MediaContainer>
-                  <div className="flex justify-center w-full h-full aspect-4/3 relative">
-                    <button
-                      onClick={() => {
-                        setIsImageOpen(true);
-                      }}
-                      aria-hidden
-                      className="absolute inset-0 z-10"
-                    />
-                    <img src={post.post.url} className="z-1" alt="" />
-                    <img
-                      className="w-full h-full absolute blur-xl object-cover scale-[1.2]"
-                      src={post.post.url}
-                      alt=""
-                    />
-                  </div>
-                </MediaContainer>
-              )}
-
-              {post.post.url_content_type.startsWith('video/') && (
-                <MediaContainer>
-                  <video src={post.post.url} autoPlay controls muted width="100%" height="100%" />
-                </MediaContainer>
-              )}
-
-              {post.post.url_content_type === 'text/html; charset=utf-8' &&
-                post.post.url &&
-                (ReactPlayer.canPlay?.(post.post.url) ? (
-                  <MediaContainer>
-                    <ReactPlayer src={post.post.url} width={'100%'} height={'100%'} controls />
-                  </MediaContainer>
-                ) : (
-                  <div className="flex flex-col border border-neutral-border-weak rounded-2xl">
-                    <a href={post.post.url}>
-                      <img
-                        className="flex justify-center w-full relative rounded-t-2xl"
-                        src={post.post.thumbnail_url}
-                        alt=""
-                      />
-                    </a>
-
-                    <div className="flex justify-between px-4 py-2 text-sm">
-                      <a className="flex justify-between items-center w-full" href={post.post.url} target="_blank">
-                        <span className="text-neutral-content-weak hover:underline">{externalAbsoluteName}</span>
-                        <button className="flex justify-between items-center px-3 py-2 font-semibold border border-neutral-border-medium rounded-full text-secondary-plain hover:text-secondary-plain-hover active:bg-secondary-background-selected">
-                          Open
-                        </button>
-                      </a>
-                    </div>
-                  </div>
-                ))}
-            </>
-          )}
-
-          <div className="py-2 text-sm leading-5">
-            <Markdown remarkPlugins={[remarkGfm]}>{post.post.body}</Markdown>
-          </div>
+          <PostPageBody
+            post={post}
+            openImage={() => {
+              setIsImageOpen(true);
+            }}
+          />
 
           {/* // will need for styling etc.
           <p>{post.post.deleted}</p>
