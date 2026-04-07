@@ -5,14 +5,9 @@ import { Downvote } from '../../icons/Downvote';
 import { Comment } from '../../icons/Comment';
 import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
-import ReactPlayer from 'react-player';
-import { ImageViewer } from '../ImageViewer/ImageViewer';
-import { useState } from 'react';
-import { Markdown } from '../Markdown/Markdown';
+import { PostCardBody } from './PostCardBody';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
-  const [isImageOpen, setIsImageOpen] = useState(false);
-
   const creatorAbsoluteName = post.creator.local
     ? post.creator.name
     : `${post.creator.name}@${new URL(post.creator.actor_id).host}`;
@@ -143,48 +138,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
           </div>
         )}
 
-        <div>
-          <p className="pb-1.5 text-xl font-bold text-neutral-content-strong">{post.post.name}</p>
-
-          {post.post.url_content_type && (
-            <>
-              <div className="flex justify-center min-h-56 max-h-135 aspect-4/3 relative overflow-hidden border border-solid border-media-border-weak rounded-2xl">
-                {post.post.url_content_type.includes('image') && (
-                  <>
-                    <button
-                      onClick={() => {
-                        setIsImageOpen(true);
-                      }}
-                      aria-hidden
-                      className="absolute inset-0 z-10"
-                    />
-                    <img
-                      className="w-full h-full absolute blur-xl object-cover scale-[1.2]"
-                      src={post.post.url}
-                      alt=""
-                    />
-                    <img src={post.post.url} className="z-1" alt="" />
-                  </>
-                )}
-
-                {!post.post.url_content_type.includes('image') && (
-                  <ReactPlayer src={post.post.url} width={'100%'} height={'100%'} controls />
-                )}
-              </div>
-            </>
-          )}
-
-          {!post.post.url_content_type && (
-            <div className="text-sm">
-              <Markdown>{post.post.body}</Markdown>
-            </div>
-          )}
-
-          {/* // will need for styling etc.
-          <p>{post.post.deleted}</p>
-          <p>{post.post.nsfw}</p>
-          <p>{post.post.removed}</p> */}
-        </div>
+        <PostCardBody post={post} />
 
         <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong">
           <div className="flex justify-center items-center rounded-2xl bg-secondary-background">
@@ -209,15 +163,6 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
         </div>
 
         <Link className="after:content-[''] after:absolute after:inset-0" href={`/post/${post.post.id}`} />
-
-        {isImageOpen && (
-          <ImageViewer
-            closeImage={() => {
-              setIsImageOpen(false);
-            }}
-            post={post}
-          />
-        )}
       </div>
     </div>
   );
