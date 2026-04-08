@@ -12,15 +12,9 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
         <>
           {data.creator.avatar && <img className="size-8 rounded-full" src={data.creator.avatar} alt="" />}
           {!data.creator.avatar && (
-            <div
-              className={
-                data.creator.deleted
-                  ? 'flex justify-center items-center size-8 rounded-full bg-neutral-content-weak'
-                  : 'flex justify-center items-center size-8 rounded-full bg-brand-background'
-              }
-            >
+            <div className="flex justify-center items-center size-8 rounded-full bg-neutral-content-weak">
               {!data.creator.deleted && (
-                <span className="text-neutral-content-strong">{data.creator.name[0]?.toUpperCase()}</span>
+                <span className="text-neutral-content-strong font-semibold">{data.creator.name[0]?.toUpperCase()}</span>
               )}
               {data.creator.deleted && <span className="text-5xl leading-12 text-neutral-background">X</span>}
             </div>
