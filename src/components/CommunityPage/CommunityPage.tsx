@@ -1,9 +1,10 @@
-import { usePrefetchQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, usePrefetchInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { communityQueries, postQueries } from '../../queries';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
 import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
+import { useIntersectionObserver } from 'usehooks-ts';
 
 export function CommunityPage({ name }: { name: string }) {
   const {
@@ -16,7 +17,7 @@ export function CommunityPage({ name }: { name: string }) {
     }),
   );
 
-  usePrefetchQuery(
+  usePrefetchInfiniteQuery(
     postQueries.list({
       sort: 'TopDay',
       type_: 'Local',
@@ -94,26 +95,37 @@ export function CommunityPage({ name }: { name: string }) {
 }
 
 function CommunityPosts({ communityName }: { communityName: string }) {
-  const {
-    data: posts,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery({
     ...postQueries.list({
-      sort: 'TopDay',
-      type_: 'Local',
+      sort: 'TopAll',
+      type_: 'All',
       community_name: communityName,
     }),
     refetchOnMount: false,
+  });
+
+  const { ref } = useIntersectionObserver({
+    onChange(isIntersecting) {
+      if (isIntersecting) {
+        void fetchNextPage();
+      }
+    },
   });
 
   if (isLoading) {
     return <p>loading...</p>;
   }
 
-  if (isError || !posts) {
+  if (isError || !data) {
     return <p>Error, something went wrong</p>;
   }
 
-  return <PostsSection posts={posts.posts} source="creator" />;
+  const allPosts = data.pages.flatMap((page) => page.posts);
+
+  return (
+    <div>
+      <PostsSection posts={allPosts} source="creator" />
+      {hasNextPage && <div ref={ref}>Loading...</div>}
+    </div>
+  );
 }

@@ -29,10 +29,16 @@ export const communityQueries = {
 export const postQueries = {
   all: () => ['posts'],
   lists: () => [...postQueries.all(), 'list'],
-  list: (options: GetPosts) =>
-    queryOptions({
+  list: (options: Omit<GetPosts, 'page_cursor' | 'page'>) =>
+    infiniteQueryOptions({
       queryKey: [...postQueries.lists(), options],
-      queryFn: () => client.getPosts(options),
+      queryFn: ({ pageParam }) =>
+        client.getPosts({
+          ...options,
+          page_cursor: pageParam,
+        }),
+      getNextPageParam: (lastpage) => lastpage.next_page,
+      initialPageParam: undefined as string | undefined,
     }),
   details: () => [...postQueries.all(), 'detail'],
   detail: (options: GetPost) =>
