@@ -15,27 +15,29 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
             <div
               className={
                 data.creator.deleted
-                  ? 'flex justify-center items-center size-8 rounded-full bg-neutral-content'
+                  ? 'flex justify-center items-center size-8 rounded-full bg-neutral-content-weak'
                   : 'flex justify-center items-center size-8 rounded-full bg-brand-background'
               }
             >
               {!data.creator.deleted && (
                 <span className="text-neutral-content-strong">{data.creator.name[0]?.toUpperCase()}</span>
               )}
-              {data.creator.deleted && (
-                <span className="text-5xl leading-12 font-medium text-neutral-background">X</span>
-              )}
+              {data.creator.deleted && <span className="text-5xl leading-12 text-neutral-background">X</span>}
             </div>
           )}
         </>
       )}
 
-      <Link
-        href={`/u/${creatorAbsoluteName}`}
-        className="text-xs font-bold text-neutral-content-strong hover:underline"
-      >
-        u/{creatorAbsoluteName}
-      </Link>
+      {!data.creator.deleted && (
+        <Link
+          href={`/u/${creatorAbsoluteName}`}
+          className="text-xs font-bold text-neutral-content-strong hover:underline"
+        >
+          u/{creatorAbsoluteName}
+        </Link>
+      )}
+
+      {data.creator.deleted && <span className="text-xs font-bold text-neutral-content-weak">[deleted]</span>}
 
       {data.comment.creator_id === data.post.creator_id && (
         <span className="text-xs font-bold text-global-alienblue">OP</span>
