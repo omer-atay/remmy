@@ -71,7 +71,7 @@ function PostSection({ post }: { post: PostView }) {
               onClick={() => {
                 history.back();
               }}
-              className="p-1.5 rounded-full text-secondary-onBackground bg-secondary-background hover:bg-secondary-background-hover"
+              className="p-1.5 absolute -left-8 rounded-full text-secondary-onBackground bg-secondary-background hover:bg-secondary-background-hover"
             >
               <ArrowLeft size={20} />
             </button>
