@@ -5,8 +5,13 @@ import { PostsSection } from '../PostsSection/PostsSection';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
 import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 import { useIntersectionObserver } from 'usehooks-ts';
+import { PostFilterSection } from '../PostFilterSection/PostFilterSection';
+import { usePostFilterParams } from '../../usePostFilterParams';
+import type { PostSortType } from 'lemmy-js-client';
 
 export function CommunityPage({ name }: { name: string }) {
+  const { sort } = usePostFilterParams();
+
   const {
     data: community,
     isLoading,
@@ -19,7 +24,7 @@ export function CommunityPage({ name }: { name: string }) {
 
   usePrefetchInfiniteQuery(
     postQueries.list({
-      sort: 'TopDay',
+      sort,
       type_: 'Local',
       community_name: name,
     }),
@@ -84,7 +89,10 @@ export function CommunityPage({ name }: { name: string }) {
       </div>
 
       <div className="grid grid-cols-[3fr_1fr] mt-16">
-        <CommunityPosts communityName={name} />
+        <div>
+          <PostFilterSection />
+          <CommunityPosts communityName={name} sort={sort} />
+        </div>
 
         <PageInfoPanel>
           <CommunityDetails community={community} />
@@ -94,10 +102,10 @@ export function CommunityPage({ name }: { name: string }) {
   );
 }
 
-function CommunityPosts({ communityName }: { communityName: string }) {
+function CommunityPosts({ communityName, sort }: { communityName: string; sort: PostSortType }) {
   const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery({
     ...postQueries.list({
-      sort: 'TopAll',
+      sort,
       type_: 'All',
       community_name: communityName,
     }),
