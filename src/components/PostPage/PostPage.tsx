@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { postQueries } from '../../queries';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { ThreeDot } from '../../icons/ThreeDot';
 import { Upvote } from '../../icons/Upvote';
 import { Downvote } from '../../icons/Downvote';
@@ -51,6 +51,7 @@ export function PostPage({ id }: { id: string }) {
 }
 
 function PostSection({ post }: { post: PostView }) {
+  const [, setLocation] = useLocation();
   const [isImageOpen, setIsImageOpen] = useState(false);
 
   const communityAbsoluteName = post.community.local
@@ -69,7 +70,10 @@ function PostSection({ post }: { post: PostView }) {
           <div className="flex items-center gap-1">
             <button
               onClick={() => {
-                history.back();
+                if (history.length > 1) {
+                  history.back();
+                }
+                setLocation(`/c/${communityAbsoluteName}`);
               }}
               className="p-1.5 absolute -left-8 rounded-full text-secondary-onBackground bg-secondary-background hover:bg-secondary-background-hover"
             >
