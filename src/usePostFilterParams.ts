@@ -36,7 +36,7 @@ type PostFilterType = 'mainFilter' | 'commentFilter' | 'topFilter';
 export const usePostFilterParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const selectedMainFilter = (searchParams.get('mainFilter') ?? MainFilter.New) as MainFilter;
+  const selectedMainFilter = (searchParams.get('mainFilter') ?? MainFilter.Active) as MainFilter;
   const selectedCommentFilter = (searchParams.get('commentFilter') ?? CommentFilter.Most) as CommentFilter;
   const selectedTopFilter = (searchParams.get('topFilter') ?? TopFilter.Day) as TopFilter;
 
