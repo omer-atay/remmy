@@ -22,6 +22,7 @@ export default defineConfig([
     ],
     rules: {
       '@eslint-react/no-use-context': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/restrict-template-expressions': [
         'error',
         {

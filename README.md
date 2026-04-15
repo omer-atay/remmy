@@ -20,32 +20,16 @@
   - [] SavedContentSection
   - [] RecentViewedSection
   - [] Followed/FriendsSection
-- [] PrivateMessageRoom
-- [] light/dark/system theme
+    <!-- - [] PrivateMessageRoom -->
+    <!-- - [] light/dark/system theme -->
+
+- [] login/logout
+- [] signup/delete account
+- [] follow user
+- [] join community
+- [] like/dislike/comment/report a post
+- [] like/dislike/comment/report a comment
+- [] create post
+- [] delete post
 
 ---
-
-# ToDo
-
-- [] open a google account
-- [x] change username from github
-- [] edit cv, use GPT, give it package json and want it to write (not small) descriptions of projects
-
----
-
-# Questions
-
-- [] posts are not infinite
-- [] handle dates
-- [] handle numbers
-- [] handle community details (about and rules should be separated)
-- [] handle no-text buttons, add sr-only
-- [] handle news
-- [] handle hover of community/user name, show detailed section
-- [] add 'Join the conversation' section (add comment)
-- [] handle comment layout
-  0.22826977
-  0.22826977.22835093
-  0.22826977.22827608
-  0.22826977.22827170
-  0.22826977.22827170.22830984
