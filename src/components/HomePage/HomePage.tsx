@@ -1,11 +1,12 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { CommunityList } from '../CommunityList/CommunityList';
 import { postQueries } from '../../queries';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 import { useIntersectionObserver } from 'usehooks-ts';
 import { PostFilterSection } from '../PostFilterSection/PostFilterSection';
 import { usePostFilterParams } from '../../usePostFilterParams';
+import { Sidebar } from '../Sidebar/Sidebar';
+import { CommunityListSection } from '../CommunityListSection/CommunityListSection';
 
 export function HomePage() {
   const { sort } = usePostFilterParams();
@@ -36,17 +37,17 @@ export function HomePage() {
   const allPosts = data.pages.flatMap((page) => page.posts);
 
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr]">
-      <div>sidebar</div>
+    <div className="grid grid-cols-[3fr_1fr] relative">
+      <Sidebar />
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center ml-68">
         <PostFilterSection />
         <PostsSection posts={allPosts} />
         {hasNextPage && <div ref={ref}>Loading...</div>}
       </div>
 
       <PageInfoPanel>
-        <CommunityList />
+        <CommunityListSection />
       </PageInfoPanel>
     </div>
   );

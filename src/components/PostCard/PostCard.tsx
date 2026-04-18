@@ -6,6 +6,7 @@ import { Comment } from '../../icons/Comment';
 import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
 import { PostCardBody } from './PostCardBody';
+import { Divider } from '../Divider/Divider';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
   const creatorAbsoluteName = post.creator.local
@@ -20,7 +21,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
 
   return (
     <div className="flex flex-col justify-between gap-1 relative">
-      <hr className="border-0 border-b border-solid border-b-media-border-weak" />
+      <Divider />
       <div className="flex flex-col justify-between gap-2 w-2xl px-2 rounded-2xl hover:bg-neutral-background-hover">
         {source === 'community' && (
           <div className="flex justify-between items-center gap-2">

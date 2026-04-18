@@ -5,6 +5,7 @@ import { CirclePlus } from 'lucide-react';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 import { Markdown } from '../Markdown/Markdown';
+import { Sidebar } from '../Sidebar/Sidebar';
 
 export function CreatorPage({ username }: { username: string }) {
   const {
@@ -26,12 +27,10 @@ export function CreatorPage({ username }: { username: string }) {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4">
-      <div>
-        <p>SIDEBAR</p>
-      </div>
+    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 relative">
+      <Sidebar />
 
-      <div className="flex flex-col gap-3 mt-4">
+      <div className="flex flex-col gap-3 mt-4 ml-80">
         <div className="flex items-center gap-4">
           {creator.person_view.person.avatar ? (
             <img

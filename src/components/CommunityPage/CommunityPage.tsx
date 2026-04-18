@@ -41,7 +41,9 @@ export function CommunityPage({ name }: { name: string }) {
   console.log(community.community_view.community.description);
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <>
+      <Sidebar />
+      <div className="max-w-280 ml-80">
       <div className="w-full h-32">
         {community.community_view.community.banner ? (
           <img
@@ -88,8 +90,8 @@ export function CommunityPage({ name }: { name: string }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-[3fr_1fr] mt-16">
-        <div>
+        <div className="grid grid-cols-[3fr_1fr] mt-14">
+          <div className="flex flex-col max-w-167.5">
           <PostFilterSection />
           <CommunityPosts communityName={name} sort={sort} />
         </div>
@@ -99,6 +101,7 @@ export function CommunityPage({ name }: { name: string }) {
         </PageInfoPanel>
       </div>
     </div>
+    </>
   );
 }
 

@@ -14,6 +14,8 @@ import { ImageViewer } from '../ImageViewer/ImageViewer';
 import { useState } from 'react';
 import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 import { PostPageBody } from './PostPageBody';
+import { Sidebar } from '../Sidebar/Sidebar';
+import { Divider } from '../Divider/Divider';
 
 export function PostPage({ id }: { id: string }) {
   const {
@@ -35,18 +37,19 @@ export function PostPage({ id }: { id: string }) {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4">
-      <div>SIDEBAR</div>
-
-      <PostSection post={post.post_view} />
-      {/* {post.cross_posts.map((cross_post) => {
+    <>
+      <Sidebar />
+      <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 ml-90">
+        <PostSection post={post.post_view} />
+        {/* {post.cross_posts.map((cross_post) => {
         return <PostSection key={cross_post.post.id} post={cross_post} />;
       })} */}
 
-      <PageInfoPanel>
-        <CommunityDetails community={post} />
-      </PageInfoPanel>
-    </div>
+        <PageInfoPanel>
+          <CommunityDetails community={post} />
+        </PageInfoPanel>
+      </div>
+    </>
   );
 }
 
@@ -64,7 +67,7 @@ function PostSection({ post }: { post: PostView }) {
 
   return (
     <div className="flex flex-col justify-between gap-1 relative">
-      <hr className="border-0 border-b border-solid border-b-media-border-weak" />
+      <Divider />
       <div className="flex flex-col justify-between gap-2 w-2xl px-2 rounded-2xl">
         <div className="flex justify-between items-center gap-2">
           <div className="flex items-center gap-1">
