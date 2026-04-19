@@ -1,13 +1,13 @@
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 import { client } from './client';
 import type {
-  GetComment,
   GetComments,
   GetCommunity,
   GetPersonDetails,
   GetPost,
   GetPosts,
   ListCommunities,
+  Search,
 } from 'lemmy-js-client';
 
 export const communityQueries = {
@@ -74,10 +74,14 @@ export const commentQueries = {
       },
       initialPageParam: 1,
     }),
-  details: () => [...commentQueries.all(), 'detail'],
-  detail: (options: GetComment) =>
+};
+
+export const searchQueries = {
+  all: () => ['search'],
+  results: () => [...searchQueries.all(), 'result'],
+  result: (options: Search) =>
     queryOptions({
-      queryKey: [...commentQueries.details(), options],
-      queryFn: () => client.getComment(options),
+      queryKey: [...searchQueries.results(), options],
+      queryFn: () => client.search(options),
     }),
 };
