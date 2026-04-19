@@ -9,6 +9,8 @@ export function ImageViewer({ src, onClose }: { src: string; onClose: () => void
       <button
         onClick={onClose}
         className="flex justify-center items-center w-12 h-12 z-2000 fixed right-2 top-2 bg-black/60 text-white rounded-full hover:bg-black/80 active:bg-black/10"
+        type="button"
+        title="Close image"
       >
         <X size={26} />
         <span className="sr-only">Close image</span>

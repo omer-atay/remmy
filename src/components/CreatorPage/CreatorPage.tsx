@@ -6,8 +6,19 @@ import { PostsSection } from '../PostsSection/PostsSection';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 import { Markdown } from '../Markdown/Markdown';
 import { Sidebar } from '../Sidebar/Sidebar';
+import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 
 export function CreatorPage({ username }: { username: string }) {
+  return (
+    <div className="grid grid-cols-[auto_2fr_1fr] gap-4">
+      <Sidebar />
+
+      <CreatorMain username={username} />
+    </div>
+  );
+}
+
+function CreatorMain({ username }: { username: string }) {
   const {
     data: creator,
     isLoading,
@@ -27,14 +38,12 @@ export function CreatorPage({ username }: { username: string }) {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 relative">
-      <Sidebar />
-
-      <div className="flex flex-col gap-3 mt-4 ml-80">
-        <div className="flex items-center gap-4">
+    <>
+      <div className="flex flex-col gap-3 mt-4">
+        <div className="flex items-center gap-4 ml-15">
           {creator.person_view.person.avatar ? (
             <img
-              className="size-16 border-2 border-neutral-border-weak rounded-full"
+              className="size-24 border-2 border-neutral-border-weak rounded-full"
               src={creator.person_view.person.avatar}
               alt=""
             />
@@ -53,58 +62,67 @@ export function CreatorPage({ username }: { username: string }) {
         <PostsSection posts={creator.posts} />
       </div>
 
-      <PageDetailsSection>
-        {creator.person_view.person.banner && (
-          <img className="h-full w-full object-cover object-center" src={creator.person_view.person.banner} alt="" />
-        )}
-
-        <div className="flex flex-col px-4">
-          <div className="flex justify-between items-center gap-2 my-3">
-            <span className="font-bold text-neutral-content-strong">{creator.person_view.person.name}</span>
-
-            <button className="p-2 rounded-full bg-neutral-background-highlighted-strong hover:bg-secondary-background-hover">
-              <ThreeDot />
-            </button>
-          </div>
-
-          <button className="flex justify-center items-center w-fit gap-2 py-2 px-3 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover">
-            <CirclePlus size={16} />
-            <span>Follow</span>
-          </button>
-
-          {creator.person_view.person.bio && (
-            <>
-              <div className="py-3 text-sm leading-5 text-neutral-content-weak">
-                <Markdown>{creator.person_view.person.bio}</Markdown>
-              </div>
-
-              <hr className="border-neutral-border-weak" />
-            </>
+      <PageInfoPanel className="top-14 pt-4">
+        <PageDetailsSection>
+          {creator.person_view.person.banner && (
+            <img className="h-full w-full object-cover object-center" src={creator.person_view.person.banner} alt="" />
           )}
 
-          <div className="grid grid-cols-2 grid-rows-2 py-2 my-3">
-            <div className="flex flex-col">
-              <span className="text-sm text-neutral-content-strong font-bold">
-                {creator.person_view.counts.post_count}
-              </span>
-              <span className="text-xs text-neutral-content-weak font-medium">Contributions</span>
+          <div className="flex flex-col px-4">
+            <div className="flex justify-between items-center gap-2 my-3">
+              <span className="font-bold text-neutral-content-strong">{creator.person_view.person.name}</span>
+
+              <button
+                className="p-2 rounded-full bg-neutral-background-highlighted-strong hover:bg-secondary-background-hover"
+                type="button"
+                title="More"
+              >
+                <ThreeDot />
+                <span className="sr-only">More</span>
+              </button>
             </div>
 
-            <div className="flex flex-col">
-              <span className="text-sm text-neutral-content-strong font-bold">
-                {creator.person_view.counts.comment_count}
-              </span>
-              <span className="text-xs text-neutral-content-weak font-medium">Comments</span>
-            </div>
+            <button
+              className="flex justify-center items-center w-fit gap-2 py-2 px-3 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover"
+              type="button"
+            >
+              <CirclePlus size={16} />
+              <span>Follow</span>
+            </button>
 
-            <div className="flex flex-col">
-              <span className="text-neutral-content-strong font-bold">{creator.person_view.person.published}</span>
-              {/* todo: display correct age */}
-              <span className="text-xs text-neutral-content-weak font-medium">Lemmy Age</span>
+            {creator.person_view.person.bio && (
+              <>
+                <div className="py-3 text-sm leading-5 text-neutral-content-weak">
+                  <Markdown>{creator.person_view.person.bio}</Markdown>
+                </div>
+
+                <hr className="border-neutral-border-weak" />
+              </>
+            )}
+
+            <div className="grid grid-cols-2 grid-rows-2 py-2 my-3">
+              <div className="flex flex-col">
+                <span className="text-sm text-neutral-content-strong font-bold">
+                  {creator.person_view.counts.post_count}
+                </span>
+                <span className="text-xs text-neutral-content-weak font-medium">Contributions</span>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-sm text-neutral-content-strong font-bold">
+                  {creator.person_view.counts.comment_count}
+                </span>
+                <span className="text-xs text-neutral-content-weak font-medium">Comments</span>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-neutral-content-strong font-bold">{creator.person_view.person.published}</span>
+                <span className="text-xs text-neutral-content-weak font-medium">Lemmy Age</span>
+              </div>
             </div>
           </div>
-        </div>
-      </PageDetailsSection>
-    </div>
+        </PageDetailsSection>
+      </PageInfoPanel>
+    </>
   );
 }

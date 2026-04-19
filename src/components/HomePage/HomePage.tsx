@@ -9,6 +9,15 @@ import { Sidebar } from '../Sidebar/Sidebar';
 import { CommunityListSection } from '../CommunityListSection/CommunityListSection';
 
 export function HomePage() {
+  return (
+    <div className="grid grid-cols-[auto_3fr_1fr]">
+      <Sidebar />
+      <HomeMain />
+    </div>
+  );
+}
+
+function HomeMain() {
   const { sort } = usePostFilterParams();
 
   const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery(
@@ -37,18 +46,16 @@ export function HomePage() {
   const allPosts = data.pages.flatMap((page) => page.posts);
 
   return (
-    <div className="grid grid-cols-[3fr_1fr] relative">
-      <Sidebar />
-
-      <div className="flex flex-col items-center ml-68">
+    <>
+      <div className="flex flex-col items-center mt-6">
         <PostFilterSection />
         <PostsSection posts={allPosts} />
         {hasNextPage && <div ref={ref}>Loading...</div>}
       </div>
 
-      <PageInfoPanel>
+      <PageInfoPanel className="top-14 right-16 pt-4">
         <CommunityListSection />
       </PageInfoPanel>
-    </div>
+    </>
   );
 }

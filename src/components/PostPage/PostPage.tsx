@@ -18,6 +18,15 @@ import { Sidebar } from '../Sidebar/Sidebar';
 import { Divider } from '../Divider/Divider';
 
 export function PostPage({ id }: { id: string }) {
+  return (
+    <div className="grid grid-cols-[auto_1fr] gap-20">
+      <Sidebar />
+      <PostMain id={id} />
+    </div>
+  );
+}
+
+function PostMain({ id }: { id: string }) {
   const {
     data: post,
     isLoading,
@@ -37,19 +46,13 @@ export function PostPage({ id }: { id: string }) {
   }
 
   return (
-    <>
-      <Sidebar />
-      <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 ml-90">
-        <PostSection post={post.post_view} />
-        {/* {post.cross_posts.map((cross_post) => {
-        return <PostSection key={cross_post.post.id} post={cross_post} />;
-      })} */}
+    <div className="grid grid-cols-[2fr_1fr] mt-6">
+      <PostSection post={post.post_view} />
 
-        <PageInfoPanel>
-          <CommunityDetails community={post} />
-        </PageInfoPanel>
-      </div>
-    </>
+      <PageInfoPanel className="top-14">
+        <CommunityDetails community={post} />
+      </PageInfoPanel>
+    </div>
   );
 }
 
@@ -79,8 +82,11 @@ function PostSection({ post }: { post: PostView }) {
                 setLocation(`/c/${communityAbsoluteName}`);
               }}
               className="p-1.5 absolute -left-8 rounded-full text-secondary-onBackground bg-secondary-background hover:bg-secondary-background-hover"
+              type="button"
+              title="Go back"
             >
               <ArrowLeft size={20} />
+              <span className="sr-only">Go back</span>
             </button>
 
             {post.community.icon && <img className="size-8 rounded-4xl" src={post.community.icon} alt="" />}
@@ -115,8 +121,9 @@ function PostSection({ post }: { post: PostView }) {
           </div>
 
           <div className="flex items-center gap-1">
-            <button className="p-2 hover:bg-secondary-background-hover rounded-full">
+            <button className="p-2 hover:bg-secondary-background-hover rounded-full" type="button" title="More">
               <ThreeDot />
+              <span className="sr-only">More</span>
             </button>
           </div>
 
@@ -160,21 +167,39 @@ function PostSection({ post }: { post: PostView }) {
 
         <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong">
           <div className="flex justify-center items-center rounded-2xl bg-secondary-background">
-            <button className="p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover">
+            <button
+              className="p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover"
+              type="button"
+              title="Upvote"
+            >
               <Upvote />
+              <span className="sr-only">Upvote</span>
             </button>
             <span>{post.counts.upvotes}</span>
-            <button className="p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover">
+            <button
+              className="p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover"
+              type="button"
+              title="Downvote"
+            >
               <Downvote />
+              <span className="sr-only">Downvote</span>
             </button>
           </div>
 
-          <button className="flex justify-center items-center gap-1 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
+          <button
+            className="flex justify-center items-center gap-1 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover"
+            type="button"
+            title="Comment"
+          >
             <Comment />
             <span>{post.counts.comments}</span>
+            <span className="sr-only">Comment</span>
           </button>
 
-          <button className="flex justify-center items-center gap-1.5 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
+          <button
+            className="flex justify-center items-center gap-1.5 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover"
+            type="button"
+          >
             <Share />
             <span>Share</span>
           </button>

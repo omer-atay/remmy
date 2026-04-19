@@ -2,15 +2,9 @@ import { Modal } from './Modal';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { createPortal } from 'react-dom';
 
-export function LoginModal({
-  closeLoginModal,
-  showSignupModal,
-}: {
-  closeLoginModal: () => void;
-  showSignupModal: () => void;
-}) {
+export function LoginModal({ onClose, showSignupModal }: { onClose: () => void; showSignupModal: () => void }) {
   return createPortal(
-    <Modal closeModal={closeLoginModal}>
+    <Modal onClose={onClose}>
       <h1 className="text-neutral-content-strong font-bold text-2xl text-center leading-7">Log In</h1>
 
       <p className="leading-5 text-center mt-2 mb-4">

@@ -28,14 +28,6 @@ export function PostCardBody({ post }: { post: PostView }) {
     return <ExternalPostCardBody post={post} />;
   }
 
-  if (post.post.url_content_type.startsWith('text/plain') && post.post.url) {
-    if (ReactPlayer.canPlay?.(post.post.url)) {
-      return <EmbedPostCardBody post={post} />;
-    }
-
-    return <EmbedPostCardBody post={post} />;
-  }
-
   if (post.post.url_content_type === 'application/binary') {
     if (post.post.url && ReactPlayer.canPlay?.(post.post.url)) {
       return <EmbedPostCardBody post={post} />;

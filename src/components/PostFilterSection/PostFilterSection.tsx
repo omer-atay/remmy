@@ -4,9 +4,9 @@ export function PostFilterSection() {
   const { selectedMainFilter, selectedCommentFilter, selectedTopFilter, setFilter } = usePostFilterParams();
 
   return (
-    <div className="flex">
+    <div className="flex gap-4">
       <select
-        className="p-2 font-semibold text-xs text-neutral-content-weak hover:bg-secondary-background-hover rounded-4xl"
+        className="p-2 font-semibold text-xs text-neutral-content-weak hover:bg-secondary-background-hover hover:cursor-pointer rounded-4xl"
         aria-label="Main filter"
         value={selectedMainFilter}
         onChange={(e) => {
@@ -26,7 +26,7 @@ export function PostFilterSection() {
 
       {selectedMainFilter === MainFilter.Comments && (
         <select
-          className="p-2 font-semibold text-xs text-neutral-content-weak hover:bg-secondary-background-hover rounded-4xl"
+          className="p-2 font-semibold text-xs text-neutral-content-weak hover:bg-secondary-background-hover hover:cursor-pointer rounded-4xl"
           aria-label="Comment filter"
           value={selectedCommentFilter}
           onChange={(e) => {
@@ -40,7 +40,7 @@ export function PostFilterSection() {
 
       {selectedMainFilter === MainFilter.Top && (
         <select
-          className="p-2 font-semibold text-xs text-neutral-content-weak hover:bg-secondary-background-hover rounded-4xl"
+          className="p-2 font-semibold text-xs text-neutral-content-weak hover:bg-secondary-background-hover hover:cursor-pointer rounded-4xl"
           aria-label="Top filter"
           value={selectedTopFilter}
           onChange={(e) => {

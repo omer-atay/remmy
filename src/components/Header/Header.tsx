@@ -26,14 +26,19 @@ export function Header() {
               onClick={() => {
                 setIsLoginShown(true);
               }}
-              type="button"
               className="flex justify-center items-center px-3 py-2.5 rounded-full text-sm font-bold text-danger-content-default bg-brand-background hover:bg-brand-background-hover"
+              type="button"
             >
               Log In
             </button>
 
-            <button className="flex justify-center items-center size-10 p-2 text-secondary-plain hover:text-secondary-plain hover:bg-secondary-background-hover rounded-full">
+            <button
+              className="flex justify-center items-center size-10 p-2 text-secondary-plain hover:text-secondary-plain hover:bg-secondary-background-hover rounded-full"
+              type="button"
+              title="More"
+            >
               <ThreeDot size={20} />
+              <span className="sr-only">More</span>
             </button>
           </div>
         </nav>
@@ -41,7 +46,7 @@ export function Header() {
 
       {isLoginShown && (
         <LoginModal
-          closeLoginModal={() => {
+          onClose={() => {
             setIsLoginShown(false);
           }}
           showSignupModal={() => {
@@ -53,7 +58,7 @@ export function Header() {
 
       {isSignupShown && (
         <SignupModal
-          closeSignupModal={() => {
+          onClose={() => {
             setIsSignupShown(false);
           }}
           showLoginModal={() => {

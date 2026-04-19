@@ -19,7 +19,6 @@ export function LoginForm({ showSignupModal }: { showSignupModal: () => void }) 
   async function submitForm(data: FormValues) {
     await client.login(data);
     // handle here
-    console.log(data);
   }
 
   return (
@@ -90,7 +89,7 @@ export function LoginForm({ showSignupModal }: { showSignupModal: () => void }) 
 
         <span>
           New to Lemmy?{' '}
-          <button onClick={showSignupModal} className="text-primary w-fit hover:text-primary-hover">
+          <button type="button" onClick={showSignupModal} className="text-primary w-fit hover:text-primary-hover">
             Sign Up
           </button>
         </span>

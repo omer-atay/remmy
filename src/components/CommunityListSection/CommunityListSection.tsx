@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { communityQueries } from '../../queries';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
-import { CommunityList } from '../CommunityList/CommunityList';
+import { CommunityItem } from '../CommunityItem/CommunityItem';
 
 export function CommunityListSection() {
   const [shouldShowMore, setShouldShowMore] = useState(false);
@@ -31,15 +31,28 @@ export function CommunityListSection() {
         <h2 className="text-xs font-bold text-neutral-content-weak">POPULAR COMMUNITIES</h2>
         <ul className="flex flex-col mt-4">
           {visibleCommunities.map((community) => {
-            console.log(community.community);
-            return <CommunityList key={community.community.id} community={community} />;
+            const communityAbsoluteName = community.community.local
+              ? community.community.name
+              : `${community.community.name}@${new URL(community.community.actor_id).host}`;
+            return (
+              <CommunityItem
+                key={community.community.id}
+                community={{
+                  absoluteName: communityAbsoluteName,
+                  name: community.community.name,
+                  iconSource: community.community.icon,
+                  subscribers: community.counts.subscribers,
+                }}
+              />
+            );
           })}
         </ul>
         <button
-          className="flex w-fit px-3 py-2 mt-1 text-xs font-extrabold text-neutral-content-strong hover:bg-secondary-background-hover rounded-2xl"
           onClick={() => {
             setShouldShowMore((prev) => !prev);
           }}
+          className="flex w-fit px-3 py-2 mt-1 text-xs font-extrabold text-neutral-content-strong hover:bg-secondary-background-hover rounded-2xl"
+          type="button"
         >
           See {!shouldShowMore ? 'more' : 'less'}
         </button>

@@ -1,9 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { communityQueries } from '../../queries';
-import { CommunityList } from '../CommunityList/CommunityList';
+import { CommunityItem } from '../CommunityItem/CommunityItem';
 import { Sidebar } from '../Sidebar/Sidebar';
 
 export function CommunitiesPage() {
+  return (
+    <div className="grid grid-cols-[auto_1fr]">
+      <Sidebar />
+      <CommunitiesMain />
+    </div>
+  );
+}
+
+function CommunitiesMain() {
   const { data, isLoading, isError } = useQuery(
     communityQueries.list({
       sort: 'TopAll',
@@ -21,13 +30,23 @@ export function CommunitiesPage() {
   }
 
   return (
-    <>
-      <Sidebar />
-      <ul className="grid grid-cols-3 gap-x-6 gap-y-4 max-w-280 ml-80 p-6">
-        {data.communities.map((community) => {
-          return <CommunityList key={community.community.id} community={community} />;
-        })}
-      </ul>
-    </>
+    <ul className="grid grid-cols-3 gap-x-6 gap-y-4 max-w-280 p-6 ml-12">
+      {data.communities.map((community) => {
+        const communityAbsoluteName = community.community.local
+          ? community.community.name
+          : `${community.community.name}@${new URL(community.community.actor_id).host}`;
+        return (
+          <CommunityItem
+            key={community.community.id}
+            community={{
+              absoluteName: communityAbsoluteName,
+              name: community.community.name,
+              iconSource: community.community.icon,
+              subscribers: community.counts.subscribers,
+            }}
+          />
+        );
+      })}
+    </ul>
   );
 }

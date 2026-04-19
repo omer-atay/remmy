@@ -17,8 +17,6 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
     ? post.community.name
     : `${post.community.name}@${new URL(post.community.actor_id).host}`;
 
-  console.log({ post });
-
   return (
     <div className="flex flex-col justify-between gap-1 relative">
       <Divider />
@@ -48,12 +46,16 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
             </div>
 
             <div className="flex items-center gap-1">
-              <button className="flex justify-center items-center py-1 px-3 z-10 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover">
+              <button
+                className="flex justify-center items-center py-1 px-3 z-10 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover"
+                type="button"
+              >
                 Join
               </button>
 
-              <button className="p-2 z-10 hover:bg-secondary-background-hover rounded-full">
+              <button className="p-2 z-10 hover:bg-secondary-background-hover rounded-full" type="button" title="More">
                 <ThreeDot />
+                <span className="sr-only">More</span>
               </button>
             </div>
 
@@ -117,8 +119,9 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
             </div>
 
             <div className="flex items-center gap-1">
-              <button className="p-2 z-10 hover:bg-secondary-background-hover rounded-full">
+              <button className="p-2 z-10 hover:bg-secondary-background-hover rounded-full" type="button" title="More">
                 <ThreeDot />
+                <span className="sr-only">More</span>
               </button>
             </div>
 
@@ -143,21 +146,39 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
 
         <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong">
           <div className="flex justify-center items-center rounded-2xl bg-secondary-background">
-            <button className="p-2 z-10 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover">
+            <button
+              className="p-2 z-10 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover"
+              type="button"
+              title="Upvote"
+            >
               <Upvote />
+              <span className="sr-only">Upvote</span>
             </button>
             <span>{post.counts.upvotes}</span>
-            <button className="p-2 z-10 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover">
+            <button
+              className="p-2 z-10 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover"
+              type="button"
+              title="Downvote"
+            >
               <Downvote />
+              <span className="sr-only">Downvote</span>
             </button>
           </div>
 
-          <button className="flex justify-center items-center gap-1 py-2 px-4 z-10 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
+          <button
+            className="flex justify-center items-center gap-1 py-2 px-4 z-10 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover"
+            type="button"
+            title="Comment"
+          >
             <Comment />
             <span>{post.counts.comments}</span>
+            <span className="sr-only">Comment</span>
           </button>
 
-          <button className="flex justify-center items-center gap-1.5 py-2 px-4 z-10 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover">
+          <button
+            className="flex justify-center items-center gap-1.5 py-2 px-4 z-10 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover"
+            type="button"
+          >
             <Share />
             <span>Share</span>
           </button>

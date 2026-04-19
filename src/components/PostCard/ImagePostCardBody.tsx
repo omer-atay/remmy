@@ -16,8 +16,9 @@ export function ImagePostCardBody({ post }: { post: PostView }) {
             onClick={() => {
               setIsImageOpen(true);
             }}
-            aria-hidden
             className="absolute inset-0 z-10"
+            type="button"
+            aria-hidden
           />
           <img src={post.post.url} className="z-1" alt="" />
           <img className="w-full h-full absolute blur-xl object-cover scale-[1.2]" src={post.post.url} alt="" />

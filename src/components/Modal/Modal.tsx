@@ -3,18 +3,20 @@ import { X } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { Backdrop } from '../Backdrop/Backdrop';
 
-export function Modal({ closeModal, children }: { closeModal: () => void; children: ReactNode }) {
+export function Modal({ onClose, children }: { onClose: () => void; children: ReactNode }) {
   return (
     <div className="flex justify-center items-center size-full fixed inset-0 z-1001">
-      <Backdrop onClick={closeModal} />
+      <Backdrop onClick={onClose} />
 
       <div className="flex clex-col w-lg h-fit px-7 pb-7 pt-14 mx-auto relative z-1001 bg-neutral-background-strong rounded-2xl">
         <button
           className="flex justify-center items-center size-8 absolute right-6 top-6 text-secondary-onBackground bg-secondary-background hover:bg-secondary-background-hover active:bg-secondary-background-selected rounded-full"
-          onClick={closeModal}
+          onClick={onClose}
           type="button"
+          title="Close modal"
         >
           <X size={20} />
+          <span className="sr-only">Close modal</span>
         </button>
 
         <div className="text-sm text-neutral-content">{children}</div>

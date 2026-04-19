@@ -148,7 +148,7 @@ export function SignupForm({ showLoginModal }: { showLoginModal: () => void }) {
       <div className="flex flex-col gap-3 self-start ml-14">
         <span>
           Already have an account?{' '}
-          <button onClick={showLoginModal} className="text-primary w-fit hover:text-primary-hover">
+          <button onClick={showLoginModal} className="text-primary w-fit hover:text-primary-hover" type="button">
             Log In
           </button>
         </span>

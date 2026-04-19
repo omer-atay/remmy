@@ -29,23 +29,25 @@ function Comment({ data, comments, level = 0 }: { data: CommentView; comments: C
             onClick={toggleComment}
           >
             <SubtractCircleIcon />
+            <span className="sr-only">Minimize comment</span>
           </button>
         </div>
       )}
 
       {level !== 0 && (
         <button
-          type="button"
+          onClick={toggleComment}
           className="absolute top-1 left-4 w-4 h-2.5 
               border-l-[1.5px] border-b-[1.5px] text-tone-4 hover:text-tone-2
               rounded-bl-[80px]"
-          onClick={toggleComment}
+          type="button"
         />
       )}
 
       {isCollapsed && (
-        <button type="button" onClick={toggleComment}>
+        <button onClick={toggleComment} type="button">
           <AddCircleIcon />
+          <span className="sr-only">Maximize comment</span>
         </button>
       )}
 

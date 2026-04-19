@@ -11,7 +11,7 @@ export function CommentBody({ data }: { data: CommentView }) {
 
   return (
     <div className="flex flex-col pl-10">
-      <div className="text-sm leading-5">
+      <div className="text-sm leading-5 wrap-anywhere">
         {data.comment.deleted && <span className="text-neutral-content-weak">Comment deleted by user</span>}
 
         {data.comment.removed && <span className="text-neutral-content-weak">Comment removed by moderator</span>}
@@ -22,14 +22,17 @@ export function CommentBody({ data }: { data: CommentView }) {
       <div className="flex text-secondary-plain-weak">
         <div className="flex items-center">
           <button
-            disabled={areButtonsDisabled}
             className={
               !areButtonsDisabled
                 ? 'p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover'
                 : 'text-interactive-content-disabled p-2'
             }
+            type="button"
+            title="Upvote"
+            disabled={areButtonsDisabled}
           >
             <Upvote />
+            <span className="sr-only">Upvote</span>
           </button>
 
           {!areButtonsDisabled && (
@@ -39,44 +42,54 @@ export function CommentBody({ data }: { data: CommentView }) {
           )}
 
           <button
-            disabled={areButtonsDisabled}
             className={
               !areButtonsDisabled
                 ? 'p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover'
                 : 'text-interactive-content-disabled p-2'
             }
+            type="button"
+            title="Downvote"
+            disabled={areButtonsDisabled}
           >
             <Downvote />
+            <span className="sr-only">Downvote</span>
           </button>
         </div>
 
         <button
-          disabled={areButtonsDisabled}
           className={
             !areButtonsDisabled
               ? 'flex items-center gap-1 w-fit py-2 px-4 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong'
               : 'text-interactive-content-disabled flex items-center gap-1 w-fit py-2 px-4'
           }
+          type="button"
+          disabled={areButtonsDisabled}
         >
           <CommentIcon />
           <span className="font-bold text-xs">Reply</span>
         </button>
 
         <button
-          disabled={areButtonsDisabled}
           className={
             !areButtonsDisabled
               ? 'flex justify-center items-center gap-1.5 w-fit py-2 px-4 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong'
               : 'text-interactive-content-disabled flex justify-center items-center gap-1.5 w-fit py-2 px-4'
           }
+          type="button"
+          disabled={areButtonsDisabled}
         >
           <Share />
           <span className="font-bold text-xs">Share</span>
         </button>
 
         {!areButtonsDisabled && (
-          <button className="py-2 px-3 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong">
+          <button
+            className="py-2 px-3 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong"
+            type="button"
+            title="More"
+          >
             <ThreeDot />
+            <span className="sr-only">More</span>
           </button>
         )}
       </div>
