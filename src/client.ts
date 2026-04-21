@@ -1,4 +1,8 @@
-import { LemmyHttp } from "lemmy-js-client";
+import { LemmyHttp } from 'lemmy-js-client';
 
-const baseUrl = "https://lemmy.world";
+const jwt = localStorage.getItem('jwt') ?? '';
+
+const baseUrl = 'https://lemmy.world';
 export const client = new LemmyHttp(baseUrl);
+
+client.setHeaders({ jwt });

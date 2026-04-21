@@ -2,6 +2,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { client } from '../../client';
 import { Form } from '@base-ui/react/form';
 import { Field } from '@base-ui/react/field';
+import { useLocalStorage } from 'usehooks-ts';
 
 interface FormValues {
   username_or_email: string;
@@ -9,6 +10,7 @@ interface FormValues {
 }
 
 export function LoginForm({ showSignupModal }: { showSignupModal: () => void }) {
+  const [, setToken] = useLocalStorage('loginToken', '');
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       username_or_email: '',
@@ -17,8 +19,9 @@ export function LoginForm({ showSignupModal }: { showSignupModal: () => void }) 
   });
 
   async function submitForm(data: FormValues) {
-    await client.login(data);
-    // handle here
+    const { jwt } = await client.login(data);
+    console.log(jwt);
+    setToken(jwt ?? '');
   }
 
   return (
@@ -85,11 +88,13 @@ export function LoginForm({ showSignupModal }: { showSignupModal: () => void }) 
       />
 
       <div className="flex flex-col gap-3 self-start ml-14">
-        <button className="text-primary w-fit hover:text-primary-hover">Forgot password?</button>
+        <button className="text-primary w-fit hover:text-primary-hover" type="button">
+          Forgot password?
+        </button>
 
         <span>
           New to Lemmy?{' '}
-          <button type="button" onClick={showSignupModal} className="text-primary w-fit hover:text-primary-hover">
+          <button onClick={showSignupModal} className="text-primary w-fit hover:text-primary-hover" type="button">
             Sign Up
           </button>
         </span>
