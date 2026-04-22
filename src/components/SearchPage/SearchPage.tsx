@@ -6,6 +6,10 @@ import { PostsSection } from './PostsSection';
 import { CommunitiesSection } from './CommunitiesSection';
 import { UsersSection } from './UsersSection';
 import { ViewOptionButton } from './ViewOptionButton';
+import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
+import { CommunityListSection } from '../CommunityListSection/CommunityListSection';
+
+type View = 'posts' | 'communities' | 'users';
 
 export function SearchPage() {
   return (
@@ -16,12 +20,11 @@ export function SearchPage() {
   );
 }
 
-function SearchMain() {
-  const [searchParams, setSearchParams] = useSearchParams();
+function SearchResults() {
+  const [searchParams] = useSearchParams();
 
   const searchValue = searchParams.get('q') ?? '';
-
-  const view = searchParams.get('view') ?? 'posts';
+  const view = (searchParams.get('view') ?? 'posts') as View;
 
   const { data, isLoading, isError } = useQuery(
     searchQueries.result({
@@ -37,51 +40,70 @@ function SearchMain() {
     return <p>Error, something went wrong</p>;
   }
 
+  switch (view) {
+    case 'posts':
+      return <PostsSection posts={data.posts} />;
+    case 'communities':
+      return <CommunitiesSection communities={data.communities} />;
+    case 'users':
+      return <UsersSection users={data.users} />;
+  }
+}
+
+function SearchMain() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const view = (searchParams.get('view') ?? 'posts') as View;
+
+  const setView = (newView: View) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('view', newView);
+      return next;
+    });
+  };
+
   return (
-    <div className="flex flex-col max-w-6xl mx-auto my-6">
+    <div className="flex flex-col max-w-6xl w-full mx-auto my-6">
       <div className="flex gap-2 mb-6">
         <ViewOptionButton
-          name="Posts"
-          selectedOption={view}
+          isSelected={view === 'posts'}
           onClick={() => {
-            setSearchParams((prev) => {
-              const next = new URLSearchParams(prev);
-              next.set('view', 'posts');
-              return next;
-            });
+            setView('posts');
           }}
-        />
+        >
+          Posts
+        </ViewOptionButton>
 
         <ViewOptionButton
-          name="Communities"
-          selectedOption={view}
+          isSelected={view === 'communities'}
           onClick={() => {
-            setSearchParams((prev) => {
-              const next = new URLSearchParams(prev);
-              next.set('view', 'communities');
-              return next;
-            });
+            setView('communities');
           }}
-        />
+        >
+          Communities
+        </ViewOptionButton>
 
         <ViewOptionButton
-          name="Users"
-          selectedOption={view}
+          isSelected={view === 'users'}
           onClick={() => {
-            setSearchParams((prev) => {
-              const next = new URLSearchParams(prev);
-              next.set('view', 'users');
-              return next;
-            });
+            setView('users');
           }}
-        />
+        >
+          Users
+        </ViewOptionButton>
       </div>
 
-      {view === 'posts' && <PostsSection posts={data.posts} />}
+      {view === 'posts' ? (
+        <div className="flex gap-8">
+          <SearchResults />
 
-      {view === 'communities' && <CommunitiesSection communities={data.communities} />}
-
-      {view === 'users' && <UsersSection users={data.users} />}
+          <PageInfoPanel className="top-14 h-[calc(100vh-86px)] ml-auto">
+            <CommunityListSection />
+          </PageInfoPanel>
+        </div>
+      ) : (
+        <SearchResults />
+      )}
     </div>
   );
 }

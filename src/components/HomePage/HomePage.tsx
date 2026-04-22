@@ -12,12 +12,20 @@ export function HomePage() {
   return (
     <div className="grid grid-cols-[auto_3fr_1fr]">
       <Sidebar />
-      <HomeMain />
+
+      <div className="flex flex-col items-center mt-6">
+        <PostFilterSection />
+        <HomePosts />
+      </div>
+
+      <PageInfoPanel className="top-14 right-16 pt-4">
+        <CommunityListSection />
+      </PageInfoPanel>
     </div>
   );
 }
 
-function HomeMain() {
+function HomePosts() {
   const { sort } = usePostFilterParams();
 
   const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery(
@@ -47,15 +55,8 @@ function HomeMain() {
 
   return (
     <>
-      <div className="flex flex-col items-center mt-6">
-        <PostFilterSection />
-        <PostsSection posts={allPosts} />
-        {hasNextPage && <div ref={ref}>Loading...</div>}
-      </div>
-
-      <PageInfoPanel className="top-14 right-16 pt-4">
-        <CommunityListSection />
-      </PageInfoPanel>
+      <PostsSection posts={allPosts} />
+      {hasNextPage && <div ref={ref}>Loading...</div>}
     </>
   );
 }

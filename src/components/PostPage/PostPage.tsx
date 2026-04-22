@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { postQueries } from '../../queries';
+import { usePrefetchInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { commentQueries, postQueries } from '../../queries';
 import { Link, useLocation } from 'wouter';
 import { ThreeDot } from '../../icons/ThreeDot';
 import { Upvote } from '../../icons/Upvote';
@@ -37,6 +37,16 @@ function PostMain({ id }: { id: string }) {
   } = useQuery(
     postQueries.detail({
       id: parseInt(id),
+    }),
+  );
+
+  usePrefetchInfiniteQuery(
+    commentQueries.list({
+      post_id: parseInt(id),
+      sort: 'Hot',
+      type_: 'All',
+      limit: 10,
+      max_depth: 50,
     }),
   );
 
@@ -105,18 +115,41 @@ function PostSection({ post }: { post: PostView }) {
 
             <div className="flex flex-col justify-center relative text-xs">
               <div className="flex gap-1">
-                <Link
-                  onMouseEnter={() => {
-                    setIsCommunityDetailsShown(true);
-                  }}
-                  onMouseLeave={() => {
-                    setIsCommunityDetailsShown(false);
-                  }}
-                  href={`/c/${communityAbsoluteName}`}
-                  className="font-bold text-neutral-content hover:text-primary"
-                >
-                  c/{communityAbsoluteName}
-                </Link>
+                <div className="relative">
+                  <Link
+                    onMouseEnter={() => {
+                      setIsCommunityDetailsShown(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsCommunityDetailsShown(false);
+                    }}
+                    href={`/c/${communityAbsoluteName}`}
+                    className="font-bold text-neutral-content hover:text-primary"
+                  >
+                    c/{communityAbsoluteName}
+                  </Link>
+
+                  {isCommunityDetailsShown && (
+                    <Dropdown
+                      onHover={() => {
+                        setIsCommunityDetailsShown(true);
+                      }}
+                      onUnhover={() => {
+                        setIsCommunityDetailsShown(false);
+                      }}
+                    >
+                      <DropdownCommunityDetails
+                        data={{
+                          banner: post.community.banner ?? '',
+                          icon: post.community.icon ?? '',
+                          name: post.community.name,
+                          absoluteName: communityAbsoluteName,
+                          description: post.community.description ?? '',
+                        }}
+                      />
+                    </Dropdown>
+                  )}
+                </div>
 
                 <span className="text-neutral-content-weak" aria-hidden="true">
                   •
@@ -125,59 +158,40 @@ function PostSection({ post }: { post: PostView }) {
                 <span className="text-neutral-content-weak">{post.community.published} ago</span>
               </div>
 
-              <Link
-                onMouseEnter={() => {
-                  setIsCreatorDetailsShown(true);
-                }}
-                onMouseLeave={() => {
-                  setIsCreatorDetailsShown(false);
-                }}
-                className="text-neutral-content hover:text-primary"
-                href={`/u/${creatorAbsoluteName}`}
-              >
-                {creatorAbsoluteName}
-              </Link>
-
-              {isCreatorDetailsShown && (
-                <Dropdown
-                  onHover={() => {
+              <div className="relative">
+                <Link
+                  onMouseEnter={() => {
                     setIsCreatorDetailsShown(true);
                   }}
-                  onUnhover={() => {
+                  onMouseLeave={() => {
                     setIsCreatorDetailsShown(false);
                   }}
+                  className="text-neutral-content hover:text-primary"
+                  href={`/u/${creatorAbsoluteName}`}
                 >
-                  <DropdownUserDetails
-                    data={{
-                      icon: post.creator.avatar ?? '',
-                      name: post.creator.name,
-                      absoluteName: creatorAbsoluteName,
-                      published: post.creator.published,
-                    }}
-                  />
-                </Dropdown>
-              )}
+                  {creatorAbsoluteName}
+                </Link>
 
-              {isCommunityDetailsShown && (
-                <Dropdown
-                  onHover={() => {
-                    setIsCommunityDetailsShown(true);
-                  }}
-                  onUnhover={() => {
-                    setIsCommunityDetailsShown(false);
-                  }}
-                >
-                  <DropdownCommunityDetails
-                    data={{
-                      banner: post.community.banner ?? '',
-                      icon: post.community.icon ?? '',
-                      name: post.community.name,
-                      absoluteName: communityAbsoluteName,
-                      description: post.community.description ?? '',
+                {isCreatorDetailsShown && (
+                  <Dropdown
+                    onHover={() => {
+                      setIsCreatorDetailsShown(true);
                     }}
-                  />
-                </Dropdown>
-              )}
+                    onUnhover={() => {
+                      setIsCreatorDetailsShown(false);
+                    }}
+                  >
+                    <DropdownUserDetails
+                      data={{
+                        icon: post.creator.avatar ?? '',
+                        name: post.creator.name,
+                        absoluteName: creatorAbsoluteName,
+                        published: post.creator.published,
+                      }}
+                    />
+                  </Dropdown>
+                )}
+              </div>
             </div>
           </div>
 

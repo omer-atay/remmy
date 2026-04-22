@@ -24,7 +24,7 @@ export function Searchbar() {
         role="search"
       >
         <input
-          className="size-full text-center text-sm text-neutral-content-weak hover:bg-neutral-background-hover grow border border-orange-400 rounded-full focus:text-start focus:pl-12"
+          className="size-full text-center text-sm text-neutral-content-strong placeholder:text-neutral-content-weak hover:bg-neutral-background-hover grow border border-orange-400 rounded-full focus:text-start focus:pl-12"
           name="q"
           value={searchValue}
           onChange={(e) => {

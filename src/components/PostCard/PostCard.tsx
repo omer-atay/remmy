@@ -30,7 +30,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
       <div className="flex flex-col justify-between gap-2 w-2xl px-2 rounded-2xl hover:bg-neutral-background-hover">
         {source === 'community' && (
           <div className="flex justify-between items-center gap-2">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 relative">
               <Link
                 onMouseEnter={() => {
                   setIsCommunityDetailsShown(true);
@@ -50,6 +50,27 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                 )}
                 c/{communityAbsoluteName}
               </Link>
+
+              {isCommunityDetailsShown && (
+                <Dropdown
+                  onHover={() => {
+                    setIsCommunityDetailsShown(true);
+                  }}
+                  onUnhover={() => {
+                    setIsCommunityDetailsShown(false);
+                  }}
+                >
+                  <DropdownCommunityDetails
+                    data={{
+                      banner: post.community.banner ?? '',
+                      icon: post.community.icon ?? '',
+                      name: post.community.name,
+                      absoluteName: communityAbsoluteName,
+                      description: post.community.description ?? '',
+                    }}
+                  />
+                </Dropdown>
+              )}
 
               <span className="created-separator text-xs text-neutral-content-weak" aria-hidden="true">
                 •
@@ -71,27 +92,6 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                 <span className="sr-only">More</span>
               </button>
             </div>
-
-            {isCommunityDetailsShown && (
-              <Dropdown
-                onHover={() => {
-                  setIsCommunityDetailsShown(true);
-                }}
-                onUnhover={() => {
-                  setIsCommunityDetailsShown(false);
-                }}
-              >
-                <DropdownCommunityDetails
-                  data={{
-                    banner: post.community.banner ?? '',
-                    icon: post.community.icon ?? '',
-                    name: post.community.name,
-                    absoluteName: communityAbsoluteName,
-                    description: post.community.description ?? '',
-                  }}
-                />
-              </Dropdown>
-            )}
           </div>
         )}
 

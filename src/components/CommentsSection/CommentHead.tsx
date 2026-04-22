@@ -27,20 +27,42 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
         </>
       )}
 
-      {!data.creator.deleted && (
-        <Link
-          onMouseEnter={() => {
-            setIsUserDetailsShown(true);
-          }}
-          onMouseLeave={() => {
-            setIsUserDetailsShown(false);
-          }}
-          href={`/u/${creatorAbsoluteName}`}
-          className="text-xs font-bold text-neutral-content-strong hover:underline"
-        >
-          u/{creatorAbsoluteName}
-        </Link>
-      )}
+      <div className="relative">
+        {!data.creator.deleted && (
+          <Link
+            onMouseEnter={() => {
+              setIsUserDetailsShown(true);
+            }}
+            onMouseLeave={() => {
+              setIsUserDetailsShown(false);
+            }}
+            href={`/u/${creatorAbsoluteName}`}
+            className="text-xs font-bold text-neutral-content-strong hover:underline"
+          >
+            u/{creatorAbsoluteName}
+          </Link>
+        )}
+
+        {isUserDetailsShown && (
+          <Dropdown
+            onHover={() => {
+              setIsUserDetailsShown(true);
+            }}
+            onUnhover={() => {
+              setIsUserDetailsShown(false);
+            }}
+          >
+            <DropdownUserDetails
+              data={{
+                icon: data.creator.avatar ?? '',
+                name: data.creator.name,
+                absoluteName: creatorAbsoluteName,
+                published: data.creator.published,
+              }}
+            />
+          </Dropdown>
+        )}
+      </div>
 
       {data.creator.deleted && <span className="text-xs font-bold text-neutral-content-weak">[deleted]</span>}
 
@@ -53,26 +75,6 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
       </span>
 
       <span className="text-xs text-neutral-content-weak">{data.comment.published} ago</span>
-
-      {isUserDetailsShown && (
-        <Dropdown
-          onHover={() => {
-            setIsUserDetailsShown(true);
-          }}
-          onUnhover={() => {
-            setIsUserDetailsShown(false);
-          }}
-        >
-          <DropdownUserDetails
-            data={{
-              icon: data.creator.avatar ?? '',
-              name: data.creator.name,
-              absoluteName: creatorAbsoluteName,
-              published: data.creator.published,
-            }}
-          />
-        </Dropdown>
-      )}
     </div>
   );
 }

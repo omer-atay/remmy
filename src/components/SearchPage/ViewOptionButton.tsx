@@ -1,22 +1,23 @@
 import clsx from 'clsx';
+import type { ReactNode } from 'react';
 
 interface Props {
-  name: string;
-  selectedOption: string;
+  children: ReactNode;
+  isSelected: boolean;
   onClick: () => void;
 }
 
-export function ViewOptionButton({ name, selectedOption, onClick }: Props) {
+export function ViewOptionButton({ children, isSelected, onClick }: Props) {
   return (
     <button
       onClick={onClick}
       className={clsx(
         'flex justify-center items-center px-3 py-2 text-sm text-neutral-content-strong font-bold rounded-full',
-        selectedOption === name.toLowerCase() ? 'bg-secondary-background-selected' : '',
+        isSelected && 'bg-secondary-background-selected',
       )}
       type="button"
     >
-      {name}
+      {children}
     </button>
   );
 }

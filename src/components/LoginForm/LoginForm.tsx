@@ -1,5 +1,5 @@
 import { useForm, Controller } from 'react-hook-form';
-import { client } from '../../client';
+import { client, LOGIN_KEY } from '../../client';
 import { Form } from '@base-ui/react/form';
 import { Field } from '@base-ui/react/field';
 import { useLocalStorage } from 'usehooks-ts';
@@ -10,7 +10,7 @@ interface FormValues {
 }
 
 export function LoginForm({ showSignupModal }: { showSignupModal: () => void }) {
-  const [, setToken] = useLocalStorage('loginToken', '');
+  const [, setToken] = useLocalStorage(LOGIN_KEY, '');
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       username_or_email: '',

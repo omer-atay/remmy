@@ -1,3 +1,9 @@
 {
-  "js/ts.tsdk.path": "node_modules/typescript/lib"
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "eslint.rules.customizations": [
+    {
+      "rule": "@typescript-eslint/no-unsafe-*",
+      "severity": "off"
+    }
+  ]
 }

@@ -66,16 +66,13 @@ function Comment({ data, comments, level = 0 }: { data: CommentView; comments: C
 }
 
 export function CommentsSection({ postId, totalCount }: { postId: number; totalCount: number }) {
-  const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery(
+  const { data, isLoading, isError, fetchNextPage } = useInfiniteQuery(
     commentQueries.list({
-      totalCount,
-      options: {
-        post_id: postId,
-        sort: 'Hot',
-        type_: 'All',
-        limit: 10,
-        max_depth: 50,
-      },
+      post_id: postId,
+      sort: 'Hot',
+      type_: 'All',
+      limit: 10,
+      max_depth: 50,
     }),
   );
 
@@ -94,6 +91,9 @@ export function CommentsSection({ postId, totalCount }: { postId: number; totalC
   if (isError || !data) {
     return <p>Error, something went wrong</p>;
   }
+
+  const totalComments = data.pages.reduce((acc, page) => acc + page.comments.length, 0);
+  const hasNextPage = totalComments < totalCount;
 
   return (
     <div className="flex flex-col gap-16 my-12 max-w-2xl">

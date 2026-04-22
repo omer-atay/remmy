@@ -41,7 +41,7 @@ function CommunityMain({ name }: { name: string }) {
   usePrefetchInfiniteQuery(
     postQueries.list({
       sort,
-      type_: 'Local',
+      type_: 'All',
       community_name: name,
     }),
   );
