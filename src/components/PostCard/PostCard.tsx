@@ -7,8 +7,15 @@ import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
 import { PostCardBody } from './PostCardBody';
 import { Divider } from '../Divider/Divider';
+import { Dropdown } from '../Dropdown/Dropdown';
+import { DropdownUserDetails } from '../Dropdown/DropdownUserDetails';
+import { useState } from 'react';
+import { DropdownCommunityDetails } from '../Dropdown/DropdownCommunityDetails';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
+  const [isCommunityDetailsShown, setIsCommunityDetailsShown] = useState(false);
+  const [isCreatorDetailsShown, setIsCreatorDetailsShown] = useState(false);
+
   const creatorAbsoluteName = post.creator.local
     ? post.creator.name
     : `${post.creator.name}@${new URL(post.creator.actor_id).host}`;
@@ -25,6 +32,12 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
           <div className="flex justify-between items-center gap-2">
             <div className="flex items-center gap-1">
               <Link
+                onMouseEnter={() => {
+                  setIsCommunityDetailsShown(true);
+                }}
+                onMouseLeave={() => {
+                  setIsCommunityDetailsShown(false);
+                }}
                 href={`/c/${communityAbsoluteName}`}
                 className="flex items-center gap-1 text-xs font-bold text-neutral-content z-10 hover:text-primary"
               >
@@ -59,35 +72,41 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               </button>
             </div>
 
-            {/* <div>
-                  {post.community.banner && (
-                    <img src={post.community.banner} alt="banner_img" />
-                  )}
-                  <div className="flex justify-between gap-2">
-                    <img
-                      className="size-10 rounded-4xl"
-                      src={post.community.icon}
-                      alt={post.community.name}
-                    />
-
-                    <h3>r/{post.community.name}</h3>
-                  </div>
-                  <p>{post.community.description}</p>
-                </div> */}
-
-            {/* // will need for styling etc.
-                 <p>ID {post.community.id}</p>
-                <p>NSFW {post.community.nsfw}</p>
-                <p>REMOVED {post.community.removed}</p> */}
+            {isCommunityDetailsShown && (
+              <Dropdown
+                onHover={() => {
+                  setIsCommunityDetailsShown(true);
+                }}
+                onUnhover={() => {
+                  setIsCommunityDetailsShown(false);
+                }}
+              >
+                <DropdownCommunityDetails
+                  data={{
+                    banner: post.community.banner ?? '',
+                    icon: post.community.icon ?? '',
+                    name: post.community.name,
+                    absoluteName: communityAbsoluteName,
+                    description: post.community.description ?? '',
+                  }}
+                />
+              </Dropdown>
+            )}
           </div>
         )}
 
         {source === 'creator' && (
-          <div className="flex justify-between items-center gap-2">
+          <div className="flex justify-between items-center gap-2 relative">
             <div className="flex items-center gap-1">
               {!post.creator.deleted && (
                 <div className="flex items-center gap-1">
                   <Link
+                    onMouseEnter={() => {
+                      setIsCreatorDetailsShown(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsCreatorDetailsShown(false);
+                    }}
                     className="flex items-center gap-1 z-10 text-xs font-bold text-neutral-content hover:text-primary"
                     href={`/u/${creatorAbsoluteName}`}
                   >
@@ -125,20 +144,25 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               </button>
             </div>
 
-            {/* <div>
-                  {post.creator.banner && <img src={post.creator.banner} alt="" />}
-                  <div className="flex items-center gap-2">
-                    <img className="size-8 rounded-4xl" src={post.creator.avatar} alt="" />
-                    <Link className="text-1xl font-semibold" href={`/u/${creatorAbsoluteName`}>
-                      u/{post.creator.name}
-                    </Link>
-                  </div>
-                </div> */}
-
-            {/* // will need for styling etc.
-              <p>ACTOR ID {post.creator.actor_id}</p>
-              <p>ID {post.creator.id}</p>
-              <p>ID {post.creator.published}</p> */}
+            {isCreatorDetailsShown && (
+              <Dropdown
+                onHover={() => {
+                  setIsCreatorDetailsShown(true);
+                }}
+                onUnhover={() => {
+                  setIsCreatorDetailsShown(false);
+                }}
+              >
+                <DropdownUserDetails
+                  data={{
+                    icon: post.creator.avatar ?? '',
+                    name: post.creator.name,
+                    absoluteName: creatorAbsoluteName,
+                    published: post.post.published,
+                  }}
+                />
+              </Dropdown>
+            )}
           </div>
         )}
 

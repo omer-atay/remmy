@@ -16,6 +16,9 @@ import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 import { PostPageBody } from './PostPageBody';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { Divider } from '../Divider/Divider';
+import { Dropdown } from '../Dropdown/Dropdown';
+import { DropdownUserDetails } from '../Dropdown/DropdownUserDetails';
+import { DropdownCommunityDetails } from '../Dropdown/DropdownCommunityDetails';
 
 export function PostPage({ id }: { id: string }) {
   return (
@@ -58,6 +61,8 @@ function PostMain({ id }: { id: string }) {
 
 function PostSection({ post }: { post: PostView }) {
   const [, setLocation] = useLocation();
+  const [isCreatorDetailsShown, setIsCreatorDetailsShown] = useState(false);
+  const [isCommunityDetailsShown, setIsCommunityDetailsShown] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
 
   const communityAbsoluteName = post.community.local
@@ -98,9 +103,15 @@ function PostSection({ post }: { post: PostView }) {
               </div>
             )}
 
-            <div className="flex flex-col justify-center text-xs">
+            <div className="flex flex-col justify-center relative text-xs">
               <div className="flex gap-1">
                 <Link
+                  onMouseEnter={() => {
+                    setIsCommunityDetailsShown(true);
+                  }}
+                  onMouseLeave={() => {
+                    setIsCommunityDetailsShown(false);
+                  }}
                   href={`/c/${communityAbsoluteName}`}
                   className="font-bold text-neutral-content hover:text-primary"
                 >
@@ -114,9 +125,59 @@ function PostSection({ post }: { post: PostView }) {
                 <span className="text-neutral-content-weak">{post.community.published} ago</span>
               </div>
 
-              <Link className="text-neutral-content hover:text-primary" href={`/u/${creatorAbsoluteName}`}>
+              <Link
+                onMouseEnter={() => {
+                  setIsCreatorDetailsShown(true);
+                }}
+                onMouseLeave={() => {
+                  setIsCreatorDetailsShown(false);
+                }}
+                className="text-neutral-content hover:text-primary"
+                href={`/u/${creatorAbsoluteName}`}
+              >
                 {creatorAbsoluteName}
               </Link>
+
+              {isCreatorDetailsShown && (
+                <Dropdown
+                  onHover={() => {
+                    setIsCreatorDetailsShown(true);
+                  }}
+                  onUnhover={() => {
+                    setIsCreatorDetailsShown(false);
+                  }}
+                >
+                  <DropdownUserDetails
+                    data={{
+                      icon: post.creator.avatar ?? '',
+                      name: post.creator.name,
+                      absoluteName: creatorAbsoluteName,
+                      published: post.creator.published,
+                    }}
+                  />
+                </Dropdown>
+              )}
+
+              {isCommunityDetailsShown && (
+                <Dropdown
+                  onHover={() => {
+                    setIsCommunityDetailsShown(true);
+                  }}
+                  onUnhover={() => {
+                    setIsCommunityDetailsShown(false);
+                  }}
+                >
+                  <DropdownCommunityDetails
+                    data={{
+                      banner: post.community.banner ?? '',
+                      icon: post.community.icon ?? '',
+                      name: post.community.name,
+                      absoluteName: communityAbsoluteName,
+                      description: post.community.description ?? '',
+                    }}
+                  />
+                </Dropdown>
+              )}
             </div>
           </div>
 
@@ -126,27 +187,6 @@ function PostSection({ post }: { post: PostView }) {
               <span className="sr-only">More</span>
             </button>
           </div>
-
-          {/* <div>
-                  {post.community.banner && (
-                    <img src={post.community.banner} alt="banner_img" />
-                  )}
-                  <div className="flex justify-between gap-2">
-                    <img
-                      className="size-10 rounded-4xl"
-                      src={post.community.icon}
-                      alt={post.community.name}
-                    />
-
-                    <h3>r/{post.community.name}</h3>
-                  </div>
-                  <p>{post.community.description}</p>
-                </div> */}
-
-          {/* // will need for styling etc.
-                 <p>ID {post.community.id}</p>
-                <p>NSFW {post.community.nsfw}</p>
-                <p>REMOVED {post.community.removed}</p> */}
         </div>
 
         <div>
@@ -158,11 +198,6 @@ function PostSection({ post }: { post: PostView }) {
               setIsImageOpen(true);
             }}
           />
-
-          {/* // will need for styling etc.
-          <p>{post.post.deleted}</p>
-          <p>{post.post.nsfw}</p>
-          <p>{post.post.removed}</p> */}
         </div>
 
         <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong">
