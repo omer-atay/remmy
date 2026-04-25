@@ -1,13 +1,87 @@
-import type { CommentView } from 'lemmy-js-client';
+import type { CommentView, CreateCommentLike, GetCommentsResponse } from 'lemmy-js-client';
 import { Markdown } from '../Markdown/Markdown';
 import { Upvote } from '../../icons/Upvote';
 import { Downvote } from '../../icons/Downvote';
 import { Comment as CommentIcon } from '../../icons/Comment';
 import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
+import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
+import { client } from '../../client';
+import { commentQueries } from '../../queries';
+import clsx from 'clsx';
 
 export function CommentBody({ data }: { data: CommentView }) {
   const areButtonsDisabled = data.comment.deleted || data.comment.removed;
+  const queryClient = useQueryClient();
+
+  const voteMutation = useMutation({
+    mutationFn: async (variables: CreateCommentLike) => {
+      await client.likeComment(variables);
+    },
+    onMutate: (variables, context) => {
+      // Optimistically update to the new value
+      context.client.setQueriesData(
+        { queryKey: commentQueries.lists() },
+        (old: InfiniteData<GetCommentsResponse> | undefined) => {
+          if (old) {
+            return {
+              ...old,
+              pages: old.pages.map((page) => {
+                return {
+                  ...page,
+                  comments: page.comments.map((comment) => {
+                    if (comment.comment.id !== variables.comment_id) {
+                      return comment;
+                    }
+
+                    return {
+                      ...comment,
+                      my_vote: variables.score,
+                    };
+                  }),
+                };
+              }),
+            };
+          }
+        },
+      );
+    },
+    onError: () => {
+      void queryClient.invalidateQueries({ queryKey: commentQueries.lists() });
+    },
+  });
+
+  const upVoteComment = () => {
+    voteMutation.mutate(
+      {
+        comment_id: data.comment.id,
+        score: data.my_vote === 1 ? 0 : 1,
+      },
+      {
+        onSettled: () => {
+          void queryClient.invalidateQueries({
+            queryKey: commentQueries.lists(),
+          });
+        },
+      },
+    );
+  };
+
+  const downVoteComment = () => {
+    voteMutation.mutate(
+      {
+        comment_id: data.comment.id,
+        score: data.my_vote === -1 ? 0 : -1,
+      },
+      {
+        onSettled: () => {
+          void queryClient.invalidateQueries({
+            queryKey: commentQueries.lists(),
+          });
+        },
+      },
+    );
+  };
 
   return (
     <div className="flex flex-col pl-10">
@@ -22,11 +96,15 @@ export function CommentBody({ data }: { data: CommentView }) {
       <div className="flex text-secondary-plain-weak">
         <div className="flex items-center">
           <button
-            className={
+            onClick={() => {
+              upVoteComment();
+            }}
+            className={clsx(
+              data.my_vote === 1 && 'text-action-upvote',
               !areButtonsDisabled
                 ? 'p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover'
-                : 'text-interactive-content-disabled p-2'
-            }
+                : 'text-interactive-content-disabled p-2',
+            )}
             type="button"
             title="Upvote"
             disabled={areButtonsDisabled}
@@ -42,11 +120,15 @@ export function CommentBody({ data }: { data: CommentView }) {
           )}
 
           <button
-            className={
+            onClick={() => {
+              downVoteComment();
+            }}
+            className={clsx(
+              data.my_vote === -1 && 'text-action-downvote',
               !areButtonsDisabled
                 ? 'p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover'
-                : 'text-interactive-content-disabled p-2'
-            }
+                : 'text-interactive-content-disabled p-2',
+            )}
             type="button"
             title="Downvote"
             disabled={areButtonsDisabled}
