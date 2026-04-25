@@ -13,7 +13,7 @@ interface Props {
   };
 }
 
-export function DropdownUserDetails({ data }: Props) {
+export function PopoverUserDetails({ data }: Props) {
   return (
     <div className="flex flex-col">
       <div className="flex gap-3">

@@ -1,15 +1,22 @@
 import { Link } from 'wouter';
 import { AppLogo } from '../../icons/AppLogo';
-import { ThreeDot } from '../../icons/ThreeDot';
 import logo from '../../assets/logo.png';
 import { useState } from 'react';
 import { LoginModal } from '../Modal/LoginModal';
 import { SignupModal } from '../Modal/SignupModal';
 import { Searchbar } from '../Searchbar/Searchbar';
+import { useQuery } from '@tanstack/react-query';
+import { siteQuery } from '../../queries';
+import { DefaultHeaderButtonsSection } from './DefaultHeaderButtonsSection';
+import { MyUserHeaderSection } from './MyUserHeaderSection';
 
 export function Header() {
   const [isLoginShown, setIsLoginShown] = useState(false);
   const [isSignupShown, setIsSignupShown] = useState(false);
+
+  const { data, isLoading: isLoadingUser } = useQuery(siteQuery);
+
+  const myUser = data?.my_user?.local_user_view.person;
 
   return (
     <>
@@ -22,26 +29,21 @@ export function Header() {
 
           <Searchbar />
 
-          <div className="flex items-center justify-end gap-6">
-            <button
-              onClick={() => {
-                setIsLoginShown(true);
-              }}
-              className="flex justify-center items-center px-3 py-2.5 rounded-full text-sm font-bold text-danger-content-default bg-brand-background hover:bg-brand-background-hover"
-              type="button"
-            >
-              Log In
-            </button>
+          {isLoadingUser && <div />}
 
-            <button
-              className="flex justify-center items-center size-10 p-2 text-secondary-plain hover:text-secondary-plain hover:bg-secondary-background-hover rounded-full"
-              type="button"
-              title="More"
-            >
-              <ThreeDot size={20} />
-              <span className="sr-only">More</span>
-            </button>
-          </div>
+          {!isLoadingUser && (
+            <div className="flex items-center justify-end gap-6">
+              {!myUser && (
+                <DefaultHeaderButtonsSection
+                  openLogin={() => {
+                    setIsLoginShown(true);
+                  }}
+                />
+              )}
+
+              {myUser && <MyUserHeaderSection myUser={myUser} />}
+            </div>
+          )}
         </nav>
       </header>
 

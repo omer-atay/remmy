@@ -19,7 +19,7 @@ export function LoginModal({ onClose, showSignupModal }: { onClose: () => void; 
         .
       </p>
 
-      <LoginForm showSignupModal={showSignupModal} />
+      <LoginForm onClose={onClose} showSignupModal={showSignupModal} />
     </Modal>,
     document.body,
   );

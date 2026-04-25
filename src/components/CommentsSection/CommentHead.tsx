@@ -1,8 +1,8 @@
 import type { CommentView } from 'lemmy-js-client';
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { Dropdown } from '../Dropdown/Dropdown';
-import { DropdownUserDetails } from '../Dropdown/DropdownUserDetails';
+import { Popover } from '../Popover/Popover';
+import { PopoverUserDetails } from '../Popover/PopoverUserDetails';
 
 export function CommentHead({ data, variant = 'normal' }: { data: CommentView; variant?: 'compact' | 'normal' }) {
   const [isUserDetailsShown, setIsUserDetailsShown] = useState(false);
@@ -44,7 +44,7 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
         )}
 
         {isUserDetailsShown && (
-          <Dropdown
+          <Popover
             onHover={() => {
               setIsUserDetailsShown(true);
             }}
@@ -52,7 +52,7 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
               setIsUserDetailsShown(false);
             }}
           >
-            <DropdownUserDetails
+            <PopoverUserDetails
               data={{
                 icon: data.creator.avatar ?? '',
                 name: data.creator.name,
@@ -60,7 +60,7 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
                 published: data.creator.published,
               }}
             />
-          </Dropdown>
+          </Popover>
         )}
       </div>
 

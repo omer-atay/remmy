@@ -3,14 +3,16 @@ import { client, LOGIN_KEY } from '../../client';
 import { Form } from '@base-ui/react/form';
 import { Field } from '@base-ui/react/field';
 import { useLocalStorage } from 'usehooks-ts';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface FormValues {
   username_or_email: string;
   password: string;
 }
 
-export function LoginForm({ showSignupModal }: { showSignupModal: () => void }) {
+export function LoginForm({ onClose, showSignupModal }: { onClose: () => void; showSignupModal: () => void }) {
   const [, setToken] = useLocalStorage(LOGIN_KEY, '');
+  const queryClient = useQueryClient();
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       username_or_email: '',
@@ -20,8 +22,13 @@ export function LoginForm({ showSignupModal }: { showSignupModal: () => void }) 
 
   async function submitForm(data: FormValues) {
     const { jwt } = await client.login(data);
-    console.log(jwt);
-    setToken(jwt ?? '');
+
+    if (jwt) {
+      setToken(jwt);
+      onClose();
+      client.setHeaders({ Authorization: `Bearer ${jwt}` });
+      void queryClient.resetQueries();
+    }
   }
 
   return (

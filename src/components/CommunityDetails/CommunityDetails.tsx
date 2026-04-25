@@ -64,7 +64,7 @@ export function CommunityDetails({ community }: { community: GetCommunityRespons
                   )}
 
                   {!moderator.moderator.avatar && (
-                    <div className="flex justify-center items-center size-8 rounded-full bg-brand-background">
+                    <div className="flex justify-center items-center size-8 rounded-full font-medium bg-neutral-content-weak text-neutral-content-strong border-neutral-background">
                       <span className="text-neutral-content-strong">{moderator.moderator.name[0]?.toUpperCase()}</span>
                     </div>
                   )}

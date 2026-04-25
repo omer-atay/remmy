@@ -15,7 +15,7 @@ interface Props {
   };
 }
 
-export function DropdownCommunityDetails({ data }: Props) {
+export function PopoverCommunityDetails({ data }: Props) {
   return (
     <div className="flex flex-col gap-4">
       {data.banner && (
