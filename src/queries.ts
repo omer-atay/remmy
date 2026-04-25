@@ -61,16 +61,12 @@ export const userQueries = {
 export const commentQueries = {
   all: () => ['comments'],
   lists: () => [...commentQueries.all(), 'comment'],
-  list: ({ options, totalCount }: { options: Omit<GetComments, 'page'>; totalCount: number }) =>
+  list: (options: Omit<GetComments, 'page'>) =>
     infiniteQueryOptions({
       queryKey: [...commentQueries.lists(), options],
       queryFn: ({ pageParam }) => client.getComments({ ...options, page: pageParam }),
-      getNextPageParam: (_lastPage, allPages, lastPageParam) => {
-        const totalComments = allPages.reduce((acc, page) => acc + page.comments.length, 0);
-
-        if (totalComments < totalCount) {
-          return lastPageParam + 1;
-        }
+      getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
+        return lastPageParam + 1;
       },
       initialPageParam: 1,
     }),
@@ -85,3 +81,8 @@ export const searchQueries = {
       queryFn: () => client.search(options),
     }),
 };
+
+export const siteQuery = queryOptions({
+  queryKey: ['site'],
+  queryFn: () => client.getSite(),
+});

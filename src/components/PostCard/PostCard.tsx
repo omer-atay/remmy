@@ -1,4 +1,4 @@
-import type { PostView } from 'lemmy-js-client';
+import type { CreatePostLike, GetPostsResponse, PostView } from 'lemmy-js-client';
 import { Link } from 'wouter';
 import { Upvote } from '../../icons/Upvote';
 import { Downvote } from '../../icons/Downvote';
@@ -7,14 +7,88 @@ import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
 import { PostCardBody } from './PostCardBody';
 import { Divider } from '../Divider/Divider';
-import { Dropdown } from '../Dropdown/Dropdown';
-import { DropdownUserDetails } from '../Dropdown/DropdownUserDetails';
+import { Popover } from '../Popover/Popover';
+import { PopoverUserDetails } from '../Popover/PopoverUserDetails';
 import { useState } from 'react';
-import { DropdownCommunityDetails } from '../Dropdown/DropdownCommunityDetails';
+import { PopoverCommunityDetails } from '../Popover/PopoverCommunityDetails';
+import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
+import { client } from '../../client';
+import { postQueries, userQueries } from '../../queries';
+import clsx from 'clsx';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
   const [isCommunityDetailsShown, setIsCommunityDetailsShown] = useState(false);
   const [isCreatorDetailsShown, setIsCreatorDetailsShown] = useState(false);
+  const queryClient = useQueryClient();
+
+  const voteMutation = useMutation({
+    mutationFn: async (variables: CreatePostLike) => {
+      await client.likePost(variables);
+    },
+    onMutate: (variables, context) => {
+      // Optimistically update to the new value
+      context.client.setQueriesData(
+        { queryKey: postQueries.lists() },
+        (old: InfiniteData<GetPostsResponse> | undefined) => {
+          if (old) {
+            return {
+              ...old,
+              pages: old.pages.map((page) => {
+                return {
+                  ...page,
+                  posts: page.posts.map((post) => {
+                    if (post.post.id !== variables.post_id) {
+                      return post;
+                    }
+
+                    return {
+                      ...post,
+                      my_vote: variables.score,
+                    };
+                  }),
+                };
+              }),
+            };
+          }
+        },
+      );
+    },
+    onError: () => {
+      void queryClient.invalidateQueries({ queryKey: postQueries.lists() });
+    },
+  });
+
+  const upVotePost = () => {
+    voteMutation.mutate(
+      {
+        post_id: post.post.id,
+        score: post.my_vote === 1 ? 0 : 1,
+      },
+      {
+        onSettled: () => {
+          void queryClient.invalidateQueries({
+            queryKey: userQueries.details(),
+          });
+        },
+      },
+    );
+  };
+
+  const downVotePost = () => {
+    voteMutation.mutate(
+      {
+        post_id: post.post.id,
+        score: post.my_vote === -1 ? 0 : -1,
+      },
+      {
+        onSettled: () => {
+          void queryClient.invalidateQueries({
+            queryKey: userQueries.details(),
+          });
+        },
+      },
+    );
+  };
 
   const creatorAbsoluteName = post.creator.local
     ? post.creator.name
@@ -52,7 +126,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               </Link>
 
               {isCommunityDetailsShown && (
-                <Dropdown
+                <Popover
                   onHover={() => {
                     setIsCommunityDetailsShown(true);
                   }}
@@ -60,7 +134,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                     setIsCommunityDetailsShown(false);
                   }}
                 >
-                  <DropdownCommunityDetails
+                  <PopoverCommunityDetails
                     data={{
                       banner: post.community.banner ?? '',
                       icon: post.community.icon ?? '',
@@ -69,7 +143,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                       description: post.community.description ?? '',
                     }}
                   />
-                </Dropdown>
+                </Popover>
               )}
 
               <span className="created-separator text-xs text-neutral-content-weak" aria-hidden="true">
@@ -145,7 +219,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
             </div>
 
             {isCreatorDetailsShown && (
-              <Dropdown
+              <Popover
                 onHover={() => {
                   setIsCreatorDetailsShown(true);
                 }}
@@ -153,7 +227,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                   setIsCreatorDetailsShown(false);
                 }}
               >
-                <DropdownUserDetails
+                <PopoverUserDetails
                   data={{
                     icon: post.creator.avatar ?? '',
                     name: post.creator.name,
@@ -161,7 +235,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                     published: post.post.published,
                   }}
                 />
-              </Dropdown>
+              </Popover>
             )}
           </div>
         )}
@@ -171,16 +245,30 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
         <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong">
           <div className="flex justify-center items-center rounded-2xl bg-secondary-background">
             <button
-              className="p-2 z-10 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover"
+              onClick={() => {
+                upVotePost();
+              }}
+              className={clsx(
+                'p-2 z-10 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover',
+                post.my_vote === 1 && 'text-action-upvote',
+              )}
               type="button"
               title="Upvote"
             >
               <Upvote />
               <span className="sr-only">Upvote</span>
             </button>
+
             <span>{post.counts.upvotes}</span>
+
             <button
-              className="p-2 z-10 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover"
+              onClick={() => {
+                downVotePost();
+              }}
+              className={clsx(
+                'p-2 z-10 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover',
+                post.my_vote === -1 && 'text-action-downvote',
+              )}
               type="button"
               title="Downvote"
             >
