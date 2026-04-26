@@ -27,6 +27,7 @@ import { PopoverUserDetails } from '../Popover/PopoverUserDetails';
 import { PopoverCommunityDetails } from '../Popover/PopoverCommunityDetails';
 import { client } from '../../client';
 import clsx from 'clsx';
+import { MakeCommentSection } from '../CommentsSection/MakeCommentSection';
 
 export function PostPage({ id }: { id: string }) {
   return (
@@ -349,6 +350,8 @@ function PostSection({ post }: { post: PostView }) {
             <span>Share</span>
           </button>
         </div>
+
+        <MakeCommentSection post={post} />
       </div>
 
       <CommentsSection totalCount={post.counts.comments} postId={post.post.id} />
