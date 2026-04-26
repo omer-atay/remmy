@@ -8,6 +8,8 @@ import { CommentHead } from './CommentHead';
 import { CommentBody } from './CommentBody';
 import { AddCircleIcon } from '../../icons/AddCircleIcon';
 import { SubtractCircleIcon } from '../../icons/SubtractCircleIcon';
+import { CommentToCommentSection } from './CommentToCommentSection';
+import { CommentContextProvider } from '../../contexts/useCommentContext';
 
 function Comment({ data, comments, level = 0 }: { data: CommentView; comments: CommentView[]; level?: number }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -51,11 +53,19 @@ function Comment({ data, comments, level = 0 }: { data: CommentView; comments: C
         </button>
       )}
 
-      <div className="flex flex-col gap-2" key={data.comment.id}>
-        <CommentHead data={data} variant={isCollapsed ? 'compact' : 'normal'} />
+      <CommentContextProvider>
+        <div className="flex flex-col gap-2" key={data.comment.id}>
+          <CommentHead data={data} variant={isCollapsed ? 'compact' : 'normal'} />
 
-        {!isCollapsed && <CommentBody data={data} />}
-      </div>
+          {!isCollapsed && <CommentBody data={data} />}
+
+          <CommentToCommentSection
+            post={data.post}
+            commentParentName={data.creator.name}
+            commentParentId={data.comment.id}
+          />
+        </div>
+      </CommentContextProvider>
 
       {!isCollapsed &&
         rootChildComments.map((childComment) => (

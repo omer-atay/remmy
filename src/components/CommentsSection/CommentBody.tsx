@@ -7,12 +7,11 @@ import { Share } from '../../icons/Share';
 import { ThreeDot } from '../../icons/ThreeDot';
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { client } from '../../client';
-import { commentQueries } from '../../queries';
 import clsx from 'clsx';
+import { useComment } from '../../contexts/useCommentContext';
 
 export function CommentBody({ data }: { data: CommentView }) {
-  const areButtonsDisabled = data.comment.deleted || data.comment.removed;
-  const queryClient = useQueryClient();
+  const { isMakingComment, setIsMakingComment } = useComment();
 
   const voteMutation = useMutation({
     mutationFn: async (variables: CreateCommentLike) => {
@@ -139,6 +138,13 @@ export function CommentBody({ data }: { data: CommentView }) {
         </div>
 
         <button
+          onClick={() => {
+            if (!isMakingComment) {
+              setIsMakingComment(true);
+              return;
+            }
+            setIsMakingComment(false);
+          }}
           className={
             !areButtonsDisabled
               ? 'flex items-center gap-1 w-fit py-2 px-4 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong'
