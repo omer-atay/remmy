@@ -1,11 +1,10 @@
-import type { CommentView, CreateCommentLike, GetCommentsResponse } from 'lemmy-js-client';
+import type { CommentView, CreateCommentLike } from 'lemmy-js-client';
 import { Markdown } from '../Markdown/Markdown';
 import { Upvote } from '../../icons/Upvote';
 import { Downvote } from '../../icons/Downvote';
 import { Comment as CommentIcon } from '../../icons/Comment';
 import { Share } from '../../icons/Share';
-import { ThreeDot } from '../../icons/ThreeDot';
-import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { client } from '../../client';
 import clsx from 'clsx';
 import { useComment } from '../../contexts/useCommentContext';
@@ -15,81 +14,36 @@ export function CommentBody({ data }: { data: CommentView }) {
 
   const voteMutation = useMutation({
     mutationFn: async (variables: CreateCommentLike) => {
-      await client.likeComment(variables);
-    },
-    onMutate: (variables, context) => {
-      // Optimistically update to the new value
-      context.client.setQueriesData(
-        { queryKey: commentQueries.lists() },
-        (old: InfiniteData<GetCommentsResponse> | undefined) => {
-          if (old) {
-            return {
-              ...old,
-              pages: old.pages.map((page) => {
-                return {
-                  ...page,
-                  comments: page.comments.map((comment) => {
-                    if (comment.comment.id !== variables.comment_id) {
-                      return comment;
-                    }
-
-                    return {
-                      ...comment,
-                      my_vote: variables.score,
-                    };
-                  }),
-                };
-              }),
-            };
-          }
-        },
-      );
-    },
-    onError: () => {
-      void queryClient.invalidateQueries({ queryKey: commentQueries.lists() });
+      return client.likeComment(variables);
     },
   });
 
+  const comment = voteMutation.data?.comment_view ?? data;
+
+  const areButtonsDisabled = comment.comment.deleted || comment.comment.removed;
+
   const upVoteComment = () => {
-    voteMutation.mutate(
-      {
-        comment_id: data.comment.id,
-        score: data.my_vote === 1 ? 0 : 1,
-      },
-      {
-        onSettled: () => {
-          void queryClient.invalidateQueries({
-            queryKey: commentQueries.lists(),
-          });
-        },
-      },
-    );
+    voteMutation.mutate({
+      comment_id: comment.comment.id,
+      score: comment.my_vote === 1 ? 0 : 1,
+    });
   };
 
   const downVoteComment = () => {
-    voteMutation.mutate(
-      {
-        comment_id: data.comment.id,
-        score: data.my_vote === -1 ? 0 : -1,
-      },
-      {
-        onSettled: () => {
-          void queryClient.invalidateQueries({
-            queryKey: commentQueries.lists(),
-          });
-        },
-      },
-    );
+    voteMutation.mutate({
+      comment_id: comment.comment.id,
+      score: comment.my_vote === -1 ? 0 : -1,
+    });
   };
 
   return (
     <div className="flex flex-col pl-10">
       <div className="text-sm leading-5 wrap-anywhere">
-        {data.comment.deleted && <span className="text-neutral-content-weak">Comment deleted by user</span>}
+        {comment.comment.deleted && <span className="text-neutral-content-weak">Comment deleted by user</span>}
 
-        {data.comment.removed && <span className="text-neutral-content-weak">Comment removed by moderator</span>}
+        {comment.comment.removed && <span className="text-neutral-content-weak">Comment removed by moderator</span>}
 
-        <Markdown>{data.comment.content}</Markdown>
+        <Markdown>{comment.comment.content}</Markdown>
       </div>
 
       <div className="flex text-secondary-plain-weak">
@@ -99,7 +53,7 @@ export function CommentBody({ data }: { data: CommentView }) {
               upVoteComment();
             }}
             className={clsx(
-              data.my_vote === 1 && 'text-action-upvote',
+              comment.my_vote === 1 && 'text-action-upvote',
               !areButtonsDisabled
                 ? 'p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover'
                 : 'text-interactive-content-disabled p-2',
@@ -114,7 +68,7 @@ export function CommentBody({ data }: { data: CommentView }) {
 
           {!areButtonsDisabled && (
             <span className="font-bold text-xs">
-              {data.counts.upvotes > data.counts.downvotes ? data.counts.upvotes : -data.counts.downvotes}
+              {comment.counts.upvotes > comment.counts.downvotes ? comment.counts.upvotes : -comment.counts.downvotes}
             </span>
           )}
 
@@ -123,7 +77,7 @@ export function CommentBody({ data }: { data: CommentView }) {
               downVoteComment();
             }}
             className={clsx(
-              data.my_vote === -1 && 'text-action-downvote',
+              comment.my_vote === -1 && 'text-action-downvote',
               !areButtonsDisabled
                 ? 'p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover'
                 : 'text-interactive-content-disabled p-2',
@@ -169,17 +123,6 @@ export function CommentBody({ data }: { data: CommentView }) {
           <Share />
           <span className="font-bold text-xs">Share</span>
         </button>
-
-        {!areButtonsDisabled && (
-          <button
-            className="py-2 px-3 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong"
-            type="button"
-            title="More"
-          >
-            <ThreeDot />
-            <span className="sr-only">More</span>
-          </button>
-        )}
       </div>
     </div>
   );

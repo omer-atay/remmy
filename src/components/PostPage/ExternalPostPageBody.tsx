@@ -3,7 +3,7 @@ import type { PostView } from 'lemmy-js-client';
 export function ExternalPostPageBody({ post, externalName }: { post: PostView; externalName: string }) {
   return (
     <div className="flex flex-col border border-neutral-border-weak rounded-2xl">
-      <a href={post.post.url}>
+      <a target="_blank" href={post.post.url}>
         <img className="flex justify-center w-full relative rounded-t-2xl" src={post.post.thumbnail_url} alt="" />
       </a>
 

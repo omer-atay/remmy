@@ -37,9 +37,12 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
               setIsUserDetailsShown(false);
             }}
             href={`/u/${creatorAbsoluteName}`}
-            className="text-xs font-bold text-neutral-content-strong hover:underline"
+            className="flex text-xs hover:underline"
           >
-            u/{creatorAbsoluteName}
+            <span className="text-neutral-content-strong font-bold">{data.creator.name}</span>
+            <span className="text-neutral-content">
+              {data.creator.local && `@${new URL(data.creator.actor_id).host}`}
+            </span>
           </Link>
         )}
 

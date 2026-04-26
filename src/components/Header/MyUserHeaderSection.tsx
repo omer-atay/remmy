@@ -3,7 +3,7 @@ import { Dropdown } from '../Dropdown/Dropdown';
 import type { Person } from 'lemmy-js-client';
 import { Divider } from '../Divider/Divider';
 import { client, LOGIN_KEY } from '../../client';
-import { DoorOpen, Settings } from 'lucide-react';
+import { DoorOpen } from 'lucide-react';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -66,11 +66,6 @@ export function MyUserHeaderSection({ myUser }: { myUser: Person }) {
                 <DoorOpen size={18} />
                 <span className="text-sm">Log Out</span>
               </button>
-
-              <Link className="flex gap-2 hover:text-secondary-hover" href="/settings">
-                <Settings size={18} />
-                <span className="text-sm">Settings</span>
-              </Link>
             </div>
           </Dropdown>
         )}

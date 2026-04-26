@@ -16,7 +16,7 @@ export function ExternalPostCardBody({ post }: { post: PostView }) {
         </a>
       </div>
 
-      <a className="w-32.5 h-25 shrink-0 grow-0 z-10 relative" href={post.post.url}>
+      <a target="_blank" className="w-32.5 h-25 shrink-0 grow-0 z-10 relative" href={post.post.url}>
         <img className="size-full object-cover rounded-lg" src={post.post.thumbnail_url} alt="" />
         <div className="p-1 absolute left-1 bottom-1 bg-media-background text-media-onBackground rounded-full">
           <ExternalLink size={12} />

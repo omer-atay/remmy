@@ -8,7 +8,7 @@ import { ExternalPostCardBody } from './ExternalPostCardBody';
 import { PostCardTitle } from './PostCardTitle';
 
 export function PostCardBody({ post }: { post: PostView }) {
-  /* if (!post.post.url_content_type) {
+  if (!post.post.url_content_type) {
     return <TextPostCardBody post={post} />;
   }
 
@@ -32,13 +32,13 @@ export function PostCardBody({ post }: { post: PostView }) {
     if (post.post.url && ReactPlayer.canPlay?.(post.post.url)) {
       return <EmbedPostCardBody post={post} />;
     }
-  } */
+  }
 
   return (
     <div>
-      {/* <PostCardTitle>{post.post.name}</PostCardTitle> */}
+      <PostCardTitle>{post.post.name}</PostCardTitle>
       {import.meta.env.DEV && (
-        <div className="text-red-500 text-lg">Cannot display this post{/* : {post.post.url_content_type} */}</div>
+        <div className="text-red-500 text-lg">Cannot display this post: {post.post.url_content_type}</div>
       )}
     </div>
   );

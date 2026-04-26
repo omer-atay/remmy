@@ -1,6 +1,5 @@
 import { Link } from 'wouter';
 import { Cake } from '../../icons/Cake';
-import { CirclePlus } from 'lucide-react';
 
 interface Props {
   data: {
@@ -31,7 +30,7 @@ export function PopoverUserDetails({ data }: Props) {
 
         <div className="flex flex-col justify-center">
           <Link
-            className="text-[18px] text-neutral-content-strong font-bold leading-6 hover:text-primary-hover hover:underline"
+            className="mb-2 text-[18px] text-neutral-content-strong font-bold leading-6 hover:text-primary-hover hover:underline"
             href={`/u/${data.absoluteName}`}
           >
             {data.absoluteName}
@@ -55,14 +54,6 @@ export function PopoverUserDetails({ data }: Props) {
             <span>{data.commentCount} Comments</span>
           </div>
         ))}
-
-      <button
-        className="flex justify-center items-center w-fit gap-2 mt-4 py-2 px-3 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover"
-        type="button"
-      >
-        <CirclePlus size={16} />
-        <span>Follow</span>
-      </button>
     </div>
   );
 }

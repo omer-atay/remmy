@@ -1,7 +1,5 @@
 import { userQueries } from '../../queries';
 import { useQuery } from '@tanstack/react-query';
-import { ThreeDot } from '../../icons/ThreeDot';
-import { CirclePlus } from 'lucide-react';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 import { Markdown } from '../Markdown/Markdown';
@@ -69,26 +67,7 @@ function CreatorMain({ username }: { username: string }) {
           )}
 
           <div className="flex flex-col px-4">
-            <div className="flex justify-between items-center gap-2 my-3">
-              <span className="font-bold text-neutral-content-strong">{creator.person_view.person.name}</span>
-
-              <button
-                className="p-2 rounded-full bg-neutral-background-highlighted-strong hover:bg-secondary-background-hover"
-                type="button"
-                title="More"
-              >
-                <ThreeDot />
-                <span className="sr-only">More</span>
-              </button>
-            </div>
-
-            <button
-              className="flex justify-center items-center w-fit gap-2 py-2 px-3 text-xs text-global-white font-bold bg-primary-background rounded-2xl hover:bg-primary-background-hover"
-              type="button"
-            >
-              <CirclePlus size={16} />
-              <span>Follow</span>
-            </button>
+            <span className="my-3 font-bold text-neutral-content-strong">{creator.person_view.person.name}</span>
 
             {creator.person_view.person.bio && (
               <>

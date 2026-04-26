@@ -47,13 +47,6 @@ export function PopoverCommunityDetails({ data }: Props) {
             </span>
           </Link>
         )}
-
-        <button
-          className="flex justify-center items-center w-fit text-xs font-bold py-1 px-3 text-neutral-content-strong bg-secondary-background rounded-2xl hover:bg-secondary-background-hover"
-          type="button"
-        >
-          Join
-        </button>
       </div>
 
       <div className="text-sm leading-5 text-neutral-content line-clamp-10">
