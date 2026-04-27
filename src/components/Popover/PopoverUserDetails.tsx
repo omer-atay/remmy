@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { Cake } from '../../icons/Cake';
+import { getDate } from '../../utils/getTime';
 
 interface Props {
   data: {
@@ -42,7 +43,7 @@ export function PopoverUserDetails({ data }: Props) {
 
           <span className="flex justify-center items-center gap-1 text-xs text-neutral-content-weak font-bold overflow-hidden whitespace-nowrap">
             <Cake />
-            {data.published}
+            <span className="text-xs font-medium">Created {getDate(data.published)}</span>
           </span>
         </div>
       </div>

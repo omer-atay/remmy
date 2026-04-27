@@ -5,6 +5,8 @@ import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 import { Markdown } from '../Markdown/Markdown';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
+import { Cake } from '../../icons/Cake';
+import { getDate } from '../../utils/getTime';
 
 export function CreatorPage({ username }: { username: string }) {
   return (
@@ -94,9 +96,9 @@ function CreatorMain({ username }: { username: string }) {
                 <span className="text-xs text-neutral-content-weak font-medium">Comments</span>
               </div>
 
-              <div className="flex flex-col">
-                <span className="text-neutral-content-strong font-bold">{creator.person_view.person.published}</span>
-                <span className="text-xs text-neutral-content-weak font-medium">Lemmy Age</span>
+              <div className="flex items-center gap-1">
+                <Cake />
+                <span className="text-xs font-medium">Created {getDate(creator.person_view.person.published)}</span>
               </div>
             </div>
           </div>

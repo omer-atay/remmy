@@ -20,6 +20,7 @@ import { PopoverCommunityDetails } from '../Popover/PopoverCommunityDetails';
 import { client } from '../../client';
 import clsx from 'clsx';
 import { CommentToPostSection } from '../CommentsSection/CommentToPostSection';
+import { getTime } from '../../utils/getTime';
 
 export function PostPage({ id }: { id: string }) {
   return (
@@ -177,7 +178,7 @@ function PostSection({ post }: { post: PostView }) {
                   •
                 </span>
 
-                <span className="text-neutral-content-weak">{postData.community.published} ago</span>
+                <span className="text-neutral-content-weak">{getTime(postData.post.published)}</span>
               </div>
 
               <div className="relative">

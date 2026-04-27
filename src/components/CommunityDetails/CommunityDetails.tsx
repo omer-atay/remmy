@@ -5,6 +5,7 @@ import { Markdown } from '../Markdown/Markdown';
 import { PageDetailsSection } from '../PageDetailsSection/PageDetailsSection';
 import { Fragment } from 'react';
 import { Link } from 'wouter';
+import { getDate } from '../../utils/getTime';
 
 export function CommunityDetails({ community }: { community: GetCommunityResponse | GetPostResponse }) {
   return (
@@ -15,7 +16,7 @@ export function CommunityDetails({ community }: { community: GetCommunityRespons
         <div className="flex flex-col py-2 gap-1">
           <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">
             <Cake />
-            <span>Created {new Date(community.community_view.community.published).toDateString()}</span>
+            <span className="text-xs font-medium">Created {getDate(community.community_view.community.published)}</span>
           </div>
 
           <div className="flex items-center gap-2 text-xs text-neutral-content-weak font-medium">

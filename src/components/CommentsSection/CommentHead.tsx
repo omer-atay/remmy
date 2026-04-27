@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'wouter';
 import { Popover } from '../Popover/Popover';
 import { PopoverUserDetails } from '../Popover/PopoverUserDetails';
+import { getTime } from '../../utils/getTime';
 
 export function CommentHead({ data, variant = 'normal' }: { data: CommentView; variant?: 'compact' | 'normal' }) {
   const [isUserDetailsShown, setIsUserDetailsShown] = useState(false);
@@ -77,7 +78,7 @@ export function CommentHead({ data, variant = 'normal' }: { data: CommentView; v
         •
       </span>
 
-      <span className="text-xs text-neutral-content-weak">{data.comment.published} ago</span>
+      <span className="text-xs text-neutral-content-weak">{getTime(data.comment.published)}</span>
     </div>
   );
 }

@@ -14,6 +14,7 @@ import { PopoverCommunityDetails } from '../Popover/PopoverCommunityDetails';
 import { useMutation } from '@tanstack/react-query';
 import { client } from '../../client';
 import clsx from 'clsx';
+import { getTime } from '../../utils/getTime';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
   const [isCommunityDetailsShown, setIsCommunityDetailsShown] = useState(false);
@@ -50,7 +51,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
     : `${postData.community.name}@${new URL(postData.community.actor_id).host}`;
 
   return (
-    <div className="flex flex-col justify-between gap-1 relative">
+    <div className="flex flex-col justify-between gap-1 relative max-h-170">
       <Divider />
       <div className="flex flex-col justify-between gap-2 w-2xl px-2 rounded-2xl hover:bg-neutral-background-hover">
         {source === 'community' && (
@@ -101,7 +102,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                 •
               </span>
 
-              <span className="text-xs text-neutral-content-weak">{postData.community.published} ago</span>
+              <span className="text-xs text-neutral-content-weak">{getTime(postData.post.published)}</span>
             </div>
           </div>
         )}
@@ -147,7 +148,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                 •
               </span>
 
-              <span className="text-xs text-neutral-content-weak">{postData.creator.published} ago</span>
+              <span className="text-xs text-neutral-content-weak">{getTime(postData.post.published)}</span>
             </div>
 
             <div className="flex items-center gap-1">
