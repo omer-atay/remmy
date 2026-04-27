@@ -32,11 +32,14 @@ export function Header() {
           {isLoadingUser && <div />}
 
           {!isLoadingUser && (
-            <div className="flex items-center justify-end gap-6">
+            <div className="flex items-center justify-end gap-2">
               {!myUser && (
                 <DefaultHeaderButtonsSection
                   openLogin={() => {
                     setIsLoginShown(true);
+                  }}
+                  openSignup={() => {
+                    setIsSignupShown(true);
                   }}
                 />
               )}
