@@ -14,4 +14,17 @@
       color: var(--color-primary-hover);
     }
   }
+
+  pre {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-neutral-border) transparent;
+    box-shadow:
+      0 1px 8px rgba(0, 0, 0, 0.4),
+      0 1px 8px rgba(0, 0, 0, 0.4);
+    overflow: auto;
+    margin: 8px 0;
+    border-radius: 8px;
+    padding: 8px;
+    background: #0f0e0e;
+  }
 }

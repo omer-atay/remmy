@@ -4,7 +4,7 @@ import { Markdown } from '../Markdown/Markdown';
 
 export function TextPostCardBody({ post }: { post: PostView }) {
   return (
-    <div>
+    <div className="line-clamp-10">
       <PostCardTitle>{post.post.name}</PostCardTitle>
       <div className="text-sm">
         <Markdown>{post.post.body}</Markdown>
