@@ -5,7 +5,7 @@ import { Sidebar } from '../Sidebar/Sidebar';
 
 export function CommunitiesPage() {
   return (
-    <div className="grid grid-cols-[auto_1fr]">
+    <div className="grid grid-cols-1 mx-auto xl:grid-cols-[auto_1fr]">
       <Sidebar />
       <CommunitiesMain />
     </div>
@@ -30,7 +30,7 @@ function CommunitiesMain() {
   }
 
   return (
-    <ul className="grid grid-cols-3 gap-x-6 gap-y-4 max-w-280 p-6 ml-12">
+    <ul className="grid grid-cols-2 md:grid-cols-3 sm:gap-x-26 lg:gap-x-36 gap-y-4 max-w-280 py-6 mx-auto">
       {data.communities.map((community) => {
         const communityAbsoluteName = community.community.local
           ? community.community.name

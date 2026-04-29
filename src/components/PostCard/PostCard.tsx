@@ -1,24 +1,32 @@
 import type { CreatePostLike, PostView } from 'lemmy-js-client';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Upvote } from '../../icons/Upvote';
 import { Downvote } from '../../icons/Downvote';
 import { Comment } from '../../icons/Comment';
 import { Share } from '../../icons/Share';
-import { ThreeDot } from '../../icons/ThreeDot';
 import { PostCardBody } from './PostCardBody';
 import { Divider } from '../Divider/Divider';
 import { Popover } from '../Popover/Popover';
 import { PopoverUserDetails } from '../Popover/PopoverUserDetails';
 import { useState } from 'react';
 import { PopoverCommunityDetails } from '../Popover/PopoverCommunityDetails';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { client } from '../../client';
 import clsx from 'clsx';
 import { getTime } from '../../utils/getTime';
+import { siteQuery } from '../../queries';
+import { useSignup } from '../../contexts/useSignupContext';
+import { shareUrl } from '../../utils/shareUrl';
+import { toast } from 'sonner';
+import { getEditedNumber } from '../../utils/getEditedNumber';
 
 export function PostCard({ post, source = 'community' }: { post: PostView; source?: 'community' | 'creator' }) {
   const [isCommunityDetailsShown, setIsCommunityDetailsShown] = useState(false);
   const [isCreatorDetailsShown, setIsCreatorDetailsShown] = useState(false);
+  const [, setLocation] = useLocation();
+  const { setIsSignupShown } = useSignup();
+
+  const { data: site, isLoading, isError } = useQuery(siteQuery);
 
   const voteMutation = useMutation({
     mutationFn: async (variables: CreatePostLike) => {
@@ -42,6 +50,14 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
     });
   };
 
+  if (isLoading) {
+    return <p>loading...</p>;
+  }
+
+  if (isError || !site) {
+    return <p>Error, something went wrong</p>;
+  }
+
   const creatorAbsoluteName = postData.creator.local
     ? postData.creator.name
     : `${postData.creator.name}@${new URL(postData.creator.actor_id).host}`;
@@ -51,9 +67,9 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
     : `${postData.community.name}@${new URL(postData.community.actor_id).host}`;
 
   return (
-    <div className="flex flex-col justify-between gap-1 relative max-h-170">
+    <div className="flex flex-col justify-between gap-1 relative max-h-170 max-w-2xl px-4">
       <Divider />
-      <div className="flex flex-col justify-between gap-2 w-2xl px-2 rounded-2xl hover:bg-neutral-background-hover">
+      <div className="flex flex-col justify-between gap-2 max-w-2xl px-2 rounded-2xl hover:bg-neutral-background-hover">
         {source === 'community' && (
           <div className="flex justify-between items-center gap-2">
             <div className="flex items-center gap-1 relative">
@@ -69,7 +85,7 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               >
                 {postData.community.icon && <img className="size-6 rounded-4xl" src={postData.community.icon} alt="" />}
                 {!postData.community.icon && (
-                  <div className="flex justify-center items-center gap-px size-7 mx-1 pl-0.5 text-xl leading-12 font-extrabold bg-secondary text-neutral-background border-neutral-background rounded-full">
+                  <div className="flex justify-center items-center gap-px size-7 px-1 pl-0.5 text-xl leading-12 font-extrabold bg-secondary text-neutral-background border-neutral-background rounded-full">
                     <span className="mb-1">c</span>
                     <span className="mb-2">/</span>
                   </div>
@@ -126,8 +142,8 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
                       <img className="size-6 rounded-4xl" src={postData.creator.avatar} alt="" />
                     )}
                     {!postData.creator.avatar && (
-                      <div className="flex justify-center items-center size-6 rounded-full bg-brand-background">
-                        <span className="text-neutral-content-strong">{postData.creator.name[0]?.toUpperCase()}</span>
+                      <div className="flex justify-center items-center gap-px size-6 text-sm leading-4 font-medium bg-neutral-content-weak text-neutral-content-strong border-neutral-background rounded-full">
+                        <span>{creatorAbsoluteName[0]?.toUpperCase()}</span>
                       </div>
                     )}
                     u/{creatorAbsoluteName}
@@ -149,13 +165,6 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               </span>
 
               <span className="text-xs text-neutral-content-weak">{getTime(postData.post.published)}</span>
-            </div>
-
-            <div className="flex items-center gap-1">
-              <button className="p-2 z-10 hover:bg-secondary-background-hover rounded-full" type="button" title="More">
-                <ThreeDot />
-                <span className="sr-only">More</span>
-              </button>
             </div>
 
             {isCreatorDetailsShown && (
@@ -186,10 +195,14 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
           <div className="flex justify-center items-center rounded-2xl bg-secondary-background">
             <button
               onClick={() => {
+                if (!site.my_user) {
+                  setIsSignupShown(true);
+                  return;
+                }
                 upVotePost();
               }}
               className={clsx(
-                'p-2 z-10 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover',
+                'p-2 z-10 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover active:bg-[#515a5e]',
                 postData.my_vote === 1 && 'text-action-upvote',
               )}
               type="button"
@@ -199,14 +212,18 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               <span className="sr-only">Upvote</span>
             </button>
 
-            <span>{postData.counts.upvotes}</span>
+            <span>{getEditedNumber(postData.counts.upvotes)}</span>
 
             <button
               onClick={() => {
+                if (!site.my_user) {
+                  setIsSignupShown(true);
+                  return;
+                }
                 downVotePost();
               }}
               className={clsx(
-                'p-2 z-10 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover',
+                'p-2 z-10 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover active:bg-[#515a5e]',
                 postData.my_vote === -1 && 'text-action-downvote',
               )}
               type="button"
@@ -218,17 +235,26 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
           </div>
 
           <button
-            className="flex justify-center items-center gap-1 py-2 px-4 z-10 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover"
+            onClick={() => {
+              setLocation(`/post/${postData.post.id}`);
+            }}
+            className="flex justify-center items-center gap-1 py-2 px-4 z-10 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover active:bg-[#515a5e]"
             type="button"
             title="Comment"
           >
             <Comment />
-            <span>{postData.counts.comments}</span>
+            <span>{getEditedNumber(postData.counts.comments)}</span>
             <span className="sr-only">Comment</span>
           </button>
 
           <button
-            className="flex justify-center items-center gap-1.5 py-2 px-4 z-10 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover"
+            onClick={() => {
+              const postUrl = new URL(`/post/${postData.post.id}`, window.location.origin);
+              shareUrl(postUrl.toString())
+                .then((result) => result === 'copied' && toast('Link copied'))
+                .catch(() => toast('Something went wrong'));
+            }}
+            className="flex justify-center items-center gap-1.5 py-2 px-4 z-10 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover active:bg-[#515a5e]"
             type="button"
           >
             <Share />

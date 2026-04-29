@@ -10,7 +10,7 @@ import { getDate } from '../../utils/getTime';
 
 export function CreatorPage({ username }: { username: string }) {
   return (
-    <div className="grid grid-cols-[auto_2fr_1fr] gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] xl:grid-cols-[auto_1fr_auto] gap-4 mx-auto">
       <Sidebar />
 
       <CreatorMain username={username} />
@@ -39,30 +39,33 @@ function CreatorMain({ username }: { username: string }) {
 
   return (
     <>
-      <div className="flex flex-col gap-3 mt-4">
-        <div className="flex items-center gap-4 ml-15">
+      <div className="flex flex-col items-center w-full min-w-0 mt-4 mx-auto gap-4">
+        <div className="flex items-center gap-4">
           {creator.person_view.person.avatar ? (
             <img
-              className="size-24 border-2 border-neutral-border-weak rounded-full"
+              className="size-16 sm:size-24 border-2 border-neutral-border-weak rounded-full"
               src={creator.person_view.person.avatar}
               alt=""
             />
           ) : (
-            <div className="size-16 bg-neutral-content-weak border-2 border-neutral-border-weak rounded-full" />
+            <div className="flex justify-center items-center size-16 sm:size-24 text-4xl sm:text-6xl leading-12 font-medium bg-neutral-content-weak border-2 text-neutral-content-strong border-neutral-border-weak rounded-full">
+              <span>{creator.person_view.person.name[0]?.toUpperCase()}</span>
+            </div>
           )}
 
           <div className="flex flex-col">
-            <h1 className="text-2xl font-bold text-neutral-content">
+            <h1 className="text-lg sm:text-2xl font-bold text-neutral-content">
               {creator.person_view.person.display_name ?? creator.person_view.person.name}
             </h1>
-            <span className="text-sm font-semibold text-neutral-content-weak">u/{creator.person_view.person.name}</span>
+            <span className="text-xs sm:text-sm font-semibold text-neutral-content-weak">
+              u/{creator.person_view.person.name}
+            </span>
           </div>
         </div>
-
         <PostsSection posts={creator.posts} />
       </div>
 
-      <PageInfoPanel className="top-14 pt-4">
+      <PageInfoPanel className="top-16 pt-4">
         <PageDetailsSection>
           {creator.person_view.person.banner && (
             <img className="h-full w-full object-cover object-center" src={creator.person_view.person.banner} alt="" />

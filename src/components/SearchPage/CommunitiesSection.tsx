@@ -5,7 +5,7 @@ import { Divider } from '../Divider/Divider';
 
 export function CommunitiesSection({ communities }: { communities: CommunityView[] }) {
   return (
-    <div className="flex flex-col mx-9">
+    <div className="flex flex-col px-2 sm:px-8">
       {communities.map((community) => {
         const communityAbsoluteName = community.community.local
           ? community.community.name
@@ -18,7 +18,7 @@ export function CommunitiesSection({ communities }: { communities: CommunityView
                 <img className="size-12 rounded-4xl" src={community.community.icon} alt="" />
               )}
               {!community.community.icon && (
-                <div className="flex justify-center items-center gap-px size-12 mr-1 text-4xl leading-12 font-extrabold bg-secondary text-neutral-background border-neutral-background rounded-full">
+                <div className="flex justify-center items-center shrink-0 gap-px size-12 mr-1 text-4xl leading-12 font-extrabold bg-secondary text-neutral-background border-neutral-background rounded-full">
                   <span className="mb-1">c</span>
                   <span className="mb-2">/</span>
                 </div>

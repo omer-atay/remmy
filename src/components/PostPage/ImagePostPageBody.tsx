@@ -3,7 +3,7 @@ import { MediaContainer } from '../MediaContainer/MediaContainer';
 
 export function ImagePostPageBody({ post, openImage }: { post: PostView; openImage: () => void }) {
   return (
-    <MediaContainer>
+    <MediaContainer bleed>
       <div className="flex justify-center w-full h-full aspect-4/3 relative">
         <button onClick={openImage} className="absolute inset-0 z-10" type="button" aria-hidden />
         <img src={post.post.url} className="z-1" alt="" />

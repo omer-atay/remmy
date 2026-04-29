@@ -6,7 +6,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
-import { communityQueries, postQueries } from '../../queries';
+import { communityQueries, postQueries, siteQuery } from '../../queries';
 import { PostsSection } from '../PostsSection/PostsSection';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
 import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
@@ -19,12 +19,13 @@ import { useEffect } from 'react';
 import { useRecentCommunities } from '../../hooks/useRecentCommunities';
 import clsx from 'clsx';
 import { client } from '../../client';
+import { useSignup } from '../../contexts/useSignupContext';
 
 const MAX_RECENT_COMMUNITIES = 10;
 
 export function CommunityPage({ name }: { name: string }) {
   return (
-    <div className="grid grid-cols-[auto_1fr]">
+    <div className="grid grid-cols-1 xl:grid-cols-[auto_1fr]">
       <Sidebar />
       <CommunityMain name={name} />
     </div>
@@ -35,6 +36,9 @@ function CommunityMain({ name }: { name: string }) {
   const { sort } = usePostFilterParams();
   const [, setRecentCommunities] = useRecentCommunities();
   const queryClient = useQueryClient();
+  const { setIsSignupShown } = useSignup();
+
+  const { data: site, isLoading: isSiteLoading, isError: isSiteError } = useQuery(siteQuery);
 
   const {
     data: community,
@@ -117,39 +121,41 @@ function CommunityMain({ name }: { name: string }) {
   };
 
   return (
-    <div className="px-12 mt-2 max-w-290 mx-auto">
-      <div className="w-full h-32">
+    <div className="sm:px-4 md:px-12 mt-2 max-w-300 w-full min-w-0 mx-auto">
+      <div className="w-full h-16 sm:h-32">
         {communityData.community.banner ? (
           <img
-            className="h-full w-full object-cover object-center rounded-md"
+            className="h-full w-full object-cover object-center sm:rounded-md"
             src={communityData.community.banner}
             alt=""
           />
         ) : (
-          <div className="w-full h-16 bg-secondary-background rounded-md" />
+          <div className="w-full h-16 bg-secondary-background sm:rounded-md" />
         )}
 
-        <div className="flex justify-between relative py-3">
-          <div className="flex justify-center items-center gap-4 pl-28">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0 relative py-3 pl-4">
+          <div className="flex sm:justify-center items-center gap-4 sm:pl-28">
             {communityData.community.icon && (
               <img
-                className="size-24 border-4 absolute left-4 bottom-2 bg-neutral-background border-neutral-background rounded-full"
+                className="size-12 sm:size-24 border-4 sm:absolute right-0 left-4 bottom-2 bg-neutral-background border-neutral-background rounded-full"
                 src={communityData.community.icon}
                 alt=""
               />
             )}
 
             {!communityData.community.icon && (
-              <div className="flex justify-center items-center gap-0.5 size-18 outline-8 absolute left-4 bottom-2 text-5xl leading-12 font-extrabold bg-neutral-content text-neutral-background border-neutral-background rounded-full">
+              <div className="flex justify-center items-center gap-0.5 size-11 sm:size-18 outline-8 sm:absolute left-4 bottom-2 text-3xl sm:text-5xl leading-12 font-extrabold bg-neutral-content text-neutral-background border-neutral-background rounded-full">
                 <span className="mb-3">c</span>
                 <span className="mb-5">/</span>
               </div>
             )}
 
-            <h2 className="text-3xl font-bold text-neutral-content-strong">c/{communityData.community.name}</h2>
+            <h2 className="text-[18px] sm:text-3xl font-bold text-neutral-content-strong">
+              c/{communityData.community.name}
+            </h2>
           </div>
 
-          <div className="flex justify-center items-center gap-3">
+          <div className="flex sm:justify-center items-center gap-3">
             <button
               className="flex justify-center items-center gap-2 text-secondary-plain text-sm font-bold border border-neutral-border-medium rounded-3xl py-1.5 px-2 hover:text-secondary-plain-hover hover:border-secondary-plain-hover"
               type="button"
@@ -160,6 +166,15 @@ function CommunityMain({ name }: { name: string }) {
 
             <button
               onClick={() => {
+                if (isSiteLoading || isSiteError || !site) {
+                  return;
+                }
+
+                if (!site.my_user) {
+                  setIsSignupShown(true);
+                  return;
+                }
+
                 joinCommunity();
               }}
               className={clsx(
@@ -184,8 +199,13 @@ function CommunityMain({ name }: { name: string }) {
           </div>
         </div>
       </div>
-      <div className={clsx('grid grid-cols-[3fr_1fr]', communityData.community.banner && 'mt-16')}>
-        <div className="flex flex-col max-w-167.5">
+      <div
+        className={clsx(
+          'grid grid-cols-1 lg:grid-cols-[1fr_auto] mt-32',
+          communityData.community.banner ? 'sm:mt-16' : 'sm:mt-0',
+        )}
+      >
+        <div className="flex flex-col md:max-w-167.5 w-full min-w-0 mx-auto">
           <PostFilterSection />
           <CommunityPosts communityName={name} sort={sort} />
         </div>

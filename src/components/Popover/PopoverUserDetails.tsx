@@ -18,30 +18,30 @@ export function PopoverUserDetails({ data }: Props) {
     <div className="flex flex-col">
       <div className="flex gap-3">
         {data.icon === '' ? (
-          <Link href={`/u/${data.absoluteName}`}>
+          <Link className="shrink-0" href={`/u/${data.absoluteName}`}>
             <div className="flex justify-center items-center gap-px size-12 mr-1 text-3xl leading-12 font-medium bg-neutral-content-weak text-neutral-content-strong border-neutral-background rounded-full">
               <span>{data.name[0]?.toUpperCase()}</span>
             </div>
           </Link>
         ) : (
-          <Link href={`/u/${data.absoluteName}`}>
+          <Link className="shrink-0" href={`/u/${data.absoluteName}`}>
             <img className="size-12 rounded-full" src={data.icon} alt="" />
           </Link>
         )}
 
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col">
           <Link
             className="mb-2 text-[18px] text-neutral-content-strong font-bold leading-6 hover:text-primary-hover hover:underline"
             href={`/u/${data.absoluteName}`}
           >
-            {data.absoluteName}
+            {data.name}
           </Link>
 
           <span className="text-xs text-neutral-content-weak font-bold overflow-hidden whitespace-nowrap">
             u/{data.name}
           </span>
 
-          <span className="flex justify-center items-center gap-1 text-xs text-neutral-content-weak font-bold overflow-hidden whitespace-nowrap">
+          <span className="flex items-center gap-1 text-xs text-neutral-content-weak font-bold overflow-hidden whitespace-nowrap">
             <Cake />
             <span className="text-xs font-medium">Created {getDate(data.published)}</span>
           </span>

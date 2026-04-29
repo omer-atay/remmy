@@ -6,10 +6,12 @@ import { PostPage } from './components/PostPage/PostPage';
 import { Header } from './components/Header/Header';
 import { CommunitiesPage } from './components/CommunitiesPage/CommunitiesPage';
 import { SearchPage } from './components/SearchPage/SearchPage';
+import { Toaster } from 'sonner';
 
 export function App() {
   return (
     <>
+      <Toaster expand={false} position="bottom-center" />
       <Header />
       <main>
         <Switch>

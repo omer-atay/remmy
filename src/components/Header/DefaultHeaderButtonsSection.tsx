@@ -9,7 +9,7 @@ export function DefaultHeaderButtonsSection({
     <>
       <button
         onClick={openSignup}
-        className="flex justify-center items-center px-3 py-2.5 rounded-full text-sm font-bold text-neutral-content-strong bg-secondary-background hover:bg-secondary-background-hover active:bg-secondary-background-selected"
+        className="hidden sm:flex justify-center items-center px-3 py-2.5 rounded-full text-sm font-bold text-neutral-content-strong bg-secondary-background hover:bg-secondary-background-hover active:bg-secondary-background-selected"
         type="button"
       >
         Sign Up

@@ -13,12 +13,12 @@ export function CommunityItem({ community }: { community: RecentCommunity }) {
       )}
       <div className="flex flex-col">
         <Link
-          className="after:content-[''] after:absolute after:inset-0 after:z-999 text-sm text-neutral-content"
+          className="after:content-[''] after:absolute after:inset-0 after:z-999 text-xs sm:text-sm text-neutral-content"
           href={`/c/${community.absoluteName}`}
         >
           c/{community.name}
         </Link>
-        <span className="text-xs text-neutral-content-weak">{community.subscribers} members</span>
+        <span className="text-[10px] sm:text-xs text-neutral-content-weak">{community.subscribers} members</span>
       </div>
     </li>
   );

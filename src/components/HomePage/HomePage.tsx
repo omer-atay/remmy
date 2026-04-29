@@ -10,17 +10,19 @@ import { CommunityListSection } from '../CommunityListSection/CommunityListSecti
 
 export function HomePage() {
   return (
-    <div className="grid grid-cols-[auto_3fr_1fr]">
+    <div className="grid grid-cols-1 xl:grid-cols-[auto_1fr]">
       <Sidebar />
 
-      <div className="flex flex-col items-center mt-6">
-        <PostFilterSection />
-        <HomePosts />
-      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] max-w-5xl w-full min-w-0 mx-auto lg:px-4">
+        <div className="mt-6 min-w-0 mx-auto w-full max-w-155">
+          <PostFilterSection />
+          <HomePosts />
+        </div>
 
-      <PageInfoPanel className="top-14 right-16 pt-4">
-        <CommunityListSection />
-      </PageInfoPanel>
+        <PageInfoPanel className="top-22 pt-4">
+          <CommunityListSection />
+        </PageInfoPanel>
+      </div>
     </div>
   );
 }

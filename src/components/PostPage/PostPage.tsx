@@ -1,5 +1,5 @@
 import { useMutation, usePrefetchInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { commentQueries, postQueries } from '../../queries';
+import { commentQueries, postQueries, siteQuery } from '../../queries';
 import { Link, useLocation } from 'wouter';
 import { Upvote } from '../../icons/Upvote';
 import { Downvote } from '../../icons/Downvote';
@@ -11,7 +11,6 @@ import { CommentsSection } from '../CommentsSection/CommentsSection';
 import { CommunityDetails } from '../CommunityDetails/CommunityDetails';
 import { ImageViewer } from '../ImageViewer/ImageViewer';
 import { useState } from 'react';
-import { PageInfoPanel } from '../PageInfoPanel/PageInfoPanel';
 import { PostPageBody } from './PostPageBody';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { Popover } from '../Popover/Popover';
@@ -21,10 +20,15 @@ import { client } from '../../client';
 import clsx from 'clsx';
 import { CommentToPostSection } from '../CommentsSection/CommentToPostSection';
 import { getTime } from '../../utils/getTime';
+import { useSignup } from '../../contexts/useSignupContext';
+import { shareUrl } from '../../utils/shareUrl';
+import { toast } from 'sonner';
+import { getEditedNumber } from '../../utils/getEditedNumber';
+import { Footer } from '../Footer/Footer';
 
 export function PostPage({ id }: { id: string }) {
   return (
-    <div className="grid grid-cols-[auto_1fr] gap-20">
+    <div className="grid grid-cols-1 xl:grid-cols-[auto_1fr] mx-auto">
       <Sidebar />
       <PostMain id={id} />
     </div>
@@ -61,12 +65,13 @@ function PostMain({ id }: { id: string }) {
   }
 
   return (
-    <div className="grid grid-cols-[2fr_1fr] mt-6">
+    <div className="grid grid-cols-1 px-4 md:grid-cols-[1fr_auto] w-full mx-auto">
       <PostSection post={post.post_view} />
 
-      <PageInfoPanel className="top-14">
+      <div className="hidden md:flex md:flex-col md:self-start md:gap-2 max-w-xs top-14 overflow-x-hidden scrollbar-thin scrollbar-neutral-border">
         <CommunityDetails community={post} />
-      </PageInfoPanel>
+        <Footer />
+      </div>
     </div>
   );
 }
@@ -76,6 +81,9 @@ function PostSection({ post }: { post: PostView }) {
   const [isCreatorDetailsShown, setIsCreatorDetailsShown] = useState(false);
   const [isCommunityDetailsShown, setIsCommunityDetailsShown] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
+  const { setIsSignupShown } = useSignup();
+
+  const { data: site, isLoading, isError } = useQuery(siteQuery);
 
   const voteMutation = useMutation({
     mutationFn: async (variables: CreatePostLike) => {
@@ -99,6 +107,14 @@ function PostSection({ post }: { post: PostView }) {
     });
   };
 
+  if (isLoading) {
+    return <p>loading...</p>;
+  }
+
+  if (isError || !site) {
+    return <p>Error, something went wrong</p>;
+  }
+
   const communityAbsoluteName = postData.community.local
     ? postData.community.name
     : `${postData.community.name}@${new URL(postData.community.actor_id).host}`;
@@ -108,9 +124,9 @@ function PostSection({ post }: { post: PostView }) {
     : `${postData.creator.name}@${new URL(postData.creator.actor_id).host}`;
 
   return (
-    <div className="flex flex-col justify-between gap-1 relative">
-      <div className="flex flex-col justify-between gap-2 w-2xl px-2 rounded-2xl">
-        <div className="flex justify-between items-center gap-2">
+    <div className="flex flex-col justify-between gap-1 w-full min-w-0 mt-6 px-0 md:px-4 relative">
+      <div className="flex flex-col justify-between gap-2 px-2 rounded-2xl">
+        <div className="flex justify-between items-center gap-2 ml-4 md:ml-0">
           <div className="flex items-center gap-1">
             <button
               onClick={() => {
@@ -119,7 +135,7 @@ function PostSection({ post }: { post: PostView }) {
                 }
                 setLocation(`/c/${communityAbsoluteName}`);
               }}
-              className="p-1.5 absolute -left-8 rounded-full text-secondary-onBackground bg-secondary-background hover:bg-secondary-background-hover"
+              className="p-1.5 absolute hidden -left-3 md:block rounded-full text-secondary-onBackground bg-secondary-background hover:bg-secondary-background-hover active:bg-[#515a5e]"
               type="button"
               title="Go back"
             >
@@ -220,7 +236,9 @@ function PostSection({ post }: { post: PostView }) {
         </div>
 
         <div>
-          <p className="pb-1.5 text-2xl font-bold text-neutral-content-strong">{postData.post.name}</p>
+          <h1 className="pb-1.5 text-2xl font-bold text-neutral-content-strong ml-4 md:ml-0 text-[1.125rem] md:text-2xl">
+            {postData.post.name}
+          </h1>
 
           <PostPageBody
             post={post}
@@ -230,14 +248,18 @@ function PostSection({ post }: { post: PostView }) {
           />
         </div>
 
-        <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong">
+        <div className="flex gap-4 text-xs font-extrabold text-neutral-content-strong mt-4 ml-4 md:ml-0">
           <div className="flex justify-center items-center rounded-2xl bg-secondary-background">
             <button
               onClick={() => {
+                if (!site.my_user) {
+                  setIsSignupShown(true);
+                  return;
+                }
                 upVotePost();
               }}
               className={clsx(
-                'p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover',
+                'p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover active:bg-[#515a5e]',
                 postData.my_vote === 1 && 'text-action-upvote',
               )}
               type="button"
@@ -247,14 +269,18 @@ function PostSection({ post }: { post: PostView }) {
               <span className="sr-only">Upvote</span>
             </button>
 
-            <span>{postData.counts.upvotes}</span>
+            <span>{getEditedNumber(postData.counts.upvotes)}</span>
 
             <button
               onClick={() => {
+                if (!site.my_user) {
+                  setIsSignupShown(true);
+                  return;
+                }
                 downVotePost();
               }}
               className={clsx(
-                'p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover',
+                'p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover active:bg-[#515a5e]',
                 postData.my_vote === -1 && 'text-action-downvote',
               )}
               type="button"
@@ -266,17 +292,29 @@ function PostSection({ post }: { post: PostView }) {
           </div>
 
           <button
-            className="flex justify-center items-center gap-1 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover"
+            onClick={() => {
+              if (!site.my_user) {
+                setIsSignupShown(true);
+                return;
+              }
+            }}
+            className="flex justify-center items-center gap-1 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover active:bg-[#515a5e]"
             type="button"
             title="Comment"
           >
             <Comment />
-            <span>{postData.counts.comments}</span>
+            <span>{getEditedNumber(postData.counts.comments)}</span>
             <span className="sr-only">Comment</span>
           </button>
 
           <button
-            className="flex justify-center items-center gap-1.5 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover"
+            onClick={() => {
+              const postUrl = new URL(`/post/${postData.post.id}`, window.location.origin);
+              shareUrl(postUrl.toString())
+                .then((result) => result === 'copied' && toast('Link copied'))
+                .catch(() => toast('Something went wrong'));
+            }}
+            className="flex justify-center items-center gap-1.5 py-2 px-4 rounded-2xl bg-secondary-background hover:bg-secondary-background-hover active:bg-[#515a5e]"
             type="button"
           >
             <Share />

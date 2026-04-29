@@ -5,7 +5,7 @@ import { Divider } from '../Divider/Divider';
 
 export function UsersSection({ users }: { users: PersonView[] }) {
   return (
-    <div className="flex flex-col mx-9">
+    <div className="flex flex-col px-2 sm:px-8">
       {users.map((user) => {
         const userAbsoluteName = user.person.local
           ? user.person.name
@@ -15,7 +15,7 @@ export function UsersSection({ users }: { users: PersonView[] }) {
             <li className="flex gap-1 p-4 relative hover:bg-neutral-background-hover rounded-2xl">
               {user.person.avatar && <img className="size-12 rounded-4xl" src={user.person.avatar} alt="" />}
               {!user.person.avatar && (
-                <div className="flex justify-center items-center gap-px size-12 mr-1 text-3xl leading-12 font-medium bg-neutral-content-weak text-neutral-content-strong border-neutral-background rounded-full">
+                <div className="flex justify-center items-center shrink-0 gap-px size-12 mr-1 text-3xl leading-12 font-medium bg-neutral-content-weak text-neutral-content-strong border-neutral-background rounded-full">
                   <span>{user.person.name[0]?.toUpperCase()}</span>
                 </div>
               )}

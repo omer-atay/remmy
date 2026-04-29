@@ -3,14 +3,18 @@ import { Markdown } from '../Markdown/Markdown';
 import { Upvote } from '../../icons/Upvote';
 import { Downvote } from '../../icons/Downvote';
 import { Comment as CommentIcon } from '../../icons/Comment';
-import { Share } from '../../icons/Share';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { client } from '../../client';
 import clsx from 'clsx';
 import { useComment } from '../../contexts/useCommentContext';
+import { useSignup } from '../../contexts/useSignupContext';
+import { siteQuery } from '../../queries';
 
 export function CommentBody({ data }: { data: CommentView }) {
   const { isMakingComment, setIsMakingComment } = useComment();
+  const { setIsSignupShown } = useSignup();
+
+  const { data: site, isLoading, isError } = useQuery(siteQuery);
 
   const voteMutation = useMutation({
     mutationFn: async (variables: CreateCommentLike) => {
@@ -36,6 +40,14 @@ export function CommentBody({ data }: { data: CommentView }) {
     });
   };
 
+  if (isLoading) {
+    return <p>loading...</p>;
+  }
+
+  if (isError || !site) {
+    return <p>Error, something went wrong</p>;
+  }
+
   return (
     <div className="flex flex-col pl-10">
       <div className="text-sm leading-5 wrap-anywhere">
@@ -50,12 +62,16 @@ export function CommentBody({ data }: { data: CommentView }) {
         <div className="flex items-center">
           <button
             onClick={() => {
+              if (!site.my_user) {
+                setIsSignupShown(true);
+                return;
+              }
               upVoteComment();
             }}
             className={clsx(
               comment.my_vote === 1 && 'text-action-upvote',
               !areButtonsDisabled
-                ? 'p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover'
+                ? 'p-2 rounded-full hover:text-action-upvote hover:bg-secondary-background-hover  active:bg-[#515a5e]'
                 : 'text-interactive-content-disabled p-2',
             )}
             type="button"
@@ -74,12 +90,16 @@ export function CommentBody({ data }: { data: CommentView }) {
 
           <button
             onClick={() => {
+              if (!site.my_user) {
+                setIsSignupShown(true);
+                return;
+              }
               downVoteComment();
             }}
             className={clsx(
               comment.my_vote === -1 && 'text-action-downvote',
               !areButtonsDisabled
-                ? 'p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover'
+                ? 'p-2 rounded-full hover:text-action-downvote hover:bg-secondary-background-hover  active:bg-[#515a5e]'
                 : 'text-interactive-content-disabled p-2',
             )}
             type="button"
@@ -93,6 +113,11 @@ export function CommentBody({ data }: { data: CommentView }) {
 
         <button
           onClick={() => {
+            if (!site.my_user) {
+              setIsSignupShown(true);
+              return;
+            }
+
             if (!isMakingComment) {
               setIsMakingComment(true);
               return;
@@ -101,7 +126,7 @@ export function CommentBody({ data }: { data: CommentView }) {
           }}
           className={
             !areButtonsDisabled
-              ? 'flex items-center gap-1 w-fit py-2 px-4 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong'
+              ? 'flex items-center gap-1 w-fit py-2 px-4 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong  active:bg-[#515a5e]'
               : 'text-interactive-content-disabled flex items-center gap-1 w-fit py-2 px-4'
           }
           type="button"
@@ -109,19 +134,6 @@ export function CommentBody({ data }: { data: CommentView }) {
         >
           <CommentIcon />
           <span className="font-bold text-xs">Reply</span>
-        </button>
-
-        <button
-          className={
-            !areButtonsDisabled
-              ? 'flex justify-center items-center gap-1.5 w-fit py-2 px-4 rounded-2xl hover:bg-secondary-background-hover hover:text-neutral-content-strong'
-              : 'text-interactive-content-disabled flex justify-center items-center gap-1.5 w-fit py-2 px-4'
-          }
-          type="button"
-          disabled={areButtonsDisabled}
-        >
-          <Share />
-          <span className="font-bold text-xs">Share</span>
         </button>
       </div>
     </div>

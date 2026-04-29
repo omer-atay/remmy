@@ -13,7 +13,7 @@ type View = 'posts' | 'communities' | 'users';
 
 export function SearchPage() {
   return (
-    <div className="grid grid-cols-[auto_1fr]">
+    <div className="grid grid-cols-1 xl:grid-cols-[auto_1fr]">
       <Sidebar />
       <SearchMain />
     </div>
@@ -64,7 +64,7 @@ function SearchMain() {
 
   return (
     <div className="flex flex-col max-w-6xl w-full mx-auto my-6">
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 ml-4">
         <ViewOptionButton
           isSelected={view === 'posts'}
           onClick={() => {
@@ -94,7 +94,7 @@ function SearchMain() {
       </div>
 
       {view === 'posts' ? (
-        <div className="flex gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] mx-auto xl:mx-0">
           <SearchResults />
 
           <PageInfoPanel className="top-14 h-[calc(100vh-86px)] ml-auto">

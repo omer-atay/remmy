@@ -15,7 +15,7 @@ export function ImageViewer({ src, onClose }: { src: string; onClose: () => void
         <X size={26} />
         <span className="sr-only">Close image</span>
       </button>
-      <img className="z-1000 max-w-[85%]" src={src} alt="" />
+      <img className="z-1000 object-contain w-full" src={src} alt="" />
       <img className="w-full h-full absolute blur-xl scale-[1.2] object-cover" src={src} alt="" />
     </div>,
     document.body,

@@ -21,7 +21,7 @@ export function Sidebar() {
   const [showRecent, setShowRecent] = useLocalStorage('recent', true);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-3.5rem-1px)] w-68 px-4 sticky top-14 overflow-auto scrollbar-thin scrollbar-neutral-border text-sm border-r border-r-neutral-border">
+    <div className="hidden xl:flex xl:flex-col h-[calc(100vh-3.5rem-1px)] w-68 px-4 sticky top-14 overflow-auto scrollbar-thin scrollbar-neutral-border text-sm border-r border-r-neutral-border">
       <SidebarListSection>
         <SidebarListItem>
           <Link

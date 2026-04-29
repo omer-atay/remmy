@@ -53,7 +53,10 @@ export function CommentToPostSection({ post }: { post: PostView }) {
   return (
     <form
       onSubmit={onSubmit}
-      className={clsx('flex flex-col mt-4', isExpanded && 'border border-neutral-content-weak rounded-2xl')}
+      className={clsx(
+        'flex flex-col max-w-180 mt-4 px-4 md:px-0',
+        isExpanded && 'border border-neutral-content-weak rounded-2xl',
+      )}
     >
       <label>
         <textarea

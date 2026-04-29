@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { commentQueries } from '../../queries';
-import { useIntersectionObserver } from 'usehooks-ts';
+import { useIntersectionObserver, useMediaQuery } from 'usehooks-ts';
 import type { CommentView } from 'lemmy-js-client';
 import { useState } from 'react';
 import { clsx } from 'clsx';
@@ -13,6 +13,9 @@ import { CommentContextProvider } from '../../contexts/useCommentContext';
 
 function Comment({ data, comments, level = 0 }: { data: CommentView; comments: CommentView[]; level?: number }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const isMobile = useMediaQuery('(width < 40rem)');
+
+  const maxLevel = isMobile ? 2 : 5;
 
   const toggleComment = () => {
     setIsCollapsed((prev) => !prev);
@@ -22,9 +25,14 @@ function Comment({ data, comments, level = 0 }: { data: CommentView; comments: C
   const rootChildComments = childComments.filter((comment) => comment.comment.path.split('.').length === level + 3);
 
   return (
-    <div className={clsx('flex flex-col gap-1 relative pl-8', isCollapsed && 'flex-row gap-2')}>
+    <div className={clsx('flex flex-col gap-1 relative', isCollapsed && 'flex-row gap-2', level > 0 && 'pl-8')}>
       {childComments.length > 1 && !isCollapsed && (
-        <div className="flex flex-col items-center py-5 absolute w-[1.5px] left-12 top-8 bottom-12.5 bg-tone-4 hover:bg-tone-2">
+        <div
+          className={clsx(
+            'flex flex-col sm:flex items-center py-5 absolute w-[1.5px] top-8 bottom-12.5 bg-tone-4 hover:bg-tone-2',
+            level === 0 ? 'left-4' : 'left-12',
+          )}
+        >
           <button
             type="button"
             className="after:content-[''] after:absolute after:top-0 after:bottom-0 after:-left-1 after:-right-1 after:z-10 bg-neutral-background"
@@ -68,8 +76,12 @@ function Comment({ data, comments, level = 0 }: { data: CommentView; comments: C
       </CommentContextProvider>
 
       {!isCollapsed &&
-        rootChildComments.map((childComment) => (
-          <Comment comments={childComments} data={childComment} key={childComment.comment.id} level={level + 1} />
+        (level >= maxLevel - 1 ? (
+          <span className="text-sm text-neutral-content-weak">{`+${childComments.length} comments`}</span>
+        ) : (
+          rootChildComments.map((childComment) => (
+            <Comment comments={childComments} data={childComment} key={childComment.comment.id} level={level + 1} />
+          ))
         ))}
     </div>
   );
@@ -106,7 +118,7 @@ export function CommentsSection({ postId, totalCount }: { postId: number; totalC
   const hasNextPage = totalComments < totalCount;
 
   return (
-    <div className="flex flex-col gap-16 my-12 max-w-2xl">
+    <div className="flex flex-col gap-16 pt-4 max-w-2xl">
       {data.pages.flatMap((page) => {
         const rootComments = page.comments.filter((comment) => comment.comment.path.split('.').length === 2);
 
