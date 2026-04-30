@@ -10,7 +10,7 @@ import { getDate } from '../../utils/getTime';
 
 export function CreatorPage({ username }: { username: string }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] xl:grid-cols-[auto_1fr_auto] gap-4 mx-auto">
+    <div className="grid grid-cols-1 xl:grid-cols-[auto_1fr] gap-4 mx-auto">
       <Sidebar />
 
       <CreatorMain username={username} />
@@ -38,7 +38,7 @@ function CreatorMain({ username }: { username: string }) {
   }
 
   return (
-    <>
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 max-w-5xl min-w-0 mx-auto px-4">
       <div className="flex flex-col items-center w-full min-w-0 mt-4 mx-auto gap-4">
         <div className="flex items-center gap-4">
           {creator.person_view.person.avatar ? (
@@ -107,6 +107,6 @@ function CreatorMain({ username }: { username: string }) {
           </div>
         </PageDetailsSection>
       </PageInfoPanel>
-    </>
+    </div>
   );
 }
