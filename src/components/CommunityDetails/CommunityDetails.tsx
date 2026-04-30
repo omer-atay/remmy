@@ -72,7 +72,7 @@ export function CommunityDetails({ community }: { community: GetCommunityRespons
 
                   <div className="flex flex-col justify-center">
                     <Link className="text-sm text-neutral-content hover:underline" href={`/u/${creatorAbsoluteName}`}>
-                      u/{creatorAbsoluteName}
+                      u/{moderator.moderator.name}
                     </Link>
 
                     <span className="text-xs text-secondary-weak">{moderator.moderator.display_name}</span>

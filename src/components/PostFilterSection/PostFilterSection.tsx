@@ -4,7 +4,7 @@ export function PostFilterSection() {
   const { selectedMainFilter, selectedCommentFilter, selectedTopFilter, setFilter } = usePostFilterParams();
 
   return (
-    <div className="flex gap-4 ml-2">
+    <div className="flex justify-center gap-4">
       <select
         className="p-2 font-semibold text-xs text-neutral-content-weak hover:bg-secondary-background-hover hover:cursor-pointer rounded-4xl"
         aria-label="Main filter"

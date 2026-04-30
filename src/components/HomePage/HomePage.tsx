@@ -14,7 +14,7 @@ export function HomePage() {
       <Sidebar />
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] max-w-5xl w-full min-w-0 mx-auto lg:px-4">
-        <div className="mt-6 min-w-0 mx-auto w-full max-w-155">
+        <div className="mt-6 min-w-0 mx-auto w-full max-w-210">
           <PostFilterSection />
           <HomePosts />
         </div>

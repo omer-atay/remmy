@@ -205,7 +205,7 @@ function CommunityMain({ name }: { name: string }) {
           communityData.community.banner ? 'sm:mt-16' : 'sm:mt-0',
         )}
       >
-        <div className="flex flex-col md:max-w-167.5 w-full min-w-0 mx-auto">
+        <div className="flex flex-col max-w-200 w-full min-w-0 mx-auto">
           <PostFilterSection />
           <CommunityPosts communityName={name} sort={sort} />
         </div>
