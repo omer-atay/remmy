@@ -65,7 +65,7 @@ function PostMain({ id }: { id: string }) {
   }
 
   return (
-    <div className="grid grid-cols-1 px-4 md:grid-cols-[1fr_auto] w-full mx-auto">
+    <div className="grid grid-cols-1 px-4 md:grid-cols-[1fr_auto] max-w-5xl min-w-0 w-full mx-auto">
       <PostSection post={post.post_view} />
 
       <div className="hidden md:flex md:flex-col md:self-start md:gap-2 max-w-xs top-14 overflow-x-hidden scrollbar-thin scrollbar-neutral-border">
@@ -198,18 +198,22 @@ function PostSection({ post }: { post: PostView }) {
               </div>
 
               <div className="relative">
-                <Link
-                  onMouseEnter={() => {
-                    setIsCreatorDetailsShown(true);
-                  }}
-                  onMouseLeave={() => {
-                    setIsCreatorDetailsShown(false);
-                  }}
-                  className="text-neutral-content hover:text-primary"
-                  href={`/u/${creatorAbsoluteName}`}
-                >
-                  {creatorAbsoluteName}
-                </Link>
+                {!postData.creator.deleted && (
+                  <Link
+                    onMouseEnter={() => {
+                      setIsCreatorDetailsShown(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsCreatorDetailsShown(false);
+                    }}
+                    className="text-neutral-content hover:text-primary"
+                    href={`/u/${creatorAbsoluteName}`}
+                  >
+                    {creatorAbsoluteName}
+                  </Link>
+                )}
+
+                {postData.creator.deleted && <span className="text-xs text-neutral-content-weak">[deleted]</span>}
 
                 {isCreatorDetailsShown && (
                   <Popover

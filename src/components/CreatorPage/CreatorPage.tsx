@@ -40,7 +40,7 @@ function CreatorMain({ username }: { username: string }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 max-w-5xl min-w-0 mx-auto px-4">
       <div className="flex flex-col items-center w-full min-w-0 mt-4 mx-auto gap-4">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 w-full px-6">
           {creator.person_view.person.avatar ? (
             <img
               className="size-16 sm:size-24 border-2 border-neutral-border-weak rounded-full"

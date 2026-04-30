@@ -152,11 +152,11 @@ export function PostCard({ post, source = 'community' }: { post: PostView; sourc
               )}
 
               {postData.creator.deleted && (
-                <div>
-                  <div className="flex justify-center size-6 rounded-4xl bg-brand-background">
-                    <span className="mb-2 text-xl leading-12 font-extrabold">X</span>
+                <div className="flex items-center gap-1">
+                  <div className="flex justify-center items-center shrink-0 gap-px size-6 text-4xl leading-4 bg-neutral-content-weak text-neutral-background border-neutral-background rounded-full">
+                    <span>X</span>
                   </div>
-                  <span className="text-xs font-bold text-neutral-content">[deleted]</span>
+                  <span className="text-xs text-neutral-content-weak">[deleted]</span>
                 </div>
               )}
 

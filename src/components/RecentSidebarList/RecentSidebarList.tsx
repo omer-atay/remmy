@@ -6,8 +6,9 @@ export function RecentSidebarList() {
 
   return (
     <>
-      {recentCommunities.map((community) => {
-        return <CommunityItem key={community.name} community={community} />;
+      {recentCommunities.map((community, i) => {
+        // eslint-disable-next-line @eslint-react/no-array-index-key
+        return <CommunityItem key={i} community={community} />;
       })}
     </>
   );
