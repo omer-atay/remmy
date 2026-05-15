@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import type { RecentCommunity } from '../../hooks/useRecentCommunities';
+import { getEditedNumber } from '../../utils/getEditedNumber';
 
 export function CommunityItem({ community }: { community: RecentCommunity }) {
   return (
@@ -18,7 +19,9 @@ export function CommunityItem({ community }: { community: RecentCommunity }) {
         >
           c/{community.name}
         </Link>
-        <span className="text-[10px] sm:text-xs text-neutral-content-weak">{community.subscribers} members</span>
+        <span className="text-[10px] sm:text-xs text-neutral-content-weak">
+          {getEditedNumber(community.subscribers)} members
+        </span>
       </div>
     </li>
   );
