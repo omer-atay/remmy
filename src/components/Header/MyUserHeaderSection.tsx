@@ -37,7 +37,13 @@ export function MyUserHeaderSection({ myUser }: { myUser: Person }) {
         {isMyUserDetailsShown && (
           <Dropdown>
             <div className="flex flex-col gap-2">
-              <Link href={`/u/${myUserAbsoluteName}`} className="flex items-center gap-2 hover:text-secondary-hover">
+              <Link
+                onClick={() => {
+                  setIsMyUserDetailsShown(false);
+                }}
+                href={`/u/${myUserAbsoluteName}`}
+                className="flex items-center gap-2 hover:text-secondary-hover"
+              >
                 {myUser.avatar && <img className="size-8 rounded-full" src={myUser.avatar} alt="" />}
 
                 {!myUser.avatar && (
@@ -60,6 +66,7 @@ export function MyUserHeaderSection({ myUser }: { myUser: Person }) {
                   client.setHeaders({ Authorization: '' });
                   void queryClient.resetQueries();
                   localStorage.removeItem(LOGIN_KEY);
+                  setIsMyUserDetailsShown(false);
                 }}
                 className="flex gap-2 hover:text-secondary-hover"
               >
