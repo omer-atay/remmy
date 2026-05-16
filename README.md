@@ -26,14 +26,10 @@
 
 ---
 
-# Won't Fix
+- [] problem in postpage after adding sidebar shrink
 
-- [] add SidebarMobile component
-- [] add sidebar collapse
-- [] handle signup
-- [] add community details page in community page
-- [] research how to change the browser tab name when page changes (look specifically for react 19)
 - [] externalpostcardbody gets props => image, description?, link, body?
+- [] add community details page in community page
 - [] handle new post bodies
   46132793 => application/pdf => give url and render something like external
   46131125 => text/plain => render something like external but also embed description and body
