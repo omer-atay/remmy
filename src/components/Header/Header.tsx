@@ -10,7 +10,7 @@ import { siteQuery } from '../../queries';
 import { DefaultHeaderButtonsSection } from './DefaultHeaderButtonsSection';
 import { MyUserHeaderSection } from './MyUserHeaderSection';
 import { useSignup } from '../../contexts/useSignupContext';
-import { Menu } from 'lucide-react';
+import { MenuIcon } from 'lucide-react';
 import { SidebarMobile } from '../Sidebar/SidebarMobile';
 
 export function Header() {
@@ -31,10 +31,10 @@ export function Header() {
               onClick={() => {
                 setIsSidebarOpen((prev) => !prev);
               }}
-              className="hover:bg-secondary-background-hover active:bg-secondary-background-selected p-2 rounded-full"
+              className="flex xl:hidden hover:bg-secondary-background-hover active:bg-secondary-background-selected p-2 rounded-full"
               title="Open navigation"
             >
-              <Menu size={20} className="flex xl:hidden text-neutral-content-strong" />
+              <MenuIcon size={20} className="text-neutral-content-strong" />
               <span className="sr-only">Open navigation</span>
             </button>
 

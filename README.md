@@ -26,8 +26,6 @@
 
 ---
 
-- [] problem in postpage after adding sidebar shrink
-
 - [] externalpostcardbody gets props => image, description?, link, body?
 - [] add community details page in community page
 - [] handle new post bodies

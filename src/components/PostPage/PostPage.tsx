@@ -28,7 +28,7 @@ import { Footer } from '../Footer/Footer';
 
 export function PostPage({ id }: { id: string }) {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-[auto_1fr] mx-auto">
+    <div className="grid grid-cols-1 xl:grid-cols-[auto_1fr] gap-6 mx-auto">
       <Sidebar />
       <PostMain id={id} />
     </div>
@@ -65,7 +65,7 @@ function PostMain({ id }: { id: string }) {
   }
 
   return (
-    <div className="grid grid-cols-1 px-4 md:grid-cols-[1fr_auto] max-w-5xl min-w-0 w-full mx-auto">
+    <div className="grid grid-cols-1 sm:px-4 md:grid-cols-[1fr_auto] max-w-5xl min-w-0 w-full mx-auto">
       <PostSection post={post.post_view} />
 
       <div className="hidden md:flex md:flex-col md:self-start md:gap-2 max-w-xs top-14 overflow-x-hidden scrollbar-thin scrollbar-neutral-border">
@@ -125,7 +125,7 @@ function PostSection({ post }: { post: PostView }) {
 
   return (
     <div className="flex flex-col justify-between gap-1 w-full min-w-0 mt-6 px-0 md:px-4 relative">
-      <div className="flex flex-col justify-between gap-2 px-2 rounded-2xl">
+      <div className="flex flex-col justify-between gap-2 sm:px-2 rounded-2xl">
         <div className="flex justify-between items-center gap-2 ml-4 md:ml-0">
           <div className="flex items-center gap-1">
             <button

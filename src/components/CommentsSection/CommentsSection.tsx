@@ -118,7 +118,7 @@ export function CommentsSection({ postId, totalCount }: { postId: number; totalC
   const hasNextPage = totalComments < totalCount;
 
   return (
-    <div className="flex flex-col gap-16 pt-4 max-w-2xl">
+    <div className="flex flex-col gap-16 pt-4 px-5 max-w-2xl">
       {data.pages.flatMap((page) => {
         const rootComments = page.comments.filter((comment) => comment.comment.path.split('.').length === 2);
 
